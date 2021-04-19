@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio 4 - Entornos Gráficos</title>
+    <link rel="stylesheet" href="./styles/main.css">
+</head>
+<body>
+    <p>
+      <!-- Logo que lleva a la página de la utn -->
+      <a href="https://www.frro.utn.edu.ar/">
+        <img src="https://www.frro.utn.edu.ar/imagenes/toplogo.png" alt="Logo UTN" />
+      </a>
+    </p>
+    <!-- Línea que ocupa el 100% -->
+    <hr>
+    <!-- Línea que ocupa el 100% -->
+    <h1>AÑO 2008</h1>
+    <!-- Tabla con input de fecha y cantidad de aprobados
+    ancho de 450px, borde de 1px, sin padding ni espacio -->
+    <table width="450px" border="1" cellpadding="0" cellspacing="0">
+      <tr>
+        <th colspan="2">
+          Exámenes
+        </th>
+      </tr>
+      <tr>
+        <td rowspan="2">
+          Fecha:
+          <!-- Input de fecha, fecha por defecto 2021-04-05 -->
+          <input value="2021-04-05" type="date" id="fecha" name="fecha" required>
+        </td>
+        <td align="right">Aprobados</td>
+      </tr>
+      <tr>
+        <td width="50%" align="right">25/30</td>
+      </tr>
+    </table>
+    <br>
+    <!-- Lista ordenada con
+      enunciado de examen en la misma pestaña,
+      resolucion link abre en otra pestaña
+    -->
+    <ol>
+      <li><a href="#enunciado">Enunciado del examen</a></li>
+      <li><a href="#" target="_blank" >Resolucion</a></li>    
+    </ol>
+    <p>Puede realizar consultas completando el siguiente formulario:</p>
+    <form class="question-form" action="x@x.com">
+      <label class="form-label" for="Email"><strong>e-mail:</strong></label>
+      <input type="email" id="Email" name="Email" required/><br>
+
+      <!-- Se agrega una clase simple para agregarle un poco de margin top -->
+      <label for="consulta" class="form-label consulta-style"><strong>Consulta:</strong></label>
+      <textarea id="consulta" name="consulta" class="consulta-style"></textarea>
+      
+      <!-- Se inserta un pequeño margin a la izquierda con css inline -->
+      <div class="consulta-style" style="margin-left: 3rem">
+        <input type="reset" id="boton2" name="boton2" value="BORRAR" />
+        <input type="submit" id="boton2" name="boton2" value="ENVIAR" />
+      </div>
+    </form>
+    <!-- Se agrega css inline para comprobar que funciona el link #enunciado -->
+    <div id="enunciado" style="margin-top: 200px">
+      <h2>Enunciado del examen</h2>
+      <p>
+          <p>
+              Ejercicio 1: .................................
+              <br>.....................................................
+          </p>
+          <p>
+              Ejercicio 2: .................................
+              <br>.....................................................
+          </p>
+      </p>
+      <p>
+        Para más informacion dirigirse a
+        <a href="mailto:contacto@xx.com"> contacto@xx.com</a>
+      </p>
+    </div>
+</body>
+</html>
