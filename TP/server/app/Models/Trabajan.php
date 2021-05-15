@@ -19,11 +19,11 @@ class Trabajan extends Model
 
     public function persona()
     {
-        return $this->belongsTo('App\Models\Persona');
+        return $this->belongsTo('App\Models\Persona', 'id_persona');
     }
 
     public function catedra()
     {
-        return $this->belongsTo('App\Models\Catedra');
+        return $this->belongsTo('App\Models\Catedra', 'id_catedra');
     }
 }

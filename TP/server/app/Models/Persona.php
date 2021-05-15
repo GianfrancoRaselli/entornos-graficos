@@ -43,11 +43,11 @@ class Persona extends Model implements AuthenticatableContract, AuthorizableCont
 
     public function roles()
     {
-        return $this->hasMany('App\Models\Rol');
+        return $this->belongsToMany('App\Models\Rol', 'personas_roles', 'id_persona', 'id_rol');
     }
 
     public function trabajos()
     {
-        return $this->hasMany('App\Models\Trabajan');
+        return $this->hasMany('App\Models\Trabajan', 'id_persona');
     }
 }

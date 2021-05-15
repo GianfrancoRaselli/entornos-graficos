@@ -18,11 +18,11 @@ class Catedra extends Model
 
     public function jefeCatedra()
     {
-        return $this->belongsTo('App\Models\Persona');
+        return $this->belongsTo('App\Models\Persona', 'id_jefe_catedra');
     }
 
     public function trabajan()
     {
-        return $this->hasMany('App\Models\Trabajan');
+        return $this->hasMany('App\Models\Trabajan', 'id_catedra');
     }
 }

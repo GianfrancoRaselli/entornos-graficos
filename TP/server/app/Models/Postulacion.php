@@ -20,11 +20,11 @@ class Postulacion extends Model
 
     public function persona()
     {
-        return $this->belongsTo('App\Models\Persona');
+        return $this->belongsTo('App\Models\Persona', 'id_persona');
     }
 
     public function llamado()
     {
-        return $this->belongsTo('App\Models\Llamado');
+        return $this->belongsTo('App\Models\Llamado', 'id_llamado');
     }
 }

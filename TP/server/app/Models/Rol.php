@@ -16,6 +16,6 @@ class Rol extends Model
 
     public function personas()
     {
-        return $this->hasMany('App\Models\Persona');
+        return $this->belongsToMany('App\Models\Persona', 'personas_roles', 'id_rol', 'id_persona');
     }
 }

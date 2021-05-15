@@ -19,11 +19,11 @@ class Llamado extends Model
 
     public function catedra()
     {
-        return $this->belongsTo('App\Models\Catedra');
+        return $this->belongsTo('App\Models\Catedra', 'id_catedra');
     }
 
     public function postulaciones()
     {
-        return $this->hasMany('App\Models\Postulacion');
+        return $this->hasMany('App\Models\Postulacion', 'id_postulacion');
     }
 }
