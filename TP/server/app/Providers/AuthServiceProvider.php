@@ -32,8 +32,8 @@ class AuthServiceProvider extends ServiceProvider
 
         $this->app['auth']->viaRequest('api', function ($request) {
             if ($request->header('Authorization')) {
-                if (count(explode(" ", $request->header('Authorization'))) == 2) {
-                    $token = explode(" ", $request->header('Authorization'))[1];
+                if (count(explode(' ', $request->header('Authorization'))) == 2) {
+                    $token = explode(' ', $request->header('Authorization'))[1];
                     return Persona::where('api_token', $token)->first();
                 }
             }
