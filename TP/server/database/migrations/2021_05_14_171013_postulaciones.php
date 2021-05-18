@@ -18,6 +18,7 @@ class Postulaciones extends Migration
             $table->string('curriculum_vitae');
             $table->string('estado');
             $table->integer('puntaje')->nullable();
+            $table->integer('orden')->nullable();
             $table->unsignedBigInteger('id_persona');
             $table->unsignedBigInteger('id_llamado');
             

@@ -12,6 +12,7 @@ class Postulacion extends Model
         'curriculum_vitae',
         'estado',
         'puntaje',
+        'orden',
         'id_persona',
         'id_llamado'
     ];
