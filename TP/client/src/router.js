@@ -50,13 +50,13 @@ router.beforeEach(async (to, from, next) => {
     if (localStorage.getItem('api_token')) {
         try {
             let res = await axios.get('personas/perfil',
-                {
-                    headers: {
-                        Authorization: 'Bearer ' + localStorage.getItem('api_token')
-                    }
-                });
+            {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('api_token')
+                }
+            });
 
-                persona = res.data;
+            persona = res.data[0];
         } catch (err) {
             localStorage.removeItem("api_token");
             localStorage.removeItem("nombre_usuario");
