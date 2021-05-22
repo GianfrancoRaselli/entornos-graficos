@@ -12,7 +12,7 @@ use Illuminate\Support\Str;
 
 class PersonaController extends Controller
 {
-    function signup(Request $request)
+    function signUp(Request $request)
     {
         if ($request->dni && $request->nombre_usuario && $request->clave && $request->nombre_apellido && $request->email && $request->telefono) {
             DB::beginTransaction();
@@ -46,7 +46,7 @@ class PersonaController extends Controller
         }
     }
 
-    function signin(Request $request)
+    function signIn(Request $request)
     {
         if ($request->nombre_usuario && $request->clave) {
             try {
@@ -75,6 +75,25 @@ class PersonaController extends Controller
             $persona = Persona::find(auth()->user()->id);
 
             return response()->json([$persona, $persona->roles]);
+        } catch (Exception $e) {
+            return response()->json(['error' => $e], 406, []);
+        }
+    }
+
+    public function editarPerfil(Request $request)
+    {
+        try {
+            $persona = Persona::find(auth()->user()->id);
+
+            $persona->dni = $request->dni;
+            $persona->nombre_usuario = $request->nombre_usuario;
+            $persona->nombre_apellido = $request->nombre_apellido;
+            $persona->email = $request->email;
+            $persona->telefono = $request->telefono;
+
+            $persona->save();
+
+            return response()->json($persona);
         } catch (Exception $e) {
             return response()->json(['error' => $e], 406, []);
         }

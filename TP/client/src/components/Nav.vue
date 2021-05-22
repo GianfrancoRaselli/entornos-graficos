@@ -75,12 +75,12 @@
         height: 60px;
     }
 
-    .btn{
+    .btn {
         width: 100%;
         text-align: left;
     }
 
-    #btn-cerrar-sesion{
+    #btn-cerrar-sesion {
         color: red;
     }
 </style>

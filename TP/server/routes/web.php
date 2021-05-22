@@ -13,10 +13,12 @@
 |
 */
 
-$router->post('/personas/signup', 'PersonaController@signup');
+$router->post('/personas/signUp', 'PersonaController@signUp');
 
-$router->post('/personas/signin', 'PersonaController@signin');
+$router->post('/personas/signIn', 'PersonaController@signIn');
 
 $router->group(['middleware' => ['auth']], function () use ($router) {
     $router->get('/personas/perfil', 'PersonaController@perfil');
+
+    $router->post('/personas/editarPerfil', 'PersonaController@editarPerfil');
 });

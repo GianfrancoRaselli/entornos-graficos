@@ -3,7 +3,7 @@
         <div class="col-md-4 mx-auto">
             <div class="card text-center animate__animated animate__flipInY animate__fast">
                 <div class="card-header">
-                    <h3><strong>Inicio Sesión</strong></h3>
+                    <p style="font-size: 1.75rem;"><strong>Inicio Sesión</strong></p>
                 </div>
                 <div class="card-body">
                     <img src="../assets/img-signin.png" alt="Logo Inicio Sesion" class="card-img-top mx-auto m-2 rounded-circle w-25">
@@ -42,7 +42,7 @@
         methods: {
             async handleSubmit() {
                 try {
-                    const res = await axios.post('personas/signin', 
+                    const res = await axios.post('personas/signIn',
                     {
                         nombre_usuario: this.nombre_usuario,
                         clave: this.clave

@@ -1,35 +1,34 @@
 <template>
-    <div class="row d-flex justify-content-center ml-4 mr-4 mb-3">
-        <div class="col-lg-10 mt-3 pt-3">
-            <div class="row z-depth-3">
-                <div class="col-lg-4 bg-info rounded-left">
-                    <div class="card-block text-center text-white">
-                        <i class="fas fa-user-tie fa-7x mt-5"></i>
-                        <h2 class="font-weight-bold mt-4">{{nombre_apellido}}</h2>
-                        <h4 class="font-weight mt-2">{{dni}}</h4>
-                        <hr>
-                        <p :key="rol.id" v-for="rol in roles" v-text="rol.descripcion"></p>
+    <div id="perfil">
+        <div class="row d-flex justify-content-center ml-4 mr-4 mb-3 animate__animated animate__pulse animate__fast">
+            <div class="col-lg-10 mt-3 pt-3">
+                <div class="row z-depth-3">
+                    <div class="col-lg-4 bg-info rounded-left">
+                        <div class="card-block text-center text-white">
+                            <i class="fas fa-user-tie fa-7x mt-5"></i>
+                            <p class="font-weight-bold mt-4" style="font-size: 2rem;">{{nombre_apellido}}</p>
+                            <p class="font-weight mt-2" style="font-size: 1.5rem;">{{dni}}</p>
+                            <hr>
+                            <p :key="rol.id" v-for="rol in roles" v-text="rol.descripcion"></p>
+                            <router-link to="perfil/editar" class="btn btn-link mt-2 mb-3" id="btn-editar-usuario"><i class="fas fa-edit fa-3x"></i></router-link>
+                        </div>
                     </div>
-                </div>
-                <div class="col-lg-8 bg-white rounded-right pb-2">
-                    <h3 class="mt-3 text-center">Información Personal</h3>
-                    <hr class="badge-primary mt-0 w-25">
-                    <div class="row">
-                        <div class="col-md-6 mt-3 text-center">
-                            <p class="font-weight-bold">Nombre Usuario</p>
-                            <h6 class="text-muted">{{nombre_usuario}}</h6>
-                        </div>
-                        <div class="col-md-6 mt-3 text-center">
-                            <p class="font-weight-bold">Clave</p>
-                            <h6 class="text-muted">{{clave}}</h6>
-                        </div>
-                        <div class="col-md-6 mt-3 text-center">
-                            <p class="font-weight-bold">Email</p>
-                            <h6 class="text-muted">{{email}}</h6>
-                        </div>
-                        <div class="col-md-6 mt-3 text-center">
-                            <p class="font-weight-bold">Teléfono</p>
-                            <h6 class="text-muted">{{telefono}}</h6>
+                    <div class="col-lg-8 bg-white rounded-right pb-2">
+                        <p class="mt-3 text-center" style="font-size: 1.75rem;">Información Personal</p>
+                        <hr class="badge-primary mt-0 w-25">
+                        <div class="row">
+                            <div class="col-md-6 mt-3 text-center">
+                                <p class="font-weight-bold">Nombre Usuario</p>
+                                <p class="text-muted" style="font-size: 1.05rem;">{{nombre_usuario}}</p>
+                            </div>
+                            <div class="col-md-6 mt-3 text-center">
+                                <p class="font-weight-bold">Email</p>
+                                <p class="text-muted" style="font-size: 1.05rem;">{{email}}</p>
+                            </div>
+                            <div class="col-md-6 mt-3 text-center">
+                                <p class="font-weight-bold">Teléfono</p>
+                                <p class="text-muted" style="font-size: 1.05rem;">{{telefono}}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -47,7 +46,6 @@
             return {
                 dni: '',
                 nombre_usuario: '',
-                clave: '',
                 nombre_apellido: '',
                 email: '',
                 telefono: '',
@@ -64,10 +62,9 @@
                                 Authorization: 'Bearer ' + localStorage.getItem('api_token')
                             }
                         });
-
+                        
                         this.dni = res.data[0].dni;
                         this.nombre_usuario = res.data[0].nombre_usuario;
-                        this.clave = res.data[0].clave;
                         this.nombre_apellido = res.data[0].nombre_apellido;
                         this.email = res.data[0].email;
                         this.telefono = res.data[0].telefono;
@@ -87,5 +84,11 @@
 </script>
 
 <style>
+    #btn-editar-usuario {
+        color: white;
+    }
 
+    #btn-editar-usuario:hover {
+        color: blanchedalmond;
+    }
 </style>

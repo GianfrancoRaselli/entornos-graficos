@@ -4,8 +4,9 @@ import axios from 'axios'
 
 import SignUp from './components/SignUp.vue'
 import SignIn from './components/SignIn.vue'
-import Perfil from './components/Perfil.vue'
 import Inicio from './components/Inicio.vue'
+import Perfil from './components/Perfil.vue'
+import EditarPerfil from './components/EditarPerfil.vue'
 
 Vue.use(Router)
 
@@ -31,6 +32,10 @@ const router = new Router({
             }
         },
         {
+            path: '/',
+            component: Inicio
+        },
+        {
             path: '/perfil',
             component: Perfil,
             meta: {
@@ -38,8 +43,11 @@ const router = new Router({
             }
         },
         {
-            path: '/',
-            component: Inicio
+            path: '/perfil/editar',
+            component: EditarPerfil,
+            meta: {
+                auth: true
+            }
         }
     ]
 })
