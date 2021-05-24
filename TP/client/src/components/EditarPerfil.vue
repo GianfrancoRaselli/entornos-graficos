@@ -6,6 +6,16 @@
                 <li class="breadcrumb-item active" aria-current="page">Editar Perfil</li>
             </ol>
         </nav>
+        <div style="width: 100%; margin-bottom: 1%;" v-if="error">
+            <div class="alert alert-danger alert-dismissible fade show"
+                style="width: fit-content; margin-top: 2%; margin-left: auto; margin-right: auto;" role="alert">
+                {{errorMessage}}
+                <button v-on:click="error = false" class="close btn btn-link" data-dismiss="alert"
+                    style="color: black; text-decoration: none; font-size: 22px;" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
         <div class="row m-2">
             <div class="col-md-4 mx-auto">
                 <div class="card text-center animate__animated animate__flipInY animate__fast">
@@ -54,6 +64,8 @@
         name: 'SignUp',
         data() {
             return {
+                error: false,
+                errorMessage: '',
                 dni: '',
                 nombre_usuario: '',
                 nombre_apellido: '',
@@ -99,6 +111,9 @@
                             Authorization: 'Bearer ' + localStorage.getItem('api_token')
                         }
                     });
+
+                    this.error = false;
+                    this.errorMessage = '';
                     
                     localStorage.setItem('nombre_usuario', res.data.nombre_usuario || '');
 
@@ -106,7 +121,8 @@
                     
                     this.$router.push('/perfil');
                 } catch (err) {
-                    console.log(err.response.data.error)
+                    this.errorMessage = err.response.data.error;
+                    this.error = true;
                 }
             }
         },

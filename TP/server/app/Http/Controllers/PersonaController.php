@@ -50,7 +50,7 @@ class PersonaController extends Controller
                 return response()->json(['error' => 'El DNI ya se encuentra registrado'], 406, []);
             }
         } else {
-            return response()->json(['error' => 'Ingresa todos los datos de la persona'], 406, []);
+            return response()->json(['error' => 'Ingrese todos los datos de la persona'], 406, []);
         }
     }
 
@@ -70,10 +70,10 @@ class PersonaController extends Controller
                     return response()->json(['error' => 'Persona no encontrada'], 406, []);
                 }
             } catch (Exception $e) {
-                return response()->json(['error' => $e], 406, []);
+                return response()->json(['error' => $e->getMessage()], 406, []);
             }
         } else {
-            return response()->json(['error' => 'Ingresa el nombre de usuario y la clave'], 406, []);
+            return response()->json(['error' => 'Ingrese el nombre de usuario y la clave'], 406, []);
         }
     }
 
@@ -84,26 +84,38 @@ class PersonaController extends Controller
 
             return response()->json([$persona, $persona->roles]);
         } catch (Exception $e) {
-            return response()->json(['error' => $e], 406, []);
+            return response()->json(['error' => $e->getMessage()], 406, []);
         }
     }
 
     public function editarPerfil(Request $request)
     {
-        try {
-            $persona = Persona::find(auth()->user()->id);
+        if ($request->dni && $request->nombre_usuario && $request->nombre_apellido && $request->email && $request->telefono) {
+            if (!Persona::where('dni', $request->dni)->first()) {
+                if (!Persona::where('nombre_usuario', $request->nombre_usuario)->first()) {
+                    try {
+                        $persona = Persona::find(auth()->user()->id);
 
-            $persona->dni = $request->dni;
-            $persona->nombre_usuario = $request->nombre_usuario;
-            $persona->nombre_apellido = $request->nombre_apellido;
-            $persona->email = $request->email;
-            $persona->telefono = $request->telefono;
+                        $persona->dni = $request->dni;
+                        $persona->nombre_usuario = $request->nombre_usuario;
+                        $persona->nombre_apellido = $request->nombre_apellido;
+                        $persona->email = $request->email;
+                        $persona->telefono = $request->telefono;
 
-            $persona->save();
+                        $persona->save();
 
-            return response()->json($persona);
-        } catch (Exception $e) {
-            return response()->json(['error' => $e], 406, []);
+                        return response()->json($persona);
+                    } catch (Exception $e) {
+                        return response()->json(['error' => $e->getMessage()], 406, []);
+                    }
+                } else {
+                    return response()->json(['error' => 'El nombre de usuario ya se encuentra registrado'], 406, []);
+                }
+            } else {
+                return response()->json(['error' => 'El DNI ya se encuentra registrado'], 406, []);
+            }
+        } else {
+            return response()->json(['error' => 'Ingrese todos los datos de la persona'], 406, []);
         }
     }
 }
