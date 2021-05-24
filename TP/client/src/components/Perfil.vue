@@ -40,6 +40,7 @@
 <script>
     import axios from 'axios'
     import { EventBus } from '../event-bus'
+    import Swal from 'sweetalert2'
     export default {
         name: 'Perfil',
         data() {
@@ -78,6 +79,25 @@
             }
         },
         created() {
+            if (this.$route.query.key) {
+                if (this.$route.query.key === 'signup') {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Persona registrada correctamente',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+                } else if (this.$route.query.key === 'signin') {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: '¡Bienvenido!',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                }
+            }
             this.buscarUsuario();
         }
     }

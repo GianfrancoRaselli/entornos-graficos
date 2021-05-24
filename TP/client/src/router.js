@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import axios from 'axios'
+import { EventBus } from './event-bus'
 
 import SignUp from './components/SignUp.vue'
 import SignIn from './components/SignIn.vue'
@@ -66,8 +67,9 @@ router.beforeEach(async (to, from, next) => {
 
             persona = res.data[0];
         } catch (err) {
-            localStorage.removeItem("api_token");
-            localStorage.removeItem("nombre_usuario");
+            if (err.response.status === 401) {
+                EventBus.$emit('cerrarSesion');
+            }
         }
     }
     let auth = to.matched.some(record => record.meta.auth);

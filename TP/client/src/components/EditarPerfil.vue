@@ -1,38 +1,46 @@
 <template>
-    <div class="row m-2">
-        <div class="col-md-4 mx-auto">
-            <div class="card text-center animate__animated animate__flipInY animate__fast">
-                <div class="card-header">
-                    <p style="font-size: 1.75rem;"><strong>Editar Perfil</strong></p>
-                </div>
-                <div class="card-body">
-                    <form @submit.prevent="handleSubmit">
-                        <div class="form-group">
-                            <input type="text" v-model="dni" placeholder="DNI" class="form-control" autofocus>
-                        </div>
-                        <br>
-                        <div class="form-group">
-                            <input type="text" v-model="nombre_usuario" placeholder="Nombre Usuario" class="form-control">
-                        </div>
-                        <br>
-                        <div class="form-group">
-                            <input type="text" v-model="nombre_apellido" placeholder="Nombre y Apellido" class="form-control" autofocus>
-                        </div>
-                        <br>
-                        <div class="form-group">
-                            <input type="email" v-model="email" placeholder="Email" class="form-control">
-                        </div>
-                        <br>
-                        <div class="form-group">
-                            <input type="text" v-model="telefono" placeholder="Teléfono" class="form-control">
-                        </div>
-                        <br>
-                        <div class="form-group">
-                            <button class="btn btn-success btn-block">
-                                Guardar
-                            </button>
-                        </div>
-                    </form>
+    <div>
+        <nav aria-label="breadcrumb" class="m-auto" style="width: fit-content">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><router-link to="/perfil"><i class="fas fa-id-card"></i> Perfil</router-link></li>
+                <li class="breadcrumb-item active" aria-current="page">Editar Perfil</li>
+            </ol>
+        </nav>
+        <div class="row m-2">
+            <div class="col-md-4 mx-auto">
+                <div class="card text-center animate__animated animate__flipInY animate__fast">
+                    <div class="card-header">
+                        <p style="font-size: 1.75rem;"><strong>Editar Perfil</strong></p>
+                    </div>
+                    <div class="card-body">
+                        <form @submit.prevent="handleSubmit">
+                            <div class="form-group">
+                                <input type="text" v-model="dni" placeholder="DNI" class="form-control" autofocus>
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <input type="text" v-model="nombre_usuario" placeholder="Nombre Usuario" class="form-control">
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <input type="text" v-model="nombre_apellido" placeholder="Nombre y Apellido" class="form-control" autofocus>
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <input type="email" v-model="email" placeholder="Email" class="form-control">
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <input type="text" v-model="telefono" placeholder="Teléfono" class="form-control">
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <button class="btn btn-success btn-block">
+                                    Guardar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
