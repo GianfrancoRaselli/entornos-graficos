@@ -4,12 +4,12 @@
       <div class="col-lg-12 w-100 profile-container">
         <div class="col-lg-3 data-box">
           <div class="profile-img">
-            {{ nombre_apellido[0] }}
+            {{ user.nombre_apellido[0] }}
           </div>
           <div class="personal-info mt-3">
-            <p>DNI: {{dni}}</p>
-            <p>Nombre y apellido: {{ nombre_apellido }}</p>
-            <p>Email: {{email}}</p>
+            <p>DNI: {{ user.dni }}</p>
+            <p>Nombre y apellido: {{ user.nombre_apellido }}</p>
+            <p>Email: {{ user.email }}</p>
           </div>
           <utn-button icon="fas fa-edit" to="perfil/editar" btnClass="btn btn-light" id="btn-editar-usuario">
             Editar
@@ -62,69 +62,71 @@
 </template>
 
 <script>
-    import axios from 'axios'
-    import { EventBus } from '../event-bus'
-    import Swal from 'sweetalert2'
-    export default {
-        name: 'Perfil',
-        data() {
-            return {
-                dni: '',
-                nombre_usuario: '',
-                nombre_apellido: '',
-                email: '',
-                telefono: '',
-                roles: []
-            }
-        },
-        methods: {
-            async buscarUsuario() {
-                if (localStorage.getItem('api_token')) {
-                    try {
-                        let res = await axios.get('http://localhost/entornos-graficos-2021/TP/server/public/personas/perfil',
-                        {
-                            headers: {
-                                Authorization: 'Bearer ' + localStorage.getItem('api_token')
-                            }
-                        });
-                        
-                        this.dni = res.data[0].dni;
-                        this.nombre_usuario = res.data[0].nombre_usuario;
-                        this.nombre_apellido = res.data[0].nombre_apellido;
-                        this.email = res.data[0].email;
-                        this.telefono = res.data[0].telefono;
-                        this.roles = res.data[0].roles;
-                    } catch (err) {
-                        console.log(err);
-                    }
-                } else {
-                    EventBus.$emit('cerrarSesion');
-                }
-            }
-        },
-        created() {
-            if (this.$route.query.key) {
-                if (this.$route.query.key === 'signup') {
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'success',
-                        title: 'Persona registrada correctamente',
-                        showConfirmButton: false,
-                        timer: 3000
-                    });
-                } else if (this.$route.query.key === 'signin') {
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'success',
-                        title: '¡Bienvenido!',
-                        showConfirmButton: false,
-                        timer: 2000
-                    });
-                }
-            }
-            this.buscarUsuario();
+  import axios from 'axios'
+  import { EventBus } from '../event-bus'
+  import Swal from 'sweetalert2'
+  export default {
+    name: 'Perfil',
+    data() {
+      return {
+        user:{
+          dni: '',
+          nombre_usuario: '',
+          nombre_apellido: '',
+          email: '',
+          telefono: '',
+          roles: [],
         }
+      }
+    },
+    methods: {
+      async buscarUsuario() {
+        if (localStorage.getItem('api_token')) {
+          try {
+            let res = await axios.get('http://localhost/entornos-graficos-2021/TP/server/public/personas/perfil',
+            {
+              headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('api_token')
+              }
+            });
+            
+            this.user.dni = res.data[0].dni;
+            this.user.nombre_usuario = res.data[0].nombre_usuario;
+            this.user.nombre_apellido = res.data[0].nombre_apellido;
+            this.user.email = res.data[0].email;
+            this.user.telefono = res.data[0].telefono;
+            this.user.roles = res.data[0].roles;
+          } catch (err) {
+              console.log(err);
+          }
+        } else {
+            EventBus.$emit('cerrarSesion');
+        }
+      }
+    },
+    created() {
+      if (this.$route.query.key) {
+        if (this.$route.query.key === 'signup') {
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Persona registrada correctamente',
+            showConfirmButton: false,
+            timer: 3000
+          });
+        } else if (this.$route.query.key === 'signin') {
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: '¡Bienvenido!',
+              showConfirmButton: false,
+              timer: 2000
+            });
+        }
+      }
+      this.buscarUsuario();
     }
+  }
 </script>
 
 <style>
