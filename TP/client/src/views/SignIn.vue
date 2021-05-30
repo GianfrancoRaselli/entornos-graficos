@@ -49,8 +49,8 @@
             return {
                 error: false,
                 errorMessage: '',
-                nombre_usuario: 'federoma1',
-                clave: 'asdasd123'
+                nombre_usuario: 'testing',
+                clave: 'test123'
             }
         },
         methods: {
