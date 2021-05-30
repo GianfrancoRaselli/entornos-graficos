@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Persona;
+use App\Models\Rol;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -14,7 +15,7 @@ class PersonaController extends Controller
 {
     function signUp(Request $request)
     {
-        if ($request->dni && $request->nombre_usuario && $request->clave && $request->nombre_apellido && $request->email && $request->telefono) {
+        if ($request->dni && $request->nombre_usuario && $request->clave && $request->nombre_apellido && $request->email && $request->telefono && $request->rol) {
             if (!Persona::where('dni', $request->dni)->first()) {
                 if (!Persona::where('nombre_usuario', $request->nombre_usuario)->first()) {
                     DB::beginTransaction();
@@ -34,6 +35,8 @@ class PersonaController extends Controller
                         $persona->api_token = Str::random(30) . $persona->id . Str::random(30);
                         
                         $persona->save();
+
+                        $persona->roles()->attach(Rol::where('descripcion', $request->rol)->first()->id);
 
                         DB::commit();
 
