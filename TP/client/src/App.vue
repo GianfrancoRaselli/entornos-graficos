@@ -3,7 +3,9 @@
     <header>
       <Nav />
     </header>
-    <router-view />
+    <div class="main-content">
+      <router-view class="router-content"/>
+    </div>
   </div>
 </template>
 
@@ -19,7 +21,17 @@
 
 <style>
   #app{
-    padding-top: 80px;
+    padding-top: 65px;
+  }
+
+  .main-content{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .router-content{
+    width: 95%;   
   }
 
   header{

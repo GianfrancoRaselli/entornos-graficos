@@ -3,11 +3,11 @@ import Router from 'vue-router'
 import axios from 'axios'
 import { EventBus } from './event-bus'
 
-import SignUp from './components/SignUp.vue'
-import SignIn from './components/SignIn.vue'
-import Inicio from './components/Inicio.vue'
-import Perfil from './components/Perfil.vue'
-import EditarPerfil from './components/EditarPerfil.vue'
+import SignUp from './views/SignUp.vue'
+import SignIn from './views/SignIn.vue'
+import Inicio from './views/Inicio.vue'
+import Perfil from './views/Perfil.vue'
+import EditarPerfil from './views/EditarPerfil.vue'
 
 Vue.use(Router)
 
@@ -16,10 +16,11 @@ const router = new Router({
     routes: [
         {
             path: '*',
-            redirect: '/'
+            redirect: '/',
         },
         {
             path: '/signup',
+            name: 'SignUp',
             component: SignUp,
             meta: {
                 notAuth: true
@@ -27,6 +28,7 @@ const router = new Router({
         },
         {
             path: '/signin',
+            name: 'SignIn',
             component: SignIn,
             meta: {
                 notAuth: true
@@ -34,10 +36,12 @@ const router = new Router({
         },
         {
             path: '/',
+            name: 'Home',
             component: Inicio
         },
         {
             path: '/perfil',
+            name: 'Profile',
             component: Perfil,
             meta: {
                 auth: true
@@ -45,6 +49,7 @@ const router = new Router({
         },
         {
             path: '/perfil/editar',
+            name: 'EditProfile',
             component: EditarPerfil,
             meta: {
                 auth: true
