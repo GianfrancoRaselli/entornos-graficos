@@ -82,7 +82,8 @@
                         clave: this.clave,
                         nombre_apellido: this.nombre_apellido,
                         email: this.email,
-                        telefono: this.telefono
+                        telefono: this.telefono,
+                        rol: 'Usuario'
                     });
 
                     this.error = false;
