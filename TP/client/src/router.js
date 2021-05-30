@@ -40,6 +40,11 @@ const router = new Router({
             component: Inicio
         },
         {
+            path: '/Vacantes',
+            name: 'Vacantes',
+            component: () => import('@/views/Vacancies.vue'),
+        },
+        {
             path: '/perfil',
             name: 'Profile',
             component: Perfil,
@@ -63,7 +68,7 @@ router.beforeEach(async (to, from, next) => {
     let persona = null;
     if (localStorage.getItem('api_token')) {
         try {
-            let res = await axios.get('personas/perfil',
+            let res = await axios.get('http://localhost/entornos-graficos-2021/TP/server/public/personas/perfil',
             {
                 headers: {
                     Authorization: 'Bearer ' + localStorage.getItem('api_token')

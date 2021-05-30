@@ -77,7 +77,7 @@
             async buscarUsuario() {
                 if (localStorage.getItem('api_token')) {
                     try {
-                        let res = await axios.get('personas/perfil',
+                        let res = await axios.get('http://localhost/entornos-graficos-2021/TP/server/public/personas/perfil',
                         {
                             headers: {
                                 Authorization: 'Bearer ' + localStorage.getItem('api_token')
@@ -98,7 +98,7 @@
             },
             async handleSubmit() {
                 try {
-                    const res = await axios.post('personas/editarPerfil', 
+                    const res = await axios.post('http://localhost/entornos-graficos-2021/TP/server/public/personas/editarPerfil', 
                     {
                         dni: this.dni,
                         nombre_usuario: this.nombre_usuario,

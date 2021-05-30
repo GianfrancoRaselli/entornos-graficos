@@ -4,26 +4,16 @@
       <b> Últimas vacantes </b>
     </h2>
     <div class="vacancies">
-      <div class="row">
-        <div class="col">
-          <div class="row" v-for="(vacancy, index) in vacanciesList" :key="index">
-            <div class="col" style="background-color: red">
-              1 of 2
-            </div>
-          </div>
+      <div class="vacancy" v-for="(vacancy, index) in vacancies" :key="index">
+        <div class="name">
+          {{ vacancy.name }}
         </div>
-        <div class="col">
-          <div class="row">
-            <div class="col" style="background-color: blue">
-              1 of 2
-            </div>
-          </div>
-          <div class="row">
-            <div class="col" style="background-color: green">
-              1 of 2
-            </div>
-          </div>
+        <div class="description">
+          {{ vacancy.description }}
         </div>
+        <utn-button to="Home" btnClass="btn btn-outline-primary">
+          Ver más
+        </utn-button>
       </div>
     </div>
   </div>
@@ -33,7 +23,7 @@
 export default {
   data() {
     return {
-      vacanciesList: [
+      vacancies: [
         { 
           id: 1,
           name: 'Matematica superior', 
@@ -64,5 +54,21 @@ export default {
   .vacancies-list{
     width: 90%;
     margin: 25px auto;
+  }
+
+  .vacancies{
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .vacancy{
+    width: 50%;
+    padding:1rem;
+  }
+
+  .name{
+    font-size:1.25rem;
+    font-weight: 600;
   }
 </style>

@@ -57,7 +57,7 @@
             async buscarUsuario() {
                 if (localStorage.getItem('api_token')) {
                     try {
-                        let res = await axios.get('personas/perfil',
+                        let res = await axios.get('http://localhost/entornos-graficos-2021/TP/server/public/personas/perfil',
                         {
                             headers: {
                                 Authorization: 'Bearer ' + localStorage.getItem('api_token')

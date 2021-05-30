@@ -6,22 +6,28 @@
     <div class="main-content">
       <router-view class="router-content"/>
     </div>
+    <Footer />
   </div>
 </template>
 
 <script>
-  import Nav from './components/Nav.vue'
   export default {
-    name: 'App',
     components: {
-      Nav
-    }
+      Nav: () => import('./components/Nav.vue'),
+      Footer: () => import('./components/Footer.vue'),
+    },
+    name: 'App',
   }
 </script>
 
 <style>
   #app{
     padding-top: 65px;
+    display: flex;
+    flex-direction: column;
+    justify-content:space-between;
+    min-height: 100vh;
+    height: 100vh;
   }
 
   .main-content{
@@ -41,5 +47,10 @@
     top: 0;
     left: 0;
     z-index: 100;
+  }
+
+  footer{
+    justify-self: flex-end;
+    bottom: 0;
   }
 </style>
