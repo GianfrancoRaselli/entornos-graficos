@@ -1,0 +1,32 @@
+.columnaLila {
+    background-color: rgb(185, 75, 185);
+    height: 100px;
+}
+
+.columnaRosada {
+    background-color: salmon;
+    height: 90px;
+}
+
+@media (min-width: 768px) {
+    
+    .columnaRosada {
+        height: 100%;
+    }
+    
+}
+
+.columnaVerde {
+    background-color: seagreen;
+    height: 80px;
+}
+
+.columnaGris {
+    background-color: gray;
+    height: 80px;
+}
+
+.columnaAzul {
+    background-color: royalblue;
+    height: 120px;
+}
