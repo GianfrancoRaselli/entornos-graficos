@@ -1,40 +1,64 @@
 <template>
-    <div id="perfil">
-        <div class="row d-flex justify-content-center ml-4 mr-4 mb-3 animate__animated animate__pulse animate__fast">
-            <div class="col-lg-10 mt-3 pt-3">
-                <div class="row z-depth-3">
-                    <div class="col-lg-4 bg-info rounded-left">
-                        <div class="card-block text-center text-white">
-                            <i class="fas fa-user-tie fa-7x mt-5"></i>
-                            <p class="font-weight-bold mt-4" style="font-size: 2rem;">{{nombre_apellido}}</p>
-                            <p class="font-weight mt-2" style="font-size: 1.5rem;">{{dni}}</p>
-                            <hr>
-                            <p :key="rol.id" v-for="rol in roles" v-text="rol.descripcion"></p>
-                            <router-link to="perfil/editar" class="btn btn-link mt-2 mb-3" id="btn-editar-usuario"><i class="fas fa-edit fa-3x"></i></router-link>
-                        </div>
-                    </div>
-                    <div class="col-lg-8 bg-white rounded-right pb-2">
-                        <p class="mt-3 text-center" style="font-size: 1.75rem;">Información Personal</p>
-                        <hr class="badge-primary mt-0 w-25">
-                        <div class="row">
-                            <div class="col-md-6 mt-3 text-center">
-                                <p class="font-weight-bold">Nombre Usuario</p>
-                                <p class="text-muted" style="font-size: 1.05rem;">{{nombre_usuario}}</p>
-                            </div>
-                            <div class="col-md-6 mt-3 text-center">
-                                <p class="font-weight-bold">Email</p>
-                                <p class="text-muted" style="font-size: 1.05rem;">{{email}}</p>
-                            </div>
-                            <div class="col-md-6 mt-3 text-center">
-                                <p class="font-weight-bold">Teléfono</p>
-                                <p class="text-muted" style="font-size: 1.05rem;">{{telefono}}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <div>
+    <div class="row d-flex justify-content-center animate__animated animate__pulse animate__fast">
+      <div class="col-lg-12 w-100 profile-container">
+        <div class="col-lg-3 data-box">
+          <div class="profile-img">
+            {{ nombre_apellido[0] }}
+          </div>
+          <div class="personal-info mt-3">
+            <p>DNI: {{dni}}</p>
+            <p>Nombre y apellido: {{ nombre_apellido }}</p>
+            <p>Email: {{email}}</p>
+          </div>
+          <utn-button icon="fas fa-edit" to="perfil/editar" btnClass="btn btn-light" id="btn-editar-usuario">
+            Editar
+          </utn-button>
         </div>
+        <div class="d-flex">
+          <utn-button icon="fas fa-edit" to="perfil/editar" id="btn-editar-usuario" btnClass="btn btn-outline-primary">
+            Cargar CV
+          </utn-button>
+          <utn-button icon="fas fa-eye" to="perfil/editar" id="btn-editar-usuario">
+            VER CV
+          </utn-button>
+        </div>
+        <div class="applications">
+          <h4>Mis postulaciones</h4>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">First</th>
+                <th scope="col">Last</th>
+                <th scope="col">Handle</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+              </tr>
+              <tr>
+                <th scope="row">2</th>
+                <td>Jacob</td>
+                <td>Thornton</td>
+                <td>@fat</td>
+              </tr>
+              <tr>
+                <th scope="row">3</th>
+                <td>Larry</td>
+                <td>the Bird</td>
+                <td>@twitter</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -104,11 +128,44 @@
 </script>
 
 <style>
-    #btn-editar-usuario {
-        color: white;
-    }
+  .profile-container{
+    margin-bottom: auto;
+    display:flex;
+    align-items:center;
+    flex-direction:column;
+    justify-content: center;
+  }
+  .data-box{
+    padding: 2rem 1rem;
+    align-self: center;
+    margin: 2rem;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    background-color: RGBA(12, 110, 253, 1);
+    border-radius: .5rem;
+    flex-wrap:wrap;
+  }
+  .profile-img{
+    height: 5rem;
+    width: 5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100%;
+    font-weight: 600;
+    color: RGB(12, 110, 253);
+    font-size: 2rem;
+    text-transform: uppercase;
+    background-color:white;
+  }
+  .personal-info{
+    color: white;
+    padding-left: 1rem;
+  }
 
-    #btn-editar-usuario:hover {
-        color: blanchedalmond;
-    }
+  .applications{
+    width: 90%;
+    margin-top: 1rem;
+  }
 </style>

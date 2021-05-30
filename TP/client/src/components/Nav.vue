@@ -3,7 +3,14 @@
     <router-link to="/">
       <img src="../assets/logo-utn.png" class="headerLogo" alt="Logo UTN" id="logo-utn">
     </router-link>
-    <ul class="global-nav" style="margin-left: auto;">
+    <ul class="desktop-nav" style="margin-left: auto;">
+      <li class="nav-item" v-for="(item, index) in navItems" :key="index">
+        <utn-button :icon="item.icon" btnClass="btn btn-light" :to="item.routeTo">
+          {{ item.name }}
+        </utn-button>
+      </li>
+    </ul>
+    <ul class="mobile-nav">
       <li class="nav-item" v-for="(item, index) in navItems" :key="index">
         <utn-button :icon="item.icon" btnClass="btn btn-light" :to="item.routeTo">
           {{ item.name }}
@@ -17,17 +24,10 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul v-if="usuarioLogueado" class="navbar-nav" style="margin-left: auto;">
         <li class="nav-item">
-          <router-link class="nav-link btn btn-link" to="/">
-            <i class="fas fa-home"></i>
-            Inicio
-          </router-link>
-        </li>
-        <li class="nav-item dropdown">
-          <button class="nav-link dropdown-toggle btn btn-link" id="navbarDropdown" role="button" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-user"></i>
+          <utn-button btnClass="dropdown-toggle btn btn-outline-primary" id="navbarDropdown" icon="fas fa-user" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false" to="#">
             {{nombreUsuario}}
-          </button>
+          </utn-button>
           <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="navbarDropdown">
             <router-link class="dropdown-item btn btn-link" to="/perfil">
               <i class="fas fa-id-card"></i>
@@ -107,14 +107,33 @@
     color: red;
   }
 
-  .global-nav{
+  .desktop-nav{
     list-style: none;
     display: flex;
     align-items: center;
     margin: 0;
   }
 
-  @media(max-width 991px){
-    
+  .mobile-nav{
+    display: none;
+  }
+
+  @media(max-width: 991px){
+    .desktop-nav{
+      display: none;
+    }
+    .mobile-nav{
+      display: flex;
+      position:fixed;
+      bottom: 0;
+      list-style: none;
+      box-shadow: 0 -4px 20px 0 rgba(0,0,0,.08);
+      justify-content: center;
+      background-color:white;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      left: 0;
+    }
   }
 </style>

@@ -13,53 +13,55 @@ use Illuminate\Support\Str;
 
 class PersonaController extends Controller
 {
-  function signUp(Request $request) {
-    if (
-      $request->dni
-      && $request->nombre_usuario
-      && $request->clave
-      && $request->nombre_apellido
-      && $request->email
-      && $request->telefono
-      && $request->rol
-      ) {
-      if (!Persona::where('dni', $request->dni)->first()) {
-        if (!Persona::where('nombre_usuario', $request->nombre_usuario)->first()) {
-          DB::beginTransaction();
-          try {
-            $persona = new Persona();
+    function signUp(Request $request)
+    {
+        if (
+            $request->dni 
+            && $request->nombre_usuario 
+            && $request->clave 
+            && $request->nombre_apellido 
+            && $request->email 
+            && $request->telefono 
+            && $request->rol) {
+            if (!Persona::where('dni', $request->dni)->first()) {
+                if (!Persona::where('nombre_usuario', $request->nombre_usuario)->first()) {
+                    DB::beginTransaction();
 
-            $persona->dni = $request->dni;
-            $persona->nombre_usuario = $request->nombre_usuario;
-            $persona->clave = Hash::make($request->clave);
-            $persona->nombre_apellido = $request->nombre_apellido;
-            $persona->email = $request->email;
-            $persona->telefono = $request->telefono;
+                    try {
+                        $persona = new Persona();
 
-            $persona->save();
+                        $persona->dni = $request->dni;
+                        $persona->nombre_usuario = $request->nombre_usuario;
+                        $persona->clave = Hash::make($request->clave);
+                        $persona->nombre_apellido = $request->nombre_apellido;
+                        $persona->email = $request->email;
+                        $persona->telefono = $request->telefono;
 
-            $persona->api_token = Str::random(30) . $persona->id . Str::random(30);
-            
-            $persona->save();
+                        $persona->save();
 
-            $persona->roles()->attach(Rol::where('descripcion', $request->rol)->first()->id);
+                        $persona->api_token = Str::random(30) . $persona->id . Str::random(30);
+                        
+                        $persona->save();
 
-            DB::commit();
+                        $persona->roles()->attach(Rol::where('descripcion', $request->rol)->first()->id);
 
-            return response()->json($persona, 200);
-          } catch (Exception $e) {
-              DB::rollback();
-              return response()->json(['error' => $e->getMessage()], 406, []);
+                        DB::commit();
+
+                        return response()->json($persona, 200);
+                    } catch (Exception $e) {
+                        DB::rollback();
+
+                        return response()->json(['error' => $e->getMessage()], 406, []);
+                    }
+                } else {
+                    return response()->json(['error' => 'El nombre de usuario ya se encuentra registrado'], 406, []);
+                }
+            } else {
+                return response()->json(['error' => 'El DNI ya se encuentra registrado'], 406, []);
             }
         } else {
-          return response()->json(['error' => 'El nombre de usuario ya se encuentra registrado'], 406, []);
+            return response()->json(['error' => 'Ingrese todos los datos de la persona'], 406, []);
         }
-        } else {
-          return response()->json(['error' => 'El DNI ya se encuentra registrado'], 406, []);
-        }
-      } else {
-        return response()->json(['error' => 'Ingrese todos los datos de la persona'], 406, []);
-      }
     }
 
     function signIn(Request $request)
