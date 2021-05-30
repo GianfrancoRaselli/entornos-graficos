@@ -49,14 +49,14 @@
             return {
                 error: false,
                 errorMessage: '',
-                nombre_usuario: '',
-                clave: ''
+                nombre_usuario: 'federoma1',
+                clave: 'asdasd123'
             }
         },
         methods: {
             async handleSubmit() {
                 try {
-                    const res = await axios.post('personas/signIn',
+                    const res = await axios.post('http://localhost/entornos-graficos-2021/TP/server/public/personas/signIn',
                     {
                         nombre_usuario: this.nombre_usuario,
                         clave: this.clave

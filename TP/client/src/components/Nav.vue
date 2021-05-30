@@ -3,9 +3,11 @@
     <router-link to="/">
       <img src="../assets/logo-utn.png" class="headerLogo" alt="Logo UTN" id="logo-utn">
     </router-link>
-    <ul class="navbar-nav" style="margin-left: auto;">
+    <ul class="global-nav" style="margin-left: auto;">
       <li class="nav-item" v-for="(item, index) in navItems" :key="index">
-        <utn-button :icon="item.icon" btnClass="btn btn-light" :name="item.name" :to="item.routeTo" />
+        <utn-button :icon="item.icon" btnClass="btn btn-light" :to="item.routeTo">
+          {{ item.name }}
+        </utn-button>
       </li>
     </ul>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -41,7 +43,9 @@
       </ul>
       <ul v-else class="navbar-nav" style="margin-left: auto;">
         <li class="nav-item" v-for="(item, index) in userNavItems" :key="index">
-          <utn-button :name="item.name" :btnClass="item.btnType" :icon="item.icon" :to="item.routeTo" />
+          <utn-button :btnClass="item.btnType" :icon="item.icon" :to="item.routeTo">
+            {{ item.name }}
+          </utn-button>
         </li>
       </ul>
     </div>
@@ -56,7 +60,7 @@
       return {
         navItems: [
           { name: 'Inicio', routeTo: 'Home', icon: 'fas fa-home'},
-          { name: 'Vacantes', routeTo: 'Home', icon: 'fas fa-hand-pointer'},
+          { name: 'Vacantes', routeTo: 'Vacantes', icon: 'fas fa-hand-pointer'},
         ],
         userNavItems: [
           { name: 'Crear cuenta', routeTo: 'SignUp', icon: 'fas fa-user', btnType: 'btn btn-light' },
@@ -101,5 +105,16 @@
   }
   #btn-cerrar-sesion {
     color: red;
+  }
+
+  .global-nav{
+    list-style: none;
+    display: flex;
+    align-items: center;
+    margin: 0;
+  }
+
+  @media(max-width 991px){
+    
   }
 </style>

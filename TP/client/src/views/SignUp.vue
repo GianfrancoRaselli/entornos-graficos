@@ -4,7 +4,7 @@
       <div class="alert alert-danger alert-dismissible fade show"
         style="width: fit-content; margin-top: 2%; margin-left: auto; margin-right: auto;" role="alert">
         {{errorMessage}}
-        <button v-on:click="error = false" class="close btn btn-link" data-dismiss="alert"
+        <button @click="error = false" class="close btn btn-link" data-dismiss="alert"
           style="color: black; text-decoration: none; font-size: 22px;" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -19,27 +19,27 @@
           <div class="card-body">
             <form @submit.prevent="handleSubmit">
               <div class="form-group">
-                <input type="text" v-model="dni" placeholder="DNI" class="form-control" autofocus>
+                <input type="text" v-model="user.dni" placeholder="DNI" class="form-control" autofocus>
               </div>
               <br>
               <div class="form-group">
-                <input type="text" v-model="nombre_usuario" placeholder="Nombre Usuario" class="form-control">
+                <input type="text" v-model="user.nombre_usuario" placeholder="Nombre Usuario" class="form-control">
               </div>
               <br>
               <div class="form-group">
-                <input type="password" v-model="clave" placeholder="Clave" class="form-control">
+                <input type="password" v-model="user.clave" placeholder="Clave" class="form-control">
               </div>
               <br>
               <div class="form-group">
-                <input type="text" v-model="nombre_apellido" placeholder="Nombre y Apellido" class="form-control" autofocus>
+                <input type="text" v-model="user.nombre_apellido" placeholder="Nombre y Apellido" class="form-control" autofocus>
               </div>
               <br>
               <div class="form-group">
-                <input type="email" v-model="email" placeholder="Email" class="form-control">
+                <input type="email" v-model="user.email" placeholder="Email" class="form-control">
               </div>
               <br>
               <div class="form-group">
-                <input type="text" v-model="telefono" placeholder="Teléfono" class="form-control">
+                <input type="text" v-model="user.telefono" placeholder="Teléfono" class="form-control">
               </div>
               <br>
               <div class="form-group">
@@ -56,49 +56,43 @@
 </template>
 
 <script>
-    import axios from 'axios'
-    import { EventBus } from '../event-bus'
-    export default {
-        name: 'SignUp',
-        data() {
-            return {
-                error: false,
-                errorMessage: '',
-                dni: '',
-                nombre_usuario: '',
-                clave: '',
-                nombre_apellido: '',
-                email: '',
-                telefono: ''
-            }
+  import axios from 'axios'
+  import { EventBus } from '../event-bus'
+  export default {
+    name: 'SignUp',
+    data() {
+      return {
+        error: false,
+        user:{
+          dni: '123456789',
+          nombre_usuario: 'testing',
+          clave: 'test123',
+          nombre_apellido: 'Testing Tester',
+          email: 'testing@test.com',
+          telefono: '123456789',
+          rol: 'tester',
         },
-        methods: {
-            async handleSubmit() {
-                try {
-                    const res = await axios.post('personas/signUp',
-                    {
-                        dni: this.dni,
-                        nombre_usuario: this.nombre_usuario,
-                        clave: this.clave,
-                        nombre_apellido: this.nombre_apellido,
-                        email: this.email,
-                        telefono: this.telefono
-                    });
+        errorMessage: '',
+      }
+    },
+    methods: {
+      async handleSubmit() {
+        try {
+          const res = await axios.post('http://localhost/entornos-graficos-2021/TP/server/public/personas/signUp', this.user);
+          this.error = false;
+          this.errorMessage = '';
+          
+          localStorage.setItem('api_token', res.data.api_token);
+          localStorage.setItem('nombre_usuario', res.data.nombre_usuario || '');
 
-                    this.error = false;
-                    this.errorMessage = '';
-                    
-                    localStorage.setItem('api_token', res.data.api_token);
-                    localStorage.setItem('nombre_usuario', res.data.nombre_usuario || '');
-
-                    EventBus.$emit('inicioSesion');
-                    
-                    this.$router.push({ path: '/perfil', query: { key: 'signup' } });
-                } catch (err) {
-                    this.errorMessage = err.response.data.error;
-                    this.error = true;
-                }
-            }
+          EventBus.$emit('inicioSesion');
+            
+          this.$router.push({ path: '/perfil', query: { key: 'signup' } });
+        } catch (err) {
+          this.errorMessage = err.response.data.error;
+          this.error = true;
         }
+      }
     }
+  }
 </script>

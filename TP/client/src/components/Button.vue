@@ -3,7 +3,7 @@
     <router-link :to="to">
       <button :class="btnClass">
         <i :class="icon" v-if="icon"></i>
-        {{ name }}
+        <slot />
       </button>
     </router-link>
   </div>
@@ -12,7 +12,7 @@
 <script>
 export default {
   props: {
-    name: { type: String, required: true },
+    // name: { type: String, required: true },
     to: { type: String, required: true },
     btnClass: { type: String, default: 'btn btn-primary' },
     icon: { type: String },
