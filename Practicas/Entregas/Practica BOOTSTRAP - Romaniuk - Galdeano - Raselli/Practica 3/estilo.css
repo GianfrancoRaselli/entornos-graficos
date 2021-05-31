@@ -23,10 +23,10 @@
 
 .columnaGris {
     background-color: gray;
-    height: 80px;
+    height: 100%;
 }
 
 .columnaAzul {
     background-color: royalblue;
-    height: 120px;
+    height: 100%;
 }
