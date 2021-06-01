@@ -13,7 +13,7 @@
 export default {
   props: {
     // name: { type: String, required: true },
-    to: { type: String, required: true, default: '#' },
+    to: { type: String, default: '#' },
     btnClass: { type: String, default: 'btn btn-primary' },
     icon: { type: String },
   }
