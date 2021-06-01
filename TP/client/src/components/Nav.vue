@@ -42,11 +42,28 @@
         </li>
       </ul>
       <ul v-else class="navbar-nav" style="margin-left: auto;">
-        <li class="nav-item" v-for="(item, index) in userNavItems" :key="index">
-          <utn-button :btnClass="item.btnType" :icon="item.icon" :to="item.routeTo">
+        <!-- TO CONFIRM: LOGIN AND REGISTER AS A POPUP OR VIEW ? -->
+        <utn-button
+        v-for="(item, index) in userNavItems"
+        data-toggle="modal"
+        :btnClass="item.btnClass"
+        :data-target="item.target"
+        :icon="item.icon"
+        :key="index">
+          {{ item.name }}
+        </utn-button>
+        <Popup dataTarget="loginPopup" title="Iniciar Sesión" :showButtons="false">
+          <LogIn />
+        </Popup>
+        <Popup dataTarget="signUpPopup" title="Registrarse" :showButtons="false">
+          <SignUp />
+        </Popup>
+        <li class="nav-item" v-for="(item, index) in userNavItems" :key="index+10">
+          <utn-button data-bs-toggle="modal" :btnClass="item.btnClass" :icon="item.icon" :to="item.routeTo">
             {{ item.name }}
           </utn-button>
         </li>
+        <!-- // TO CONFIRM: LOGIN AND REGISTER AS A POPUP OR VIEW ? -->
       </ul>
     </div>
   </nav>
@@ -56,15 +73,19 @@
   import { EventBus } from '../event-bus'
   export default {
     name: 'Nav',
+    components: {
+      LogIn: () => import('./LogIn.vue'),
+      SignUp: () => import('./SignUp.vue'),
+    },
     data() {
       return {
         navItems: [
-          { name: 'Inicio', routeTo: 'Home', icon: 'fas fa-home'},
-          { name: 'Vacantes', routeTo: 'Vacantes', icon: 'fas fa-hand-pointer'},
+          { name: 'Inicio', routeTo: 'Home', icon: 'fas fa-home' },
+          { name: 'Vacantes', routeTo: 'Vacantes', icon: 'fas fa-hand-pointer' },
         ],
         userNavItems: [
-          { name: 'Crear cuenta', routeTo: 'SignUp', icon: 'fas fa-user', btnType: 'btn btn-light' },
-          { name: 'Iniciar sesión', routeTo: 'SignIn', icon: 'fas fa-id-card', btnType: 'btn btn-primary' },
+          { name: 'Crear cuenta', routeTo: 'SignUp', icon: 'fas fa-user', btnClass: 'btn btn-light', target: '#signUpPopup' },
+          { name: 'Iniciar sesión', routeTo: 'SignIn', icon: 'fas fa-id-card', btnClass: 'btn btn-primary', target: '#loginPopup' },
         ],
         nombreUsuario: localStorage.getItem('nombre_usuario') || '',
         usuarioLogueado: localStorage.getItem('api_token') ? true : false
