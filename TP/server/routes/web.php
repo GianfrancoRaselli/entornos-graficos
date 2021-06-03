@@ -17,6 +17,8 @@ $router->post('/personas/signUp', 'PersonaController@signUp');
 
 $router->post('/personas/signIn', 'PersonaController@signIn');
 
+$router->get('/llamados/ultimasVacantes', 'LlamadoController@ultimasVacantes');
+
 $router->group(['middleware' => ['auth']], function () use ($router) {
     $router->get('/personas/perfil', 'PersonaController@perfil');
 

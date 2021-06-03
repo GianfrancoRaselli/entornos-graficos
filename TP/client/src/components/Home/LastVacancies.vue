@@ -4,12 +4,12 @@
       <b> Últimas vacantes </b>
     </h2>
     <div class="vacancies">
-      <div class="vacancy" v-for="(vacancy, index) in vacancies" :key="index">
+      <div class="vacancy" v-for="(vacante, index) in vacantes" :key="index">
         <div class="name">
-          {{ vacancy.name }}
+          {{ vacante.descripcion }}
         </div>
         <div class="description">
-          {{ vacancy.description }}
+          {{ vacante.definicion }}
         </div>
         <utn-button to="Home" btnClass="btn btn-outline-primary">
           Ver más
@@ -20,33 +20,27 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   data() {
     return {
-      vacancies: [
-        { 
-          id: 1,
-          name: 'Matematica superior', 
-          description: 'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est.'
-        },
-        { 
-          id: 2,
-          name: 'Entornos gráficos', 
-          description: 'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est.'
-        },
-        { 
-          id: 3,
-          name: 'Administración de recursos', 
-          description: 'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est.'
-        },
-        { 
-          id: 4,
-          name: 'Comunicaciones', 
-          description: 'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est.'
-        },
-      ],
+      vacantes: null,
     }
-  }
+  },
+  methods: {
+    async buscarVacantes() {
+      try {
+        let res = await axios.get('/llamados/ultimasVacantes');
+
+        this.vacantes = res.data;
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  },
+  created() {
+      this.buscarVacantes();
+    }
 }
 </script>
 

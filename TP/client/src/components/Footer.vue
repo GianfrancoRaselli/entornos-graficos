@@ -15,7 +15,6 @@
 </template>
 
 <script>
-  import { EventBus } from '../event-bus'
   export default {
     name: 'Nav',
     data() {
@@ -30,24 +29,6 @@
         ],
         nombreUsuario: localStorage.getItem('nombre_usuario') || '',
         usuarioLogueado: localStorage.getItem('api_token') ? true : false
-      }
-    },
-    created() {
-      EventBus.$on('inicioSesion', function() {
-        this.nombreUsuario = localStorage.getItem('nombre_usuario') || '';
-        this.usuarioLogueado = localStorage.getItem('api_token') ? true : false;
-      }.bind(this)),
-      EventBus.$on('cerrarSesion', function() {
-        this.cerrarSesion();
-      }.bind(this))
-    },
-    methods: {
-      cerrarSesion() {
-        localStorage.removeItem('api_token');
-        localStorage.removeItem('nombre_usuario');
-        this.nombreUsuario = localStorage.getItem('nombre_usuario') || '';
-        this.usuarioLogueado = localStorage.getItem('api_token') ? true : false;
-        this.$router.push('/');
       }
     },
   }

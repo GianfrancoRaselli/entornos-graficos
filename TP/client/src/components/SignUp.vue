@@ -63,7 +63,7 @@
           nombre_apellido: 'Testing Tester2',
           email: 'testing@test2.com',
           telefono: '123456789',
-          rol: 'test',
+          rol: 'Usuario',
         },
         errorMessage: '',
       }
@@ -71,7 +71,7 @@
     methods: {
       async handleSubmit() {
         try {
-          const res = await axios.post('http://localhost/entornos-graficos-2021/TP/server/public/personas/signUp', this.user);
+          const res = await axios.post('/personas/signUp', this.user);
           this.error = false;
           this.errorMessage = '';
           

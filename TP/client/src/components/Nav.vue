@@ -42,7 +42,6 @@
         </li>
       </ul>
       <ul v-else class="navbar-nav" style="margin-left: auto;">
-        <!-- TO CONFIRM: LOGIN AND REGISTER AS A POPUP OR VIEW ? -->
         <utn-button
         v-for="(item, index) in userNavItems"
         data-toggle="modal"
@@ -58,12 +57,6 @@
         <Popup dataTarget="signUpPopup" title="Registrarse" :showButtons="false">
           <SignUp />
         </Popup>
-        <li class="nav-item" v-for="(item, index) in userNavItems" :key="index+10">
-          <utn-button data-bs-toggle="modal" :btnClass="item.btnClass" :icon="item.icon" :to="item.routeTo">
-            {{ item.name }}
-          </utn-button>
-        </li>
-        <!-- // TO CONFIRM: LOGIN AND REGISTER AS A POPUP OR VIEW ? -->
       </ul>
     </div>
   </nav>

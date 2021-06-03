@@ -1,7 +1,7 @@
 <template>
   <div class="cta">
     <div class="cta-title">
-      Postulate!
+      ¡Postulate!
     </div>
     <div class="cta-subtitle">
       Para postularte, primero debes registrarte

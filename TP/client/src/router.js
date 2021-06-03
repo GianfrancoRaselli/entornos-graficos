@@ -3,8 +3,6 @@ import Router from 'vue-router'
 import axios from 'axios'
 import { EventBus } from './event-bus'
 
-import SignUp from './views/SignUp.vue'
-import SignIn from './views/SignIn.vue'
 import Inicio from './views/Inicio.vue'
 import Perfil from './views/Perfil.vue'
 import EditarPerfil from './views/EditarPerfil.vue'
@@ -17,22 +15,6 @@ const router = new Router({
         {
             path: '*',
             redirect: '/',
-        },
-        {
-            path: '/signup',
-            name: 'SignUp',
-            component: SignUp,
-            meta: {
-                notAuth: true
-            }
-        },
-        {
-            path: '/signin',
-            name: 'SignIn',
-            component: SignIn,
-            meta: {
-                notAuth: true
-            }
         },
         {
             path: '/',
@@ -68,7 +50,7 @@ router.beforeEach(async (to, from, next) => {
     let persona = null;
     if (localStorage.getItem('api_token')) {
         try {
-            let res = await axios.get('http://localhost/entornos-graficos-2021/TP/server/public/personas/perfil',
+            let res = await axios.get('/personas/perfil',
             {
                 headers: {
                     Authorization: 'Bearer ' + localStorage.getItem('api_token')
