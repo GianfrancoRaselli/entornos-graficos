@@ -16,13 +16,14 @@ class PersonaController extends Controller
     function signUp(Request $request)
     {
         if (
-            $request->dni 
-            && $request->nombre_usuario 
-            && $request->clave 
-            && $request->nombre_apellido 
-            && $request->email 
-            && $request->telefono 
-            && $request->rol) {
+            $request->dni
+            && $request->nombre_usuario
+            && $request->clave
+            && $request->nombre_apellido
+            && $request->email
+            && $request->telefono
+            && $request->rol
+        ) {
             if (!Persona::where('dni', $request->dni)->first()) {
                 if (!Persona::where('nombre_usuario', $request->nombre_usuario)->first()) {
                     DB::beginTransaction();
@@ -40,7 +41,7 @@ class PersonaController extends Controller
                         $persona->save();
 
                         $persona->api_token = Str::random(30) . $persona->id . Str::random(30);
-                        
+
                         $persona->save();
 
                         $persona->roles()->attach(Rol::where('descripcion', $request->rol)->first()->id);
@@ -70,7 +71,7 @@ class PersonaController extends Controller
             try {
                 $persona = Persona::where('nombre_usuario', $request->nombre_usuario)->first();
 
-                if($persona) {
+                if ($persona) {
                     if (Hash::check($request->clave, $persona->clave)) {
                         return response()->json($persona, 200);
                     } else {

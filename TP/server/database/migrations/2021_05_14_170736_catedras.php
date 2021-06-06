@@ -16,7 +16,7 @@ class Catedras extends Migration
         Schema::create('catedras', function (Blueprint $table) {
             $table->id();
             $table->string('descripcion')->unique();
-            $table->string('definicion')->nullable();
+            $table->string('definicion');
             $table->unsignedBigInteger('id_jefe_catedra');
 
             $table->foreign('id_jefe_catedra')->references('id')->on('personas');

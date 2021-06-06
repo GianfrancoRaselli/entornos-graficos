@@ -63,6 +63,7 @@
 </template>
 
 <script>
+  import login from '../logic/login';
   import { EventBus } from '../event-bus'
   export default {
     name: 'Nav',
@@ -80,26 +81,23 @@
           { name: 'Crear cuenta', routeTo: 'SignUp', icon: 'fas fa-user', btnClass: 'btn btn-light', target: '#signUpPopup' },
           { name: 'Iniciar sesión', routeTo: 'SignIn', icon: 'fas fa-id-card', btnClass: 'btn btn-primary', target: '#loginPopup' },
         ],
-        nombreUsuario: localStorage.getItem('nombre_usuario') || '',
-        usuarioLogueado: localStorage.getItem('api_token') ? true : false
+        nombreUsuario: login.getNombreUsuarioLogueado() || '',
+        usuarioLogueado: login.isLoggedIn(),
       }
     },
     created() {
-      EventBus.$on('inicioSesion', function() {
-        this.nombreUsuario = localStorage.getItem('nombre_usuario') || '';
-        this.usuarioLogueado = localStorage.getItem('api_token') ? true : false;
+      EventBus.$on('sesionIniciada', function() {
+        this.nombreUsuario = login.getNombreUsuarioLogueado() || '';
+        this.usuarioLogueado = login.isLoggedIn();
       }.bind(this)),
-      EventBus.$on('cerrarSesion', function() {
-        this.cerrarSesion();
+      EventBus.$on('sesionCerrada', function() {
+        this.nombreUsuario = login.getNombreUsuarioLogueado() || '';
+        this.usuarioLogueado = login.isLoggedIn();
       }.bind(this))
     },
     methods: {
       cerrarSesion() {
-        localStorage.removeItem('api_token');
-        localStorage.removeItem('nombre_usuario');
-        this.nombreUsuario = localStorage.getItem('nombre_usuario') || '';
-        this.usuarioLogueado = localStorage.getItem('api_token') ? true : false;
-        this.$router.push('/');
+        login.logout();
       }
     },
   }

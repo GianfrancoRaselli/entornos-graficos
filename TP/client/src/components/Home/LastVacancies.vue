@@ -1,19 +1,36 @@
 <template>
   <div class="vacancies-list">
     <h2>
-      <b> Últimas vacantes </b>
+      <b>Últimas vacantes</b>
     </h2>
-    <div class="vacancies">
+    <p v-if="!vacantes.length">No hay vacantes</p>
+    <div class="vacancies" v-if="vacantes.length">
       <div class="vacancy" v-for="(vacante, index) in vacantes" :key="index">
-        <div class="name">
-          {{ vacante.descripcion }}
+        <div class="descripcion">
+          <p>{{ vacante.descripcion }}</p>
         </div>
-        <div class="description">
-          {{ vacante.definicion }}
+        <div class="definicion">
+          <p>{{ vacante.definicion }}</p>
         </div>
-        <utn-button to="Home" btnClass="btn btn-outline-primary">
-          Ver más
-        </utn-button>
+        <div class="requisitos">
+          <p><i class="fas fa-check-circle"></i>&nbsp;<strong>Requisitos:</strong>&nbsp;{{ vacante.requisitos }}</p>
+        </div>
+        <div class="fecha-fin">
+          <p><i class="fas fa-calendar"></i>&nbsp;<strong>Fecha de cierre:</strong>&nbsp;{{ vacante.fecha_fin }}</p>
+        </div>
+        <div class="postulado alert alert-success" role="alert" v-if="vacante.usuarioPostulado">
+          Ya se encuentra postulado
+        </div>
+        <div class="pocas-vacantes" role="alert" v-if="!vacante.usuarioPostulado">
+          <p v-if="vacante.vacantes_disponibles > 1"><i class="fas fa-exclamation-circle"></i>&nbsp;¡Quedan solo {{ vacante.vacantes_disponibles }} vacantes!</p>
+          <p v-if="vacante.vacantes_disponibles === 1"><i class="fas fa-exclamation-circle"></i>&nbsp;¡Última vacante disponible!</p>
+        </div>
+        <button @click="postularme(vacante.id)" class="btn btn-primary" v-if="!vacante.usuarioPostulado">
+          Postularme
+        </button>
+        <button @click="darmeDeBaja(vacante.id)" class="btn btn-danger" v-if="vacante.usuarioPostulado">
+          Darme de baja
+        </button>
       </div>
     </div>
   </div>
@@ -21,25 +38,120 @@
 
 <script>
 import axios from 'axios'
+import { EventBus } from '../../event-bus'
 export default {
   data() {
     return {
-      vacantes: null,
+      postulacionesDelUsuario: [],
+      vacantes: []
     }
   },
   methods: {
+    async buscarPostulacionesDelUsuario() {
+      try {
+        let res = await axios.get('/postulaciones/buscarPostulacionesDelUsuario',
+        {
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('api_token')
+          }
+        });
+
+        this.postulacionesDelUsuario = res.data;
+      } catch (err) {
+        console.log(err.response.data.error);
+      }
+    },
+
     async buscarVacantes() {
       try {
-        let res = await axios.get('/llamados/ultimasVacantes');
+        let res = await axios.get('/llamados/buscarUltimasVacantes');
 
-        this.vacantes = res.data;
+        let vacantes = res.data;
+
+        if (vacantes && vacantes.length > 0) {
+          for (let vacante of vacantes) {
+            vacante.usuarioPostulado = false;
+
+            if (this.postulacionesDelUsuario && this.postulacionesDelUsuario.length > 0) {
+              for (let postulacion of this.postulacionesDelUsuario) {
+                if (vacante.id === postulacion.id_llamado) {
+                  vacante.usuarioPostulado = true;
+                  break;
+                }
+              }
+            }
+          }
+        }
+
+        this.vacantes = vacantes;
       } catch (err) {
         console.log(err);
       }
+    },
+
+    async actualizarVacantes() {
+      this.postulacionesDelUsuario = [];
+      this.vacantes = [];
+
+      if (localStorage.getItem('api_token')) {
+        await this.buscarPostulacionesDelUsuario();
+      }
+      await this.buscarVacantes();
+    },
+
+    async postularme(id_llamado) {
+      if (localStorage.getItem('api_token')) {
+        try {
+          await axios.post('/postulaciones/agregarPostulacionDelUsuario',
+          {
+            id_llamado,
+            curriculum_vitae: 'curriculum.jpg'
+          },
+          {
+            headers: {
+              Authorization: 'Bearer ' + localStorage.getItem('api_token')
+            }
+          });
+
+          this.actualizarVacantes();
+        } catch (err) {
+          console.log(err.response.data.error);
+        }
+      } else {
+        console.log("");
+      }
+    },
+
+    async darmeDeBaja(id_llamado) {
+      if (localStorage.getItem('api_token')) {
+        try {
+          await axios.delete('/postulaciones/eliminarPostulacionDelUsuario/' + id_llamado,
+          {
+            headers: {
+              Authorization: 'Bearer ' + localStorage.getItem('api_token')
+            }
+          });
+          
+          this.actualizarVacantes();
+        } catch (err) {
+          console.log(err.response.data.error);
+        }
+      } else {
+        EventBus.$emit('cerrarSesion');
+      }
     }
   },
-  created() {
-      this.buscarVacantes();
+  async created() {
+      this.actualizarVacantes();
+
+      EventBus.$on('sesionCerrada', function() {
+        this.actualizarVacantes();
+      }.bind(this)),
+
+      EventBus.$on('inicioSesion', function() {
+        this.actualizarVacantes();
+      }.bind(this))
+
     }
 }
 </script>
@@ -59,10 +171,24 @@ export default {
   .vacancy{
     width: 50%;
     padding:1rem;
+    border: black 2px solid;
+    border-radius: 15px;
+    background-color: rgb(240, 240, 240);
+    font-size: 1.08rem;
   }
 
-  .name{
-    font-size:1.25rem;
+  .descripcion{
+    font-size:1.64rem;
     font-weight: 600;
+  }
+
+  .pocas-vacantes{
+    color: rgb(221, 44, 0);
+  }
+
+  @media(max-width: 991px){
+    .vacancy{
+      width: 100%;
+    }
   }
 </style>

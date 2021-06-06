@@ -42,8 +42,8 @@
             return {
                 error: false,
                 errorMessage: '',
-                nombre_usuario: 'testing',
-                clave: 'test123'
+                nombre_usuario: 'testing2',
+                clave: 'test1232'
             }
         },
         methods: {
