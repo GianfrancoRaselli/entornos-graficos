@@ -49,13 +49,13 @@
 </template>
 
 <script>
-  import axios from 'axios'
-  //import { EventBus } from '../event-bus'
+  import { mapActions } from 'vuex'
   export default {
     name: 'SignUp',
     data() {
       return {
         error: false,
+        errorMessage: '',
         user:{
           dni: '1234567892',
           nombre_usuario: 'testing2',
@@ -64,23 +64,19 @@
           email: 'testing@test2.com',
           telefono: '123456789',
           rol: 'Usuario',
-        },
-        errorMessage: '',
+        }
       }
     },
     methods: {
+      ...mapActions({
+        signUp: 'signUp'
+      }),
+
       async handleSubmit() {
         try {
-          const res = await axios.post('/personas/signUp', this.user);
           this.error = false;
-          this.errorMessage = '';
-          
-          localStorage.setItem('api_token', res.data.api_token);
-          localStorage.setItem('nombre_usuario', res.data.nombre_usuario || '');
 
-          //EventBus.$emit('inicioSesion');
-          console.log('signin');
-          this.$router.push({ path: '/perfil', query: { key: 'signup' } });
+          await this.signUp(this.user);
         } catch (err) {
           this.errorMessage = err.response.data.error;
           this.error = true;

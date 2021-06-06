@@ -38,7 +38,6 @@
 
 <script>
 import axios from 'axios'
-import { EventBus } from '../../event-bus'
 export default {
   data() {
     return {
@@ -52,7 +51,7 @@ export default {
         let res = await axios.get('/postulaciones/buscarPostulacionesDelUsuario',
         {
           headers: {
-            Authorization: 'Bearer ' + localStorage.getItem('api_token')
+            Authorization: 'Bearer ' + this.$store.getters.user.api_token
           }
         });
 
@@ -93,14 +92,14 @@ export default {
       this.postulacionesDelUsuario = [];
       this.vacantes = [];
 
-      if (localStorage.getItem('api_token')) {
+      if (this.$store.getters.authenticated) {
         await this.buscarPostulacionesDelUsuario();
       }
       await this.buscarVacantes();
     },
 
     async postularme(id_llamado) {
-      if (localStorage.getItem('api_token')) {
+      if (this.$store.getters.authenticated) {
         try {
           await axios.post('/postulaciones/agregarPostulacionDelUsuario',
           {
@@ -109,7 +108,7 @@ export default {
           },
           {
             headers: {
-              Authorization: 'Bearer ' + localStorage.getItem('api_token')
+              Authorization: 'Bearer ' + this.$store.getters.user.api_token
             }
           });
 
@@ -123,12 +122,12 @@ export default {
     },
 
     async darmeDeBaja(id_llamado) {
-      if (localStorage.getItem('api_token')) {
+      if (this.$store.getters.authenticated) {
         try {
           await axios.delete('/postulaciones/eliminarPostulacionDelUsuario/' + id_llamado,
           {
             headers: {
-              Authorization: 'Bearer ' + localStorage.getItem('api_token')
+              Authorization: 'Bearer ' + this.$store.getters.user.api_token
             }
           });
           
@@ -137,21 +136,12 @@ export default {
           console.log(err.response.data.error);
         }
       } else {
-        EventBus.$emit('cerrarSesion');
+        console.log("");
       }
     }
   },
   async created() {
       this.actualizarVacantes();
-
-      EventBus.$on('sesionCerrada', function() {
-        this.actualizarVacantes();
-      }.bind(this)),
-
-      EventBus.$on('inicioSesion', function() {
-        this.actualizarVacantes();
-      }.bind(this))
-
     }
 }
 </script>

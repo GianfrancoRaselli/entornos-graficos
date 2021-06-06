@@ -59,9 +59,9 @@
 
 <script>
     import axios from 'axios'
-    // import { EventBus } from '../event-bus'
+    import { mapActions } from 'vuex'
     export default {
-        name: 'SignUp',
+        name: 'Editar perfil',
         data() {
             return {
                 error: false,
@@ -74,13 +74,17 @@
             }
         },
         methods: {
+            ...mapActions({
+                updateProfile: 'updateProfile'
+            }),
+
             async buscarUsuario() {
-                if (localStorage.getItem('api_token')) {
+                if (this.$store.getters.authenticated) {
                     try {
-                        let res = await axios.get('http://localhost/entornos-graficos-2021/TP/server/public/personas/perfil',
+                        let res = await axios.get('/personas/perfil',
                         {
                             headers: {
-                                Authorization: 'Bearer ' + localStorage.getItem('api_token')
+                                Authorization: 'Bearer ' + this.$store.getters.user.api_token
                             }
                         });
                         
@@ -93,37 +97,22 @@
                         console.log(err);
                     }
                 } else {
-                    // EventBus.$emit('cerrarSesion');
-                    console.log('cerrarsesion');
+                    this.$store.dispatch('logOut');
                 }
             },
+
             async handleSubmit() {
-                try {
-                    const res = await axios.post('http://localhost/entornos-graficos-2021/TP/server/public/personas/editarPerfil', 
-                    {
-                        dni: this.dni,
-                        nombre_usuario: this.nombre_usuario,
-                        nombre_apellido: this.nombre_apellido,
-                        email: this.email,
-                        telefono: this.telefono
-                    },
-                    {
-                        headers: {
-                            Authorization: 'Bearer ' + localStorage.getItem('api_token')
-                        }
-                    });
+                this.error = false;
 
-                    this.error = false;
-                    this.errorMessage = '';
-                    
-                    localStorage.setItem('nombre_usuario', res.data.nombre_usuario || '');
-
-                    //EventBus.$emit('inicioSesion');
-                    console.log('inicio sesion');
-                    this.$router.push('/perfil');
-                } catch (err) {
-                    this.errorMessage = err.response.data.error;
-                    this.error = true;
+                if (this.$store.getters.authenticated) {
+                    try {
+                        await this.updateProfile(this.user);
+                    } catch (err) {
+                        this.errorMessage = err.response.data.error;
+                        this.error = true;
+                    }
+                } else {
+                    this.$store.dispatch('logOut');
                 }
             }
         },

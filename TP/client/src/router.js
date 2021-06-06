@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import axios from 'axios'
-// import { EventBus } from './event-bus'
+import store from './store'
 
 Vue.use(Router)
 
@@ -41,23 +41,21 @@ const router = new Router({
   ]
 })
 
-
 router.beforeEach(async (to, from, next) => {
   let persona = null;
-  if (localStorage.getItem('api_token')) {
+  if (store.getters.authenticated) {
     try {
       let res = await axios.get('/personas/perfil',
       {
         headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('api_token')
+          Authorization: 'Bearer ' + store.getters.user.api_token
         }
       });
 
       persona = res.data[0];
     } catch (err) {
       if (err.response.status === 401) {
-        console.log('cerrar sesion');
-        // EventBus.$emit('cerrarSesion');
+        store.dispatch('logOut');
       }
     }
   }
@@ -72,6 +70,5 @@ router.beforeEach(async (to, from, next) => {
     next();
   }
 })
-
 
 export default router;

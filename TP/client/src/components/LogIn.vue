@@ -34,9 +34,7 @@
 </template>
 
 <script>
-  // import axios from 'axios'
   import { mapActions } from 'vuex'
-  //import { EventBus } from '../event-bus'
   export default {
     name: 'SignIn',
     data() {
@@ -51,17 +49,19 @@
     },
     methods: {
       ...mapActions({
-        signIn: 'auth/signIn'
+        signIn: 'signIn'
       }),
 
-      handleSubmit() {
-        this.signIn(this.user).then(() => {
-          console.log('login');
-          this.$router.push({ path: '/perfil', query: { key: 'signin' } });
-        }).catch(() => {
-          console.log('error en login');
-        });
+      async handleSubmit() {
+        try {
+          this.error = false;
+
+          await this.signIn(this.user);
+        } catch (err) {
+          this.errorMessage = err.response.data.error;
+          this.error = true;
+        }
       }
     }
-    }
+  }
 </script>

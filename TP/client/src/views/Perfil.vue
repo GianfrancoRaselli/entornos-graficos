@@ -63,13 +63,12 @@
 
 <script>
   import axios from 'axios'
-  // import { EventBus } from '../event-bus'
   import Swal from 'sweetalert2'
   export default {
     name: 'Perfil',
     data() {
       return {
-        user:{
+        user: {
           dni: '',
           nombre_usuario: '',
           nombre_apellido: '',
@@ -81,12 +80,12 @@
     },
     methods: {
       async buscarUsuario() {
-        if (localStorage.getItem('api_token')) {
+        if (this.$store.getters.authenticated) {
           try {
             let res = await axios.get('/personas/perfil',
             {
               headers: {
-                Authorization: 'Bearer ' + localStorage.getItem('api_token')
+                Authorization: 'Bearer ' + this.$store.getters.user.api_token
               }
             });
             
@@ -97,11 +96,10 @@
             this.user.telefono = res.data[0].telefono;
             this.user.roles = res.data[0].roles;
           } catch (err) {
-              console.log(err);
+              console.log(err.response.data.error);
           }
         } else {
-          console.log('cerrarsesion');
-            // EventBus.$emit('cerrarSesion');
+          this.$store.dispatch('logOut');
         }
       }
     },
