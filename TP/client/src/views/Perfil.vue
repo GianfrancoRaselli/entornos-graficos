@@ -63,7 +63,7 @@
 
 <script>
   import axios from 'axios'
-  import { EventBus } from '../event-bus'
+  // import { EventBus } from '../event-bus'
   import Swal from 'sweetalert2'
   export default {
     name: 'Perfil',
@@ -100,7 +100,8 @@
               console.log(err);
           }
         } else {
-            EventBus.$emit('cerrarSesion');
+          console.log('cerrarsesion');
+            // EventBus.$emit('cerrarSesion');
         }
       }
     },

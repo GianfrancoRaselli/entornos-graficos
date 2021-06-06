@@ -1,4 +1,4 @@
-import { EventBus } from '../event-bus';
+//import { EventBus } from '../event-bus';
 
 module.exports = {
 
@@ -21,13 +21,15 @@ module.exports = {
   login(api_token, nombre_usuario) {
     localStorage.setItem(api_token);
     localStorage.setItem(nombre_usuario);
-    EventBus.$emit('sesionIniciada');
+    // EventBus.$emit('sesionIniciada');
+    console.log('sesion iniciada');
   },
 
   logout() {
     localStorage.removeItem('api_token');
     localStorage.removeItem('nombre_usuario');
-    EventBus.$emit('sesionCerrada');
+    // EventBus.$emit('sesionCerrada');
+    console.log('sesion cerrada');
     this.$router.push('/');
   },
 

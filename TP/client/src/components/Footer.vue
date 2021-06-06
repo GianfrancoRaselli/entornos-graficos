@@ -17,20 +17,6 @@
 <script>
   export default {
     name: 'Nav',
-    data() {
-      return {
-        navItems: [
-          { name: 'Inicio', routeTo: 'Home', icon: 'fas fa-home'},
-          { name: 'Vacantes', routeTo: 'Home', icon: 'fas fa-hand-pointer'},
-        ],
-        userNavItems: [
-          { name: 'Crear cuenta', routeTo: 'SignUp', icon: 'fas fa-user', btnType: 'btn btn-light' },
-          { name: 'Iniciar sesión', routeTo: 'SignIn', icon: 'fas fa-id-card', btnType: 'btn btn-primary' },
-        ],
-        nombreUsuario: localStorage.getItem('nombre_usuario') || '',
-        usuarioLogueado: localStorage.getItem('api_token') ? true : false
-      }
-    },
   }
 </script>
 

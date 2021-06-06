@@ -59,7 +59,7 @@
 
 <script>
     import axios from 'axios'
-    import { EventBus } from '../event-bus'
+    // import { EventBus } from '../event-bus'
     export default {
         name: 'SignUp',
         data() {
@@ -93,7 +93,8 @@
                         console.log(err);
                     }
                 } else {
-                    EventBus.$emit('cerrarSesion');
+                    // EventBus.$emit('cerrarSesion');
+                    console.log('cerrarsesion');
                 }
             },
             async handleSubmit() {
@@ -117,8 +118,8 @@
                     
                     localStorage.setItem('nombre_usuario', res.data.nombre_usuario || '');
 
-                    EventBus.$emit('inicioSesion');
-                    
+                    //EventBus.$emit('inicioSesion');
+                    console.log('inicio sesion');
                     this.$router.push('/perfil');
                 } catch (err) {
                     this.errorMessage = err.response.data.error;

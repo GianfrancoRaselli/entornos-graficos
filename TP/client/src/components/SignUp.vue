@@ -50,7 +50,7 @@
 
 <script>
   import axios from 'axios'
-  import { EventBus } from '../event-bus'
+  //import { EventBus } from '../event-bus'
   export default {
     name: 'SignUp',
     data() {
@@ -78,8 +78,8 @@
           localStorage.setItem('api_token', res.data.api_token);
           localStorage.setItem('nombre_usuario', res.data.nombre_usuario || '');
 
-          EventBus.$emit('inicioSesion');
-            
+          //EventBus.$emit('inicioSesion');
+          console.log('signin');
           this.$router.push({ path: '/perfil', query: { key: 'signup' } });
         } catch (err) {
           this.errorMessage = err.response.data.error;

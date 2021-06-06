@@ -15,11 +15,11 @@
         <img src="../assets/img-signin.png" alt="Logo Inicio Sesion" class="card-img-top mx-auto m-2 rounded-circle w-25">
         <form @submit.prevent="handleSubmit">
           <div class="form-group">
-            <input type="text" v-model="nombre_usuario" placeholder="Nombre Usuario" class="form-control">
+            <input type="text" v-model="user.nombre_usuario" placeholder="Nombre Usuario" class="form-control">
           </div>
           <br>
           <div class="form-group">
-            <input type="password" v-model="clave" placeholder="Clave" class="form-control">
+            <input type="password" v-model="user.clave" placeholder="Clave" class="form-control">
           </div>
           <br>
           <div class="form-group">
@@ -34,41 +34,34 @@
 </template>
 
 <script>
-    import axios from 'axios'
-    import { EventBus } from '../event-bus'
-    export default {
-        name: 'SignIn',
-        data() {
-            return {
-                error: false,
-                errorMessage: '',
-                nombre_usuario: 'testing2',
-                clave: 'test1232'
-            }
+  // import axios from 'axios'
+  import { mapActions } from 'vuex'
+  //import { EventBus } from '../event-bus'
+  export default {
+    name: 'SignIn',
+    data() {
+      return {
+        error: false,
+        errorMessage: '',
+        user: {
+          nombre_usuario: 'testing2',
+          clave: 'test1232',
         },
-        methods: {
-            async handleSubmit() {
-                try {
-                    const res = await axios.post('/personas/signIn',
-                    {
-                        nombre_usuario: this.nombre_usuario,
-                        clave: this.clave
-                    });
+      }
+    },
+    methods: {
+      ...mapActions({
+        signIn: 'auth/signIn'
+      }),
 
-                    this.error = false;
-                    this.errorMessage = '';
-                    
-                    localStorage.setItem('api_token', res.data.api_token);
-                    localStorage.setItem('nombre_usuario', res.data.nombre_usuario || '');
-
-                    EventBus.$emit('inicioSesion');
-                    
-                    this.$router.push({ path: '/perfil', query: { key: 'signin' } });
-                } catch (err) {
-                    this.errorMessage = err.response.data.error;
-                    this.error = true;
-                }
-            }
-        }
+      handleSubmit() {
+        this.signIn(this.user).then(() => {
+          console.log('login');
+          this.$router.push({ path: '/perfil', query: { key: 'signin' } });
+        }).catch(() => {
+          console.log('error en login');
+        });
+      }
+    }
     }
 </script>

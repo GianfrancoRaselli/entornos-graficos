@@ -22,11 +22,11 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul v-if="usuarioLogueado" class="navbar-nav" style="margin-left: auto;">
+      <ul v-if="authenticated" class="navbar-nav" style="margin-left: auto;">
         <li class="nav-item">
           <utn-button btnClass="dropdown-toggle btn btn-outline-primary" id="navbarDropdown" icon="fas fa-user" data-toggle="dropdown"
           aria-haspopup="true" aria-expanded="false" to="#">
-            {{nombreUsuario}}
+            {{ user.nombre_usuario }}
           </utn-button>
           <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="navbarDropdown">
             <router-link class="dropdown-item btn btn-link" to="/perfil">
@@ -63,8 +63,9 @@
 </template>
 
 <script>
-  import login from '../logic/login';
-  import { EventBus } from '../event-bus'
+  // import login from '../logic/login';
+  // import { EventBus } from '../event-bus'
+  import { mapGetters } from 'vuex'
   export default {
     name: 'Nav',
     components: {
@@ -81,24 +82,28 @@
           { name: 'Crear cuenta', routeTo: 'SignUp', icon: 'fas fa-user', btnClass: 'btn btn-light', target: '#signUpPopup' },
           { name: 'Iniciar sesión', routeTo: 'SignIn', icon: 'fas fa-id-card', btnClass: 'btn btn-primary', target: '#loginPopup' },
         ],
-        nombreUsuario: login.getNombreUsuarioLogueado() || '',
-        usuarioLogueado: login.isLoggedIn(),
+        // nombreUsuario: login.getNombreUsuarioLogueado() || '',
+        // usuarioLogueado: login.isLoggedIn(),
       }
     },
-    created() {
-      EventBus.$on('sesionIniciada', function() {
-        this.nombreUsuario = login.getNombreUsuarioLogueado() || '';
-        this.usuarioLogueado = login.isLoggedIn();
-      }.bind(this)),
-      EventBus.$on('sesionCerrada', function() {
-        this.nombreUsuario = login.getNombreUsuarioLogueado() || '';
-        this.usuarioLogueado = login.isLoggedIn();
-      }.bind(this))
+    computed: {
+      ...mapGetters({
+        authenticated: 'auth/authenticated',
+        user: 'auth/user',
+      })
+      // EventBus.$on('sesionIniciada', function() {
+      //   this.nombreUsuario = login.getNombreUsuarioLogueado() || '';
+      //   this.usuarioLogueado = login.isLoggedIn();
+      // }.bind(this)),
+      // EventBus.$on('sesionCerrada', function() {
+      //   this.nombreUsuario = login.getNombreUsuarioLogueado() || '';
+      //   this.usuarioLogueado = login.isLoggedIn();
+      // }.bind(this))
     },
     methods: {
-      cerrarSesion() {
-        login.logout();
-      }
+      // cerrarSesion() {
+      //   login.logout();
+      // }
     },
   }
 </script>
