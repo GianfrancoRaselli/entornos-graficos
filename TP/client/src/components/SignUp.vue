@@ -56,7 +56,7 @@
       return {
         error: false,
         errorMessage: '',
-        user:{
+        user: {
           dni: '1234567892',
           nombre_usuario: 'testing2',
           clave: 'test1232',

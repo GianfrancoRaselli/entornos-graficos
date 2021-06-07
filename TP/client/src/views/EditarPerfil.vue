@@ -25,23 +25,23 @@
                     <div class="card-body">
                         <form @submit.prevent="handleSubmit">
                             <div class="form-group">
-                                <input type="text" v-model="dni" placeholder="DNI" class="form-control" autofocus>
+                                <input type="text" v-model="user.dni" placeholder="DNI" class="form-control" autofocus>
                             </div>
                             <br>
                             <div class="form-group">
-                                <input type="text" v-model="nombre_usuario" placeholder="Nombre Usuario" class="form-control">
+                                <input type="text" v-model="user.nombre_usuario" placeholder="Nombre Usuario" class="form-control">
                             </div>
                             <br>
                             <div class="form-group">
-                                <input type="text" v-model="nombre_apellido" placeholder="Nombre y Apellido" class="form-control" autofocus>
+                                <input type="text" v-model="user.nombre_apellido" placeholder="Nombre y Apellido" class="form-control" autofocus>
                             </div>
                             <br>
                             <div class="form-group">
-                                <input type="email" v-model="email" placeholder="Email" class="form-control">
+                                <input type="email" v-model="user.email" placeholder="Email" class="form-control">
                             </div>
                             <br>
                             <div class="form-group">
-                                <input type="text" v-model="telefono" placeholder="Teléfono" class="form-control">
+                                <input type="text" v-model="user.telefono" placeholder="Teléfono" class="form-control">
                             </div>
                             <br>
                             <div class="form-group">
@@ -66,11 +66,13 @@
             return {
                 error: false,
                 errorMessage: '',
-                dni: '',
-                nombre_usuario: '',
-                nombre_apellido: '',
-                email: '',
-                telefono: ''
+                user: {
+                    dni: '',
+                    nombre_usuario: '',
+                    nombre_apellido: '',
+                    email: '',
+                    telefono: ''
+                }
             }
         },
         methods: {
@@ -88,13 +90,13 @@
                             }
                         });
                         
-                        this.dni = res.data[0].dni;
-                        this.nombre_usuario = res.data[0].nombre_usuario;
-                        this.nombre_apellido = res.data[0].nombre_apellido;
-                        this.email = res.data[0].email;
-                        this.telefono = res.data[0].telefono;
+                        this.user.dni = res.data[0].dni;
+                        this.user.nombre_usuario = res.data[0].nombre_usuario;
+                        this.user.nombre_apellido = res.data[0].nombre_apellido;
+                        this.user.email = res.data[0].email;
+                        this.user.telefono = res.data[0].telefono;
                     } catch (err) {
-                        console.log(err);
+                        console.log(err.response.data.error);
                     }
                 } else {
                     this.$store.dispatch('logOut');

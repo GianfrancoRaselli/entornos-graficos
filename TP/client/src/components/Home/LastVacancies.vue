@@ -38,6 +38,7 @@
 
 <script>
 import axios from 'axios'
+import EventBus from '../../event-bus'
 export default {
   data() {
     return {
@@ -141,8 +142,12 @@ export default {
     }
   },
   async created() {
+    this.actualizarVacantes();
+
+    EventBus.$on('actualizarUltimasVacantes', function() {
       this.actualizarVacantes();
-    }
+    }.bind(this))
+  }
 }
 </script>
 

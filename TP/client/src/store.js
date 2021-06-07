@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import VuexPersistence from 'vuex-persist'
 import axios from 'axios'
 import router from './router'
+import EventBus from './event-bus'
 
 Vue.use(Vuex);
 
@@ -32,19 +33,24 @@ const store = new Vuex.Store({
       return router.push({ path: '/perfil', query: { key: 'signin' } });
     },
 
-    logOut ({ dispatch }) {
-      dispatch('attempt', null);
+    async logOut ({ dispatch }) {
+      await dispatch('attempt', null);
+      EventBus.$emit('actualizarUltimasVacantes');
       return router.push('/');
     },
 
-    async updateProfile ({ dispatch }, personalInformation) {
-      const res = await axios.post('/personas/editarPerfil', 
+    async updateProfile ({ dispatch, getters }, personalInformation) {
+      const res = await axios.post('/personas/editarPerfil',
       {
-        personalInformation
+        dni: personalInformation.dni,
+        nombre_usuario: personalInformation.nombre_usuario,
+        nombre_apellido: personalInformation.nombre_apellido,
+        email: personalInformation.email,
+        telefono: personalInformation.telefono
       },
       {
         headers: {
-          Authorization: 'Bearer ' + this.user.api_token
+          Authorization: 'Bearer ' + getters.user.api_token
         }
       });
       dispatch('attempt', res.data);

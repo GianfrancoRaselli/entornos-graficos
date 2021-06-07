@@ -102,8 +102,8 @@ class PersonaController extends Controller
     public function editarPerfil(Request $request)
     {
         if ($request->dni && $request->nombre_usuario && $request->nombre_apellido && $request->email && $request->telefono) {
-            if (!Persona::where('dni', $request->dni)->first()) {
-                if (!Persona::where('nombre_usuario', $request->nombre_usuario)->first()) {
+            if (!Persona::where([['dni', $request->dni], ['id', '<>', auth()->user()->id]])->first()) {
+                if (!Persona::where([['nombre_usuario', $request->nombre_usuario], ['id', '<>', auth()->user()->id]])->first()) {
                     try {
                         $persona = Persona::find(auth()->user()->id);
 
@@ -126,7 +126,7 @@ class PersonaController extends Controller
                 return response()->json(['error' => 'El DNI ya se encuentra registrado'], 406, []);
             }
         } else {
-            return response()->json(['error' => 'Ingrese todos los datos de la persona'], 406, []);
+            return response()->json(['error' => 'Ingrese todos los datos de la persona' . $request->dni], 406, []);
         }
     }
 }
