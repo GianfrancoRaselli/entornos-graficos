@@ -4986,6 +4986,11 @@
   "resolved" "https://registry.npm.taobao.org/javascript-stringify/download/javascript-stringify-2.1.0.tgz"
   "version" "2.1.0"
 
+"jquerry@*":
+  "integrity" "sha512-6/x0OFGLte1tqTnInZ0foNjR/hCsNnfkNg7T1vxiCKSLObPbSF4EoswifsUdHiXBvQ/F60uILQGlfvjT0x3NSg=="
+  "resolved" "https://registry.npmjs.org/jquerry/-/jquerry-0.0.1-security.tgz"
+  "version" "0.0.1-security"
+
 "jquery@^3.6.0":
   "integrity" "sha512-JVzAR/AjBvVt2BmYhxRCSYysDsPcssdmTFnzyLEts9qNwmjmu4JTAMYubEfwVOSwpQ1I1sKKFcxhZCI2buerfw=="
   "resolved" "https://registry.npmjs.org/jquery/-/jquery-3.6.0.tgz"

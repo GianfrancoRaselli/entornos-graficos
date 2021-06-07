@@ -41,10 +41,11 @@ export default {
 </script>
 
 <style>
-  .modal-backdrop{
+  .modal-backdrop {
     display: none;
   }
-  .background-popup-fade{
+  
+  .background-popup-fade {
     background-color:RGBA(0,0,0,.5);
   }
 </style>
