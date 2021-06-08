@@ -24,19 +24,25 @@ const store = new Vuex.Store({
     async signUp ({ dispatch }, personalInformation) {
       const res = await axios.post('/personas/signUp', personalInformation);
       dispatch('attempt', res.data);
-      return this.$router.push({ path: '/perfil', query: { key: 'signup' } });
+      this.$router.push({ path: '/perfil', query: { key: 'signup' } });
+      window.$("#signUpPopup").modal('hide');
+      window.$('body').removeClass('modal-open');
+      window.$('.modal-backdrop').remove();
     },
 
     async signIn ({ dispatch }, credentials) {
       const res = await axios.post('/personas/signIn', credentials);
       dispatch('attempt', res.data);
-      return router.push({ path: '/perfil', query: { key: 'signin' } });
+      router.push({ path: '/perfil', query: { key: 'signin' } });
+      window.$("#loginPopup").modal('hide');
+      window.$('body').removeClass('modal-open');
+      window.$('.modal-backdrop').remove();
     },
 
     async logOut ({ dispatch }) {
       await dispatch('attempt', null);
       EventBus.$emit('actualizarUltimasVacantes');
-      return router.push('/');
+      router.push('/');
     },
 
     async updateProfile ({ dispatch, getters }, personalInformation) {
@@ -54,7 +60,7 @@ const store = new Vuex.Store({
         }
       });
       dispatch('attempt', res.data);
-      return router.push('/perfil');
+      router.push('/perfil');
     },
 
     async attempt ({ commit }, data) {
