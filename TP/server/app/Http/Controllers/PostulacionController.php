@@ -31,7 +31,7 @@ class PostulacionController extends Controller
           $postulacion->id_llamado = $request->id_llamado;
           $postulacion->estado = "Postulado";
           $postulacion->curriculum_vitae = $request->curriculum_vitae;
-
+          
           $postulacion->save();
         } catch (Exception $e) {
           return response()->json(['error' => $e->getMessage()], 406, []);

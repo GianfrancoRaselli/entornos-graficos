@@ -30,7 +30,7 @@
 
 <script>
 export default {
-  props:{
+  props: {
     title: { type: String, required: true },
     cancelBtn: { type: String, default: 'Cancelar' },
     acceptBtn: { type: String, default: 'Aceptar' },

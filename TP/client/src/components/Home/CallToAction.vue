@@ -14,15 +14,19 @@
         <li>asdasdasdasdasd</li>
       </ol>
     </p>
-    <utn-button to="SignUp">
+    <button class="btn btn-primary" @click="abrirModal">
       Registrarse
-    </utn-button>
+    </button>
   </div>
 </template>
 
 <script>
 export default {
-
+  methods: {
+    abrirModal() {
+      window.$("#signUpPopup").modal('show');
+    }
+  }
 }
 </script>
 

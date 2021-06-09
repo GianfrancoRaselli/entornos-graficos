@@ -77,6 +77,12 @@
           this.error = false;
 
           await this.signUp(this.user);
+
+          this.$router.push({ path: '/perfil', query: { key: 'signup' } });
+          
+          window.$("#signUpPopup").modal('hide');
+          window.$('body').removeClass('modal-open');
+          window.$('.modal-backdrop').remove();
         } catch (err) {
           this.errorMessage = err.response.data.error;
           this.error = true;

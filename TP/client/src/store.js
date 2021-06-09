@@ -23,20 +23,12 @@ const store = new Vuex.Store({
 
     async signUp ({ dispatch }, personalInformation) {
       const res = await axios.post('/personas/signUp', personalInformation);
-      dispatch('attempt', res.data);
-      this.$router.push({ path: '/perfil', query: { key: 'signup' } });
-      window.$("#signUpPopup").modal('hide');
-      window.$('body').removeClass('modal-open');
-      window.$('.modal-backdrop').remove();
+      await dispatch('attempt', res.data);
     },
 
     async signIn ({ dispatch }, credentials) {
       const res = await axios.post('/personas/signIn', credentials);
-      dispatch('attempt', res.data);
-      router.push({ path: '/perfil', query: { key: 'signin' } });
-      window.$("#loginPopup").modal('hide');
-      window.$('body').removeClass('modal-open');
-      window.$('.modal-backdrop').remove();
+      await dispatch('attempt', res.data);
     },
 
     async logOut ({ dispatch }) {
@@ -59,7 +51,7 @@ const store = new Vuex.Store({
           Authorization: 'Bearer ' + getters.user.api_token
         }
       });
-      dispatch('attempt', res.data);
+      await dispatch('attempt', res.data);
       router.push('/perfil');
     },
 

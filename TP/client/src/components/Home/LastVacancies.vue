@@ -33,20 +33,32 @@
         </button>
       </div>
     </div>
+    <Popup dataTarget="loginPostulacionPopup" title="Iniciar Sesión" :showButtons="false">
+      <LogIn :postularse="true" :id_llamado="id_llamado" />
+    </Popup>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import { mapActions } from 'vuex'
 import EventBus from '../../event-bus'
 export default {
+  components: {
+    LogIn: () => import('../LogIn.vue')
+  },
   data() {
     return {
       postulacionesDelUsuario: [],
-      vacantes: []
+      vacantes: [],
+      id_llamado: null
     }
   },
   methods: {
+    ...mapActions({
+        logOut: 'logOut'
+      }),
+
     async buscarPostulacionesDelUsuario() {
       try {
         let res = await axios.get('/postulaciones/buscarPostulacionesDelUsuario',
@@ -85,7 +97,7 @@ export default {
 
         this.vacantes = vacantes;
       } catch (err) {
-        console.log(err);
+        console.log(err.response.data.error);
       }
     },
 
@@ -118,7 +130,8 @@ export default {
           console.log(err.response.data.error);
         }
       } else {
-        console.log("");
+        this.id_llamado = id_llamado;
+        window.$("#loginPostulacionPopup").modal('show');
       }
     },
 
@@ -137,7 +150,7 @@ export default {
           console.log(err.response.data.error);
         }
       } else {
-        console.log("");
+        this.logOut();
       }
     }
   },

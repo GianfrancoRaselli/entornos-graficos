@@ -34,9 +34,15 @@
 </template>
 
 <script>
+  import axios from 'axios'
   import { mapActions } from 'vuex'
+  import EventBus from '../event-bus'
   export default {
     name: 'SignIn',
+    props: {
+      postularse: { type: Boolean, default: false },
+      id_llamado: { type: Number }
+    },
     data() {
       return {
         error: false,
@@ -57,9 +63,48 @@
           this.error = false;
 
           await this.signIn(this.user);
+
+          if (!this.postularse) {
+            this.$router.push({ path: '/perfil', query: { key: 'signin' } });
+
+            window.$("#loginPopup").modal('hide');
+            window.$('body').removeClass('modal-open');
+            window.$('.modal-backdrop').remove();
+          } else if (this.postularse) {
+            await axios.post('/postulaciones/agregarPostulacionDelUsuario',
+            {
+              id_llamado: this.id_llamado,
+              curriculum_vitae: 'curriculum.jpg'
+            },
+            {
+              headers: {
+                Authorization: 'Bearer ' + this.$store.getters.user.api_token
+              }
+            });
+
+            EventBus.$emit('actualizarUltimasVacantes');
+
+            if (this.$route.path !== '/') this.$router.push('/');
+            
+            window.$("#loginPostulacionPopup").modal('hide');
+            window.$('body').removeClass('modal-open');
+            window.$('.modal-backdrop').remove();
+          }
         } catch (err) {
-          this.errorMessage = err.response.data.error;
-          this.error = true;
+          if (!this.postularse) {
+            this.errorMessage = err.response.data.error;
+            this.error = true;
+          } else if (this.postularse) {
+            if (err.response.data.error === 'El usuario ya se encuentra postulado al llamado') {
+              EventBus.$emit('actualizarUltimasVacantes');
+
+              if (this.$route.path !== '/') this.$router.push('/');
+
+              window.$("#loginPostulacionPopup").modal('hide');
+              window.$('body').removeClass('modal-open');
+              window.$('.modal-backdrop').remove();
+            }
+          }
         }
       }
     }
