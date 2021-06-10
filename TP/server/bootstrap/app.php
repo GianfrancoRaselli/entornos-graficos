@@ -76,12 +76,15 @@ $app->configure('app');
 //     App\Http\Middleware\ExampleMiddleware::class
 // ]);
 
-$app->routeMiddleware([
-    'auth' => App\Http\Middleware\Authenticate::class,
-]);
-
 $app->middleware([
     App\Http\Middleware\CorsMiddleware::class
+]);
+
+$app->routeMiddleware([
+    'auth' => App\Http\Middleware\Authenticate::class,
+    'authAdmin' => App\Http\Middleware\AuthenticateAdmin::class,
+    'authJefeCatedra' => App\Http\Middleware\AuthenticateJefeCatedra::class,
+    'authUsuario' => App\Http\Middleware\AuthenticateUsuario::class,
 ]);
 
 /*

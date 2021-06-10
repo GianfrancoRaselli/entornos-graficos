@@ -17,16 +17,20 @@ $router->post('/personas/signUp', 'PersonaController@signUp');
 
 $router->post('/personas/signIn', 'PersonaController@signIn');
 
-$router->get('/llamados/buscarUltimasVacantes', 'LlamadoController@ultimasVacantes');
+$router->get('/llamados/buscarLlamados', 'LlamadoController@buscarLlamados');
+
+$router->get('/llamados/buscarUltimasVacantes', 'LlamadoController@buscarUltimasVacantes');
 
 $router->group(['middleware' => ['auth']], function () use ($router) {
     $router->get('/personas/perfil', 'PersonaController@perfil');
 
     $router->post('/personas/editarPerfil', 'PersonaController@editarPerfil');
 
-    $router->get('/postulaciones/buscarPostulacionesDelUsuario', 'PostulacionController@buscarPostulacionesDelUsuario');
-
-    $router->post('/postulaciones/agregarPostulacionDelUsuario', 'PostulacionController@agregarPostulacionDelUsuario');
-
-    $router->delete('/postulaciones/eliminarPostulacionDelUsuario/{id_llamado}', 'PostulacionController@eliminarPostulacionDelUsuario');
+    $router->group(['middleware' => ['authUsuario']], function () use ($router) {
+        $router->get('/postulaciones/buscarPostulacionesDelUsuario', 'PostulacionController@buscarPostulacionesDelUsuario');
+    
+        $router->post('/postulaciones/agregarPostulacionDelUsuario', 'PostulacionController@agregarPostulacionDelUsuario');
+    
+        $router->delete('/postulaciones/eliminarPostulacionDelUsuario/{id_llamado}', 'PostulacionController@eliminarPostulacionDelUsuario');
+    });
 });

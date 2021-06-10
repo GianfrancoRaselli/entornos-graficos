@@ -15,7 +15,7 @@ class Roles extends Migration
     {
         Schema::create('roles', function (Blueprint $table) {
             $table->id();
-            $table->string('descripcion')->unique();
+            $table->enum('descripcion', ['Administrador', 'Jefe Catedra', 'Usuario'])->unique();
         });
     }
 

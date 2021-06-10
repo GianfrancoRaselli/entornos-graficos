@@ -1,58 +1,152 @@
 <template>
-  <div class="vacancies">
-    <div class="vacancy" v-for="(vacancy, index) in vacancies" :key="index">
-      <div class="name">
-        {{ vacancy.name }}
-      </div>
-      <div class="time">
-        Periodo vacante: {{ vacancy.time }}
-      </div>
-      <div class="description">
-        {{ vacancy.description }}
-      </div>
-      <div class="d-flex">
-        <utn-button to="Home" btnClass="btn btn-outline-primary">
-          Requisitos
-        </utn-button>
-        <utn-button to="Home">
+  <div class="vacancies-list">
+    <p v-if="!vacantes.length">No hay vacantes</p>
+    <div class="vacancies" v-if="vacantes.length">
+      <div class="vacancy" v-for="(vacante, index) in vacantes" :key="index">
+        <div class="descripcion">
+          <p>{{ vacante.descripcion }}</p>
+        </div>
+        <div class="definicion">
+          <p>{{ vacante.definicion }}</p>
+        </div>
+        <div class="requisitos">
+          <p><i class="fas fa-check-circle"></i>&nbsp;<strong>Requisitos:</strong>&nbsp;{{ vacante.requisitos }}</p>
+        </div>
+        <div class="fecha-fin">
+          <p><i class="fas fa-calendar"></i>&nbsp;<strong>Fecha de cierre:</strong>&nbsp;{{ vacante.fecha_fin }}</p>
+        </div>
+        <div class="postulado alert alert-success" role="alert" v-if="vacante.usuarioPostulado">
+          Ya se encuentra postulado
+        </div>
+        <div class="pocas-vacantes" role="alert" v-if="!vacante.usuarioPostulado">
+          <p v-if="vacante.vacantes_disponibles > 1 && vacante.vacantes_disponibles <= 3"><i class="fas fa-exclamation-circle"></i>&nbsp;¡Quedan solo {{ vacante.vacantes_disponibles }} vacantes!</p>
+          <p v-if="vacante.vacantes_disponibles === 1"><i class="fas fa-exclamation-circle"></i>&nbsp;¡Última vacante disponible!</p>
+        </div>
+        <button @click="postularme(vacante.id)" class="btn btn-primary" v-if="!vacante.usuarioPostulado">
           Postularme
-        </utn-button>
+        </button>
+        <button @click="darmeDeBaja(vacante.id)" class="btn btn-danger" v-if="vacante.usuarioPostulado">
+          Darme de baja
+        </button>
+        <button @click="inscriptos(vacante.id)" class="btn btn-secondary ml-2" v-if="vacante.usuarioPostulado">
+          Ver inscriptos
+        </button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+import { mapActions } from 'vuex'
 export default {
   data() {
     return {
-      vacancies: [
-        { 
-          id: 1,
-          name: 'Matematica superior', 
-          time: '05/05/21 - 05/06/21',
-          description: 'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est.'
-        },
-        { 
-          id: 2,
-          name: 'Entornos gráficos',
-          time: '05/05/21 - 05/06/21',
-          description: 'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est.'
-        },
-        { 
-          id: 3,
-          name: 'Administración de recursos',
-          time: '05/05/21 - 05/06/21',
-          description: 'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est.'
-        },
-        { 
-          id: 4,
-          name: 'Comunicaciones',
-          time: '05/05/21 - 05/06/21',
-          description: 'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est.'
-        },
-      ],
+      postulacionesDelUsuario: [],
+      vacantes: []
     }
+  },
+  methods: {
+    ...mapActions({
+        logOut: 'logOut'
+      }),
+
+    async buscarPostulacionesDelUsuario() {
+      try {
+        let res = await axios.get('/postulaciones/buscarPostulacionesDelUsuario',
+        {
+          headers: {
+            Authorization: 'Bearer ' + this.$store.getters.user.api_token
+          }
+        });
+
+        this.postulacionesDelUsuario = res.data;
+      } catch (err) {
+        console.log(err.response.data.error);
+      }
+    },
+
+    async buscarVacantes() {
+      try {
+        let res = await axios.get('/llamados/buscarLlamados');
+
+        let vacantes = res.data;
+
+        if (vacantes && vacantes.length > 0) {
+          for (let vacante of vacantes) {
+            vacante.usuarioPostulado = false;
+
+            if (this.postulacionesDelUsuario && this.postulacionesDelUsuario.length > 0) {
+              for (let postulacion of this.postulacionesDelUsuario) {
+                if (vacante.id === postulacion.id_llamado) {
+                  vacante.usuarioPostulado = true;
+                  break;
+                }
+              }
+            }
+          }
+        }
+
+        this.vacantes = vacantes;
+      } catch (err) {
+        console.log(err.response.data.error);
+      }
+    },
+
+    async actualizarVacantes() {
+      this.postulacionesDelUsuario = [];
+      this.vacantes = [];
+
+      if (this.$store.getters.authenticated) {
+        await this.buscarPostulacionesDelUsuario();
+      }
+      await this.buscarVacantes();
+    },
+
+    async postularme(id_llamado) {
+      if (this.$store.getters.authenticated) {
+        try {
+          await axios.post('/postulaciones/agregarPostulacionDelUsuario',
+          {
+            id_llamado,
+            curriculum_vitae: 'curriculum.jpg'
+          },
+          {
+            headers: {
+              Authorization: 'Bearer ' + this.$store.getters.user.api_token
+            }
+          });
+
+          this.actualizarVacantes();
+        } catch (err) {
+          console.log(err.response.data.error);
+        }
+      } else {
+        this.logOut();
+      }
+    },
+
+    async darmeDeBaja(id_llamado) {
+      if (this.$store.getters.authenticated) {
+        try {
+          await axios.delete('/postulaciones/eliminarPostulacionDelUsuario/' + id_llamado,
+          {
+            headers: {
+              Authorization: 'Bearer ' + this.$store.getters.user.api_token
+            }
+          });
+          
+          this.actualizarVacantes();
+        } catch (err) {
+          console.log(err.response.data.error);
+        }
+      } else {
+        this.logOut();
+      }
+    }
+  },
+  async created() {
+    this.actualizarVacantes();
   }
 }
 </script>
@@ -72,15 +166,24 @@ export default {
   .vacancy{
     width: 50%;
     padding:1rem;
+    border: black 2px solid;
+    border-radius: 15px;
+    background-color: rgb(240, 240, 240);
+    font-size: 1.08rem;
   }
 
-  .name{
-    font-size: 1.25rem;
+  .descripcion{
+    font-size:1.64rem;
     font-weight: 600;
   }
 
-  .time{
-    margin: .5rem 1rem;
+  .pocas-vacantes{
+    color: rgb(221, 44, 0);
   }
 
+  @media(max-width: 991px){
+    .vacancy{
+      width: 100%;
+    }
+  }
 </style>

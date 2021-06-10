@@ -64,13 +64,13 @@
 
           await this.signIn(this.user);
 
-          if (!this.postularse) {
+          if (!this.$store.getters.isUsuario || !this.postularse) {
             this.$router.push({ path: '/perfil', query: { key: 'signin' } });
 
             window.$("#loginPopup").modal('hide');
             window.$('body').removeClass('modal-open');
             window.$('.modal-backdrop').remove();
-          } else if (this.postularse) {
+          } else if (this.postularse && this.$store.getters.isUsuario) {
             await axios.post('/postulaciones/agregarPostulacionDelUsuario',
             {
               id_llamado: this.id_llamado,
@@ -94,7 +94,7 @@
           if (!this.postularse) {
             this.errorMessage = err.response.data.error;
             this.error = true;
-          } else if (this.postularse) {
+          } else if (this.postularse && this.$store.getters.isUsuario) {
             if (err.response.data.error === 'El usuario ya se encuentra postulado al llamado') {
               EventBus.$emit('actualizarUltimasVacantes');
 

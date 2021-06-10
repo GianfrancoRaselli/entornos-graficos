@@ -23,12 +23,12 @@ const store = new Vuex.Store({
 
     async signUp ({ dispatch }, personalInformation) {
       const res = await axios.post('/personas/signUp', personalInformation);
-      await dispatch('attempt', res.data);
+      await dispatch('attempt', res.data[0]);
     },
 
     async signIn ({ dispatch }, credentials) {
       const res = await axios.post('/personas/signIn', credentials);
-      await dispatch('attempt', res.data);
+      await dispatch('attempt', res.data[0]);
     },
 
     async logOut ({ dispatch }) {
@@ -51,7 +51,7 @@ const store = new Vuex.Store({
           Authorization: 'Bearer ' + getters.user.api_token
         }
       });
-      await dispatch('attempt', res.data);
+      await dispatch('attempt', res.data[0]);
       router.push('/perfil');
     },
 
@@ -69,6 +69,27 @@ const store = new Vuex.Store({
       } else {
         return false;
       }
+    },
+
+    isAdministrador (state) {
+      for (let rol of state.user.roles) {
+        if (rol.descripcion === 'Administrador') return true;
+      }
+      return false;
+    },
+
+    isJefeCatedra (state) {
+      for (let rol of state.user.roles) {
+        if (rol.descripcion === 'Jefe Catedra') return true;
+      }
+      return false;
+    },
+
+    isUsuario (state) {
+      for (let rol of state.user.roles) {
+        if (rol.descripcion === 'Usuario') return true;
+      }
+      return false;
     },
 
     user (state) {

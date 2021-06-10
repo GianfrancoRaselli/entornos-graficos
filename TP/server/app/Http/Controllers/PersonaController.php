@@ -48,7 +48,7 @@ class PersonaController extends Controller
 
                         DB::commit();
 
-                        return response()->json($persona, 200);
+                        return response()->json([$persona, $persona->roles], 200);
                     } catch (Exception $e) {
                         DB::rollback();
 
@@ -73,7 +73,7 @@ class PersonaController extends Controller
 
                 if ($persona) {
                     if (Hash::check($request->clave, $persona->clave)) {
-                        return response()->json($persona, 200);
+                        return response()->json([$persona, $persona->roles], 200);
                     } else {
                         return response()->json(['error' => 'Clave incorrecta'], 406, []);
                     }
@@ -115,7 +115,7 @@ class PersonaController extends Controller
 
                         $persona->save();
 
-                        return response()->json($persona);
+                        return response()->json([$persona, $persona->roles]);
                     } catch (Exception $e) {
                         return response()->json(['error' => $e->getMessage()], 406, []);
                     }
