@@ -10,11 +10,13 @@ class LlamadoController extends Controller
 {
   public function buscarLlamados()
   {
+    $fechaDeHoy = date('Y-m-d');
     try {
       $llamados = Llamado::join('catedras', 'catedras.id', '=', 'llamados.id_catedra')
       ->leftJoin('postulaciones', 'postulaciones.id_llamado', '=', 'llamados.id')
       ->select('llamados.id', 'llamados.fecha_inicio', 'llamados.fecha_fin', 'llamados.vacantes', DB::raw('(llamados.vacantes - count(postulaciones.id_llamado)) as vacantes_disponibles'), 'llamados.requisitos', 
       'catedras.id', 'catedras.descripcion', 'catedras.definicion')
+      ->where([['fecha_inicio', '<=', $fechaDeHoy], ['fecha_fin', '>=', $fechaDeHoy]])
       ->groupBy('llamados.id', 'llamados.fecha_inicio', 'llamados.fecha_fin', 'llamados.vacantes', 'llamados.requisitos', 
       'catedras.id', 'catedras.descripcion', 'catedras.definicion')->get();
 
@@ -26,12 +28,14 @@ class LlamadoController extends Controller
 
   public function buscarUltimasVacantes()
   {
+    $fechaDeHoy = date('Y-m-d');
     try {
       // puse 3 como numero de pocas vacantes (se puede cambiar)
       $llamados = Llamado::join('catedras', 'catedras.id', '=', 'llamados.id_catedra')
       ->leftJoin('postulaciones', 'postulaciones.id_llamado', '=', 'llamados.id')
       ->select('llamados.id', 'llamados.fecha_inicio', 'llamados.fecha_fin', 'llamados.vacantes', DB::raw('(llamados.vacantes - count(postulaciones.id_llamado)) as vacantes_disponibles'), 'llamados.requisitos', 
       'catedras.id', 'catedras.descripcion', 'catedras.definicion')
+      ->where([['fecha_inicio', '<=', $fechaDeHoy], ['fecha_fin', '>=', $fechaDeHoy]])
       ->groupBy('llamados.id', 'llamados.fecha_inicio', 'llamados.fecha_fin', 'llamados.vacantes', 'llamados.requisitos', 
       'catedras.id', 'catedras.descripcion', 'catedras.definicion')->having(DB::raw('llamados.vacantes - count(postulaciones.id_llamado)'), '<=', 3)
       ->get();

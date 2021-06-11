@@ -16,7 +16,7 @@ class Postulaciones extends Migration
         Schema::create('postulaciones', function (Blueprint $table) {
             $table->id();
             $table->string('curriculum_vitae');
-            $table->string('estado');
+            $table->enum('estado', ['Postulado', 'No elegido', 'Elegido']);
             $table->integer('puntaje')->nullable();
             $table->integer('orden')->nullable();
             $table->unsignedBigInteger('id_persona');
