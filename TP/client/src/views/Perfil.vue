@@ -16,9 +16,22 @@
           </utn-button>
         </div>
         <div class="d-flex">
-          <utn-button icon="fas fa-edit" to="perfil/editar" id="btn-editar-usuario" btnClass="btn btn-outline-primary">
-            Cargar CV
-          </utn-button>
+          <button class="btn btn-outline-primary" @click="abrirModalCargarCV">
+            <i class="fas fa-edit"></i>Cargar nuevo CV
+          </button>
+          <Popup dataTarget="cargarCV" title="Cargar CV" :showButtons="false">
+            <form @submit.prevent="handleSubmitCV">
+              <div class="form-group">
+                <input type="file" placeholder="CV" class="form-control"/>
+              </div>
+              <br>
+              <div class="form-group">
+                <button class="btn btn-success btn-block">
+                  Guardar
+                </button>
+              </div>
+            </form>
+          </Popup>
           <utn-button icon="fas fa-eye" to="perfil/editar" id="btn-editar-usuario">
             VER CV
           </utn-button>
@@ -101,6 +114,12 @@
         } else {
           this.$store.dispatch('logOut');
         }
+      },
+      abrirModalCargarCV() {
+        window.$("#cargarCV").modal('show');
+      },
+      async handleSubmitCV() {
+
       }
     },
     created() {

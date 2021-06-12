@@ -25,6 +25,7 @@ export default {
     outline: none !important;
     box-shadow: none !important;
   }
+  
   .btn:hover{
     transition: .15s;
   }
