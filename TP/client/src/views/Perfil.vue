@@ -79,7 +79,6 @@
 <script>
   import axios from 'axios'
   import Swal from 'sweetalert2'
-  import { mapActions } from 'vuex'
   export default {
     name: 'Perfil',
     data() {
@@ -96,10 +95,6 @@
       }
     },
     methods: {
-      ...mapActions({
-        logOut: 'logOut'
-      }),
-
       async buscarUsuario() {
         if (this.$store.getters.authenticated) {
           try {
