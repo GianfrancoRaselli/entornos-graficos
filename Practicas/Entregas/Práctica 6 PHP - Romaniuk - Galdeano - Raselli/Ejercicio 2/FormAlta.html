@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de alta de capital</title>
+</head>
+<body>
+    <form action="Alta.php" method="post" name="FormAlta">
+        <table width="225">
+            <tr>
+                <td>Ciudad:</td>
+                <td> 
+                    <input type="text" name="Ciudad">
+                </td>
+            </tr>
+            <tr>
+                <td>País:</td>
+                <td>
+                    <input type="text" name="Pais"/> 
+                </td>
+            </tr>
+            <tr>
+                <td>Habitantes</td>
+                <td> 
+                    <input type="text" name="Hab">
+                </td>
+            </tr>
+            <tr>
+                <td>Superficie:</td>
+                <td> 
+                    <input type="number" name="Sup" step=0.01> 
+                </td>
+            </tr>
+            <tr>
+                <td>¿Tiene metro?</td>
+                <td> 
+                    <input type="checkbox" name="TieneMetro"> 
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center"> 
+                    <input type="submit" value="Agregar" />
+                    <p>
+                        <a href="Menu.html">Volver al menu; del ABM</a>
+                    </p>
+                </td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>
