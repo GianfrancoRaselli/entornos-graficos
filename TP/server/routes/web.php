@@ -26,6 +26,8 @@ $router->group(['middleware' => ['auth']], function () use ($router) {
 
     $router->post('/personas/editarPerfil', 'PersonaController@editarPerfil');
 
+    $router->post('/personas/actualizarCV', 'PersonaController@actualizarCV');
+
     $router->group(['middleware' => ['authUsuario']], function () use ($router) {
         $router->get('/postulaciones/buscarPostulacionesDelUsuario', 'PostulacionController@buscarPostulacionesDelUsuario');
     

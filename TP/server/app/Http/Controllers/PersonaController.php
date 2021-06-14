@@ -126,7 +126,18 @@ class PersonaController extends Controller
                 return response()->json(['error' => 'El DNI ya se encuentra registrado'], 406, []);
             }
         } else {
-            return response()->json(['error' => 'Ingrese todos los datos de la persona' . $request->dni], 406, []);
+            return response()->json(['error' => 'Ingrese todos los datos de la persona'], 406, []);
+        }
+    }
+
+    public function actualizarCV(Request $request)
+    {
+        if ($request->curriculum_vitae && $request->hasFile('curriculum_vitae')) {
+            $file = $request->file('curriculum_vitae');
+            $name = 'CV_' . auth()->user()->id . '.pdf';
+            $file->move(base_path('public') . '/CVs/', $name);
+        } else {
+            return response()->json(['error' => 'Envie su curriculum vitae' . $request], 406, []);
         }
     }
 }

@@ -20,9 +20,11 @@
             <i class="fas fa-edit"></i>Cargar nuevo CV
           </button>
           <Popup dataTarget="cargarCV" title="Cargar CV" :showButtons="false">
-            <form @submit.prevent="handleSubmitCV">
+            <form @submit.prevent="handleSubmitCV" enctype="multipart/form-data">
               <div class="form-group">
-                <input type="file" placeholder="CV" class="form-control"/>
+                <label for="labelInputCV">Curriculum Vitae</label>
+                <input type="file" @change="obtenerArchivo" placeholder="CV" class="form-control" accept="pdf"/>
+                <small class="form-text text-muted">Ingrese su CV en formado PDF.</small>
               </div>
               <br>
               <div class="form-group">
@@ -77,6 +79,7 @@
 <script>
   import axios from 'axios'
   import Swal from 'sweetalert2'
+  import { mapActions } from 'vuex'
   export default {
     name: 'Perfil',
     data() {
@@ -87,11 +90,16 @@
           nombre_apellido: '',
           email: '',
           telefono: '',
+          curriculum_vitae: null,
           roles: [],
         }
       }
     },
     methods: {
+      ...mapActions({
+        logOut: 'logOut'
+      }),
+
       async buscarUsuario() {
         if (this.$store.getters.authenticated) {
           try {
@@ -119,7 +127,29 @@
         window.$("#cargarCV").modal('show');
       },
       async handleSubmitCV() {
+        if (this.$store.getters.authenticated) {
+          let formData = new FormData();
+          formData.append('curriculum_vitae', this.user.curriculum_vitae);
 
+          try {
+            await axios.post('/personas/actualizarCV',
+            {
+              formData
+            },
+            {
+              headers: {
+                Authorization: 'Bearer ' + this.$store.getters.user.api_token
+              }
+            });
+          } catch (err) {
+            console.log(err.response.data.error);
+          }
+        } else {
+          this.$store.dispatch('logOut');
+        }
+      },
+      obtenerArchivo(e) {
+        this.user.curriculum_vitae = e.target.files[0];
       }
     },
     created() {
@@ -148,14 +178,15 @@
 </script>
 
 <style>
-  .profile-container{
+  .profile-container {
     margin-bottom: auto;
     display:flex;
     align-items:center;
     flex-direction:column;
     justify-content: center;
   }
-  .data-box{
+
+  .data-box {
     padding: 2rem 1rem;
     align-self: center;
     margin: 2rem;
@@ -166,7 +197,8 @@
     border-radius: .5rem;
     flex-wrap:wrap;
   }
-  .profile-img{
+
+  .profile-img {
     height: 5rem;
     width: 5rem;
     display: flex;
@@ -179,12 +211,13 @@
     text-transform: uppercase;
     background-color:white;
   }
-  .personal-info{
+
+  .personal-info {
     color: white;
     padding-left: 1rem;
   }
 
-  .applications{
+  .applications {
     width: 90%;
     margin-top: 1rem;
   }
