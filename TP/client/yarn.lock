@@ -977,6 +977,16 @@
   "resolved" "https://registry.npm.taobao.org/@soda/get-current-script/download/@soda/get-current-script-1.0.2.tgz"
   "version" "1.0.2"
 
+"@sweetalert2/theme-bootstrap-4@^5.0.0":
+  "integrity" "sha512-6fIrG3WpqM52/SUk4kv5v30fr2gjNSmArKEZ93xYEXZYNwJD5Kk6NchajhRpfjPXA7V1yfiljfsWK4nqrDeU0Q=="
+  "resolved" "https://registry.npmjs.org/@sweetalert2/theme-bootstrap-4/-/theme-bootstrap-4-5.0.0.tgz"
+  "version" "5.0.0"
+
+"@sweetalert2/theme-dark@^5.0.0":
+  "integrity" "sha512-lpO/uNn+LG9sA1bQn07zhB2cAdMGIfdTwiR7lZiOKsTXCGLz9P8nTC93Xu94dkYoExdpWbR2rZjIx4KFDjhUHQ=="
+  "resolved" "https://registry.npmjs.org/@sweetalert2/theme-dark/-/theme-dark-5.0.0.tgz"
+  "version" "5.0.0"
+
 "@types/anymatch@*":
   "integrity" "sha1-yV/xRAHbsoaZE6+sOTWvStDTfxo="
   "resolved" "https://registry.nlark.com/@types/anymatch/download/@types/anymatch-3.0.0.tgz?cache=0&sync_timestamp=1621355680901&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40types%2Fanymatch%2Fdownload%2F%40types%2Fanymatch-3.0.0.tgz"
@@ -7735,10 +7745,10 @@
     "unquote" "~1.1.1"
     "util.promisify" "~1.0.0"
 
-"sweetalert2@^11.0.11":
-  "integrity" "sha512-3xO4NI9mfO/9UImBu0Kym4tHEPQClxucLzBl9R8PPphNrdpen0TyWWBggz/EKCnidQfXYmt9R3pOr6CK4EQMwQ=="
-  "resolved" "https://registry.npmjs.org/sweetalert2/-/sweetalert2-11.0.11.tgz"
-  "version" "11.0.11"
+"sweetalert2@^11.0.17":
+  "integrity" "sha512-oaCGCNjMU648bDg5+/mdStfFNG9sYEejeEZQY8JpAakUM0pLflB3neNyArAZGcWNUQX1y/jOeRdzcNE05Una4A=="
+  "resolved" "https://registry.npmjs.org/sweetalert2/-/sweetalert2-11.0.17.tgz"
+  "version" "11.0.17"
 
 "table@^5.2.3":
   "integrity" "sha1-EpLRlQDOP4YFOwXw6Ofko7shB54="

@@ -133,11 +133,19 @@ class PersonaController extends Controller
     public function actualizarCV(Request $request)
     {
         if ($request->curriculum_vitae && $request->hasFile('curriculum_vitae')) {
-            $file = $request->file('curriculum_vitae');
-            $name = 'CV_' . auth()->user()->id . '.pdf';
-            $file->move(base_path('public') . '/CVs/', $name);
+            try {
+                $file = $request->file('curriculum_vitae');
+                $name = 'CV_' . auth()->user()->id . '.pdf';
+                $file->move(base_path('public') . '/CVs/', $name);
+
+                $persona = Persona::find(auth()->user()->id);
+                $persona->curriculum_vitae = $name;
+                $persona->save();
+            } catch (Exception $e) {
+                return response()->json(['error' => $e->getMessage()], 406, []);
+            }
         } else {
-            return response()->json(['error' => 'Envie su curriculum vitae' . $request], 406, []);
+            return response()->json(['error' => 'Envie su curriculum vitae'], 406, []);
         }
     }
 }

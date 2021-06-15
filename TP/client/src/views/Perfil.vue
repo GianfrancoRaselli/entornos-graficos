@@ -23,8 +23,9 @@
             <form @submit.prevent="handleSubmitCV" enctype="multipart/form-data">
               <div class="form-group">
                 <label for="labelInputCV">Curriculum Vitae</label>
-                <input type="file" @change="obtenerArchivo" placeholder="CV" class="form-control" accept="pdf"/>
-                <small class="form-text text-muted">Ingrese su CV en formado PDF.</small>
+                <input type="file" @change="obtenerArchivo" placeholder="CV" class="form-control" accept="pdf" required/>
+                <small class="form-text text-muted" v-if="!errorFormato"><p>Ingrese su CV en formado PDF</p></small>
+                <medium class="form-text text-muted" v-if="errorFormato"><p class="error">Ingrese su CV en formado PDF</p></medium>
               </div>
               <br>
               <div class="form-group">
@@ -91,7 +92,8 @@
           telefono: '',
           curriculum_vitae: null,
           roles: [],
-        }
+        },
+        errorFormato: false
       }
     },
     methods: {
@@ -123,28 +125,48 @@
       },
       async handleSubmitCV() {
         if (this.$store.getters.authenticated) {
-          let formData = new FormData();
-          formData.append('curriculum_vitae', this.user.curriculum_vitae);
+          if (this.user.curriculum_vitae && !this.errorFormato) {
+            let formData = new FormData();
+            formData.append('curriculum_vitae', this.user.curriculum_vitae);
 
-          try {
-            await axios.post('/personas/actualizarCV',
-            {
-              formData
-            },
-            {
-              headers: {
-                Authorization: 'Bearer ' + this.$store.getters.user.api_token
-              }
-            });
-          } catch (err) {
-            console.log(err.response.data.error);
+            try {
+              await axios.post('/personas/actualizarCV', formData,
+              {
+                headers: {
+                  Authorization: 'Bearer ' + this.$store.getters.user.api_token
+                }
+              });
+
+              window.$('#cargarCV').modal('hide');
+              window.$('body').removeClass('modal-open');
+              window.$('.modal-backdrop').remove();
+
+              Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'CV actualizado correctamente',
+                showConfirmButton: true,
+                confirmButtonColor: '#3CC134',
+                confirmButtonText: 'Confirmar',
+                timer: 3000
+              });
+            } catch (err) {
+              console.log(err.response.data.error);
+            }
+          } else {
+            this.errorFormato = true;
           }
         } else {
           this.$store.dispatch('logOut');
         }
       },
       obtenerArchivo(e) {
-        this.user.curriculum_vitae = e.target.files[0];
+        if (e.target.files[0].name.split('.').pop() === 'pdf') {
+          this.errorFormato = false;
+          this.user.curriculum_vitae = e.target.files[0];
+        } else {
+          this.errorFormato = true;
+        }
       }
     },
     created() {
@@ -215,5 +237,9 @@
   .applications {
     width: 90%;
     margin-top: 1rem;
+  }
+
+  .error {
+    color: red;
   }
 </style>
