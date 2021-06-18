@@ -135,12 +135,14 @@ class PersonaController extends Controller
         if ($request->curriculum_vitae && $request->hasFile('curriculum_vitae')) {
             try {
                 $file = $request->file('curriculum_vitae');
-                $name = 'CV_' . auth()->user()->id . '.pdf';
+                $name = 'CV_' . Str::random(5) . auth()->user()->id . Str::random(5) . '.pdf';
                 $file->move(base_path('public') . '/CVs/', $name);
 
                 $persona = Persona::find(auth()->user()->id);
                 $persona->curriculum_vitae = $name;
                 $persona->save();
+
+                return response()->json($persona->curriculum_vitae);
             } catch (Exception $e) {
                 return response()->json(['error' => $e->getMessage()], 406, []);
             }

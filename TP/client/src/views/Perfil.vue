@@ -16,7 +16,7 @@
           </utn-button>
         </div>
         <div class="d-flex">
-          <button class="btn btn-outline-primary" @click="abrirModalCargarCV">
+          <button class="btn btn-outline-primary mr-1" @click="abrirModalCargarCV">
             <i class="fas fa-edit"></i>Cargar nuevo CV
           </button>
           <Popup dataTarget="cargarCV" title="Cargar CV" :showButtons="false">
@@ -35,9 +35,9 @@
               </div>
             </form>
           </Popup>
-          <utn-button icon="fas fa-eye" to="perfil/editar" id="btn-editar-usuario">
-            VER CV
-          </utn-button>
+          <a id="btn-ver-cv" class="btn btn-primary ml-1" v-if="user.ruta_cv" :href="user.ruta_cv" target="_blank">
+            <i class="fas fa-eye"></i> CV
+          </a>
         </div>
         <div class="applications">
           <h4>Mis postulaciones</h4>
@@ -91,6 +91,7 @@
           email: '',
           telefono: '',
           curriculum_vitae: null,
+          ruta_cv: '',
           roles: [],
         },
         errorFormato: false
@@ -112,6 +113,9 @@
             this.user.nombre_apellido = res.data[0].nombre_apellido;
             this.user.email = res.data[0].email;
             this.user.telefono = res.data[0].telefono;
+            if (res.data[0].curriculum_vitae) {
+              this.user.ruta_cv = 'http://localhost/Entornos Graficos/entornos-graficos-2021/TP/server/public/CVs/' + res.data[0].curriculum_vitae;
+            }
             this.user.roles = res.data[0].roles;
           } catch (err) {
               console.log(err.response.data.error);
@@ -130,12 +134,14 @@
             formData.append('curriculum_vitae', this.user.curriculum_vitae);
 
             try {
-              await axios.post('/personas/actualizarCV', formData,
+              let res = await axios.post('/personas/actualizarCV', formData,
               {
                 headers: {
                   Authorization: 'Bearer ' + this.$store.getters.user.api_token
                 }
               });
+
+              this.user.ruta_cv = 'http://localhost/Entornos Graficos/entornos-graficos-2021/TP/server/public/CVs/' + res.data;
 
               window.$('#cargarCV').modal('hide');
               window.$('body').removeClass('modal-open');
