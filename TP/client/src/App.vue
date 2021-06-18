@@ -52,5 +52,6 @@
   footer{
     justify-self: flex-end;
     bottom: 0;
+    width: 100%;
   }
 </style>

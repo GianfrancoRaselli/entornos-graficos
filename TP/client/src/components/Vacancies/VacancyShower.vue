@@ -22,13 +22,15 @@
           <p v-if="vacante.vacantes_disponibles > 1 && vacante.vacantes_disponibles <= 3"><i class="fas fa-exclamation-circle"></i>&nbsp;¡Quedan solo {{ vacante.vacantes_disponibles }} vacantes!</p>
           <p v-if="vacante.vacantes_disponibles === 1"><i class="fas fa-exclamation-circle"></i>&nbsp;¡Última vacante disponible!</p>
         </div>
-        <button @click="postularme(vacante.id)" class="btn btn-primary" v-if="!vacante.usuarioPostulado">
-          Postularme
-        </button>
-        <button @click="darmeDeBaja(vacante.id)" class="btn btn-danger" v-if="vacante.usuarioPostulado">
-          Darme de baja
-        </button>
-        <button @click="inscriptos(vacante.id)" class="btn btn-secondary ml-2" v-if="vacante.usuarioPostulado">
+        <div v-if="isUsuario">
+          <button @click="postularme(vacante.id)" class="btn btn-primary" v-if="!vacante.usuarioPostulado">
+            Postularme
+          </button>
+          <button @click="darmeDeBaja(vacante.id)" class="btn btn-danger" v-if="vacante.usuarioPostulado">
+            Darme de baja
+          </button>
+        </div>
+        <button v-if="isAdministrador || isJefeCatedra" @click="inscriptos(vacante.id)" class="btn btn-secondary ml-2">
           Ver inscriptos
         </button>
       </div>
@@ -38,7 +40,8 @@
 
 <script>
 import axios from 'axios'
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
+import EventBus from '../../event-bus'
 export default {
   data() {
     return {
@@ -46,23 +49,31 @@ export default {
       vacantes: []
     }
   },
+  computed: {
+    ...mapGetters({
+      authenticated: 'authenticated',
+      isUsuario: 'isUsuario',
+    })
+  },
   methods: {
     ...mapActions({
         logOut: 'logOut'
       }),
 
     async buscarPostulacionesDelUsuario() {
-      try {
-        let res = await axios.get('/postulaciones/buscarPostulacionesDelUsuario',
-        {
-          headers: {
-            Authorization: 'Bearer ' + this.$store.getters.user.api_token
-          }
-        });
+      if (this.$store.getters.authenticated && this.$store.getters.isUsuario) {
+        try {
+          let res = await axios.get('/postulaciones/buscarPostulacionesDelUsuario',
+          {
+            headers: {
+              Authorization: 'Bearer ' + this.$store.getters.user.api_token
+            }
+          });
 
-        this.postulacionesDelUsuario = res.data;
-      } catch (err) {
-        console.log(err.response.data.error);
+          this.postulacionesDelUsuario = res.data;
+        } catch (err) {
+          console.log(err.response.data.error);
+        }
       }
     },
 
@@ -97,7 +108,7 @@ export default {
       this.postulacionesDelUsuario = [];
       this.vacantes = [];
 
-      if (this.$store.getters.authenticated) {
+      if (this.$store.getters.authenticated && this.$store.getters.isUsuario) {
         await this.buscarPostulacionesDelUsuario();
       }
       await this.buscarVacantes();
@@ -105,21 +116,23 @@ export default {
 
     async postularme(id_llamado) {
       if (this.$store.getters.authenticated) {
-        try {
-          await axios.post('/postulaciones/agregarPostulacionDelUsuario',
-          {
-            id_llamado,
-            curriculum_vitae: 'curriculum.jpg'
-          },
-          {
-            headers: {
-              Authorization: 'Bearer ' + this.$store.getters.user.api_token
-            }
-          });
+        if (this.$store.getters.isUsuario) {
+          try {
+            await axios.post('/postulaciones/agregarPostulacionDelUsuario',
+            {
+              id_llamado,
+              curriculum_vitae: 'curriculum.jpg'
+            },
+            {
+              headers: {
+                Authorization: 'Bearer ' + this.$store.getters.user.api_token
+              }
+            });
 
-          this.actualizarVacantes();
-        } catch (err) {
-          console.log(err.response.data.error);
+            this.actualizarVacantes();
+          } catch (err) {
+            console.log(err.response.data.error);
+          }
         }
       } else {
         this.logOut();
@@ -128,17 +141,19 @@ export default {
 
     async darmeDeBaja(id_llamado) {
       if (this.$store.getters.authenticated) {
-        try {
-          await axios.delete('/postulaciones/eliminarPostulacionDelUsuario/' + id_llamado,
-          {
-            headers: {
-              Authorization: 'Bearer ' + this.$store.getters.user.api_token
-            }
-          });
-          
-          this.actualizarVacantes();
-        } catch (err) {
-          console.log(err.response.data.error);
+        if (this.$store.getters.isUsuario) {
+          try {
+            await axios.delete('/postulaciones/eliminarPostulacionDelUsuario/' + id_llamado,
+            {
+              headers: {
+                Authorization: 'Bearer ' + this.$store.getters.user.api_token
+              }
+            });
+            
+            this.actualizarVacantes();
+          } catch (err) {
+            console.log(err.response.data.error);
+          }
         }
       } else {
         this.logOut();
@@ -147,6 +162,10 @@ export default {
   },
   async created() {
     this.actualizarVacantes();
+
+    EventBus.$on('actualizarUltimasVacantes', function() {
+      this.actualizarVacantes();
+    }.bind(this))
   }
 }
 </script>

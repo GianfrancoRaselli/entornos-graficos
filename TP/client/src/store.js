@@ -72,22 +72,28 @@ const store = new Vuex.Store({
     },
 
     isAdministrador (state) {
-      for (let rol of state.user.roles) {
-        if (rol.descripcion === 'Administrador') return true;
+      if (state.user.roles) {
+        for (let rol of state.user.roles) {
+          if (rol.descripcion === 'Administrador') return true;
+        }
       }
       return false;
     },
 
     isJefeCatedra (state) {
-      for (let rol of state.user.roles) {
-        if (rol.descripcion === 'Jefe Catedra') return true;
+      if (state.user.roles) {
+        for (let rol of state.user.roles) {
+          if (rol.descripcion === 'Jefe Catedra') return true;
+        }
       }
       return false;
     },
 
     isUsuario (state) {
-      for (let rol of state.user.roles) {
-        if (rol.descripcion === 'Usuario') return true;
+      if (state.user.roles) {
+        for (let rol of state.user.roles) {
+          if (rol.descripcion === 'Usuario') return true;
+        }
       }
       return false;
     },

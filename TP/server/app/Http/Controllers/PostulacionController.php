@@ -23,7 +23,7 @@ class PostulacionController extends Controller
 
   public function agregarPostulacionDelUsuario(Request $request)
   {
-    if ($request->id_llamado && $request->curriculum_vitae) {
+    if ($request->id_llamado) {
       if(!Postulacion::where([['id_persona', auth()->user()->id], ['id_llamado', $request->id_llamado]])->first()) {
         $llamado = Llamado::find($request->id_llamado);
         if ($llamado) {
@@ -35,7 +35,6 @@ class PostulacionController extends Controller
               $postulacion->id_persona = auth()->user()->id;
               $postulacion->id_llamado = $request->id_llamado;
               $postulacion->estado = "Postulado";
-              $postulacion->curriculum_vitae = $request->curriculum_vitae;
               
               $postulacion->save();
             } catch (Exception $e) {

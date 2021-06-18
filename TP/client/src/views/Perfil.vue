@@ -17,7 +17,7 @@
         </div>
         <div class="d-flex">
           <button class="btn btn-outline-primary mr-1" @click="abrirModalCargarCV">
-            <i class="fas fa-edit"></i>Cargar nuevo CV
+            <i class="fas fa-file-upload"></i> Cargar nuevo CV
           </button>
           <Popup dataTarget="cargarCV" title="Cargar CV" :showButtons="false">
             <form @submit.prevent="handleSubmitCV" enctype="multipart/form-data">
@@ -36,7 +36,7 @@
             </form>
           </Popup>
           <a id="btn-ver-cv" class="btn btn-primary ml-1" v-if="user.ruta_cv" :href="user.ruta_cv" target="_blank">
-            <i class="fas fa-eye"></i> CV
+            <i class="fas fa-eye"></i> Ver CV
           </a>
         </div>
         <div class="applications">
