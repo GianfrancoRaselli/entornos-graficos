@@ -74,7 +74,6 @@
             await axios.post('/postulaciones/agregarPostulacionDelUsuario',
             {
               id_llamado: this.id_llamado,
-              curriculum_vitae: 'curriculum.jpg'
             },
             {
               headers: {
