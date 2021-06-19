@@ -24,6 +24,6 @@ class Llamado extends Model
 
     public function postulaciones()
     {
-        return $this->hasMany('App\Models\Postulacion', 'id_postulacion');
+        return $this->hasMany('App\Models\Postulacion', 'id_llamado');
     }
 }

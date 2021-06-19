@@ -18,11 +18,11 @@
         <div class="postulado alert alert-success" role="alert" v-if="vacante.usuarioPostulado">
           Ya se encuentra postulado
         </div>
-        <div class="pocas-vacantes" role="alert" v-if="!vacante.usuarioPostulado">
-          <p v-if="vacante.vacantes_disponibles > 1 && vacante.vacantes_disponibles <= 3"><i class="fas fa-exclamation-circle"></i>&nbsp;¡Quedan solo {{ vacante.vacantes_disponibles }} vacantes!</p>
+        <div class="pocas-vacantes" role="alert" v-if="!vacante.usuarioPostulado && vacante.vacantes_disponibles <= 3">
+          <p v-if="vacante.vacantes_disponibles > 1"><i class="fas fa-exclamation-circle"></i>&nbsp;¡Quedan solo {{ vacante.vacantes_disponibles }} vacantes!</p>
           <p v-if="vacante.vacantes_disponibles === 1"><i class="fas fa-exclamation-circle"></i>&nbsp;¡Última vacante disponible!</p>
         </div>
-        <div v-if="isUsuario">
+        <div v-if="!authenticated || (authenticated && isUsuario)">
           <button @click="postularme(vacante.id)" class="btn btn-primary" v-if="!vacante.usuarioPostulado">
             Postularme
           </button>
@@ -30,11 +30,11 @@
             Darme de baja
           </button>
         </div>
-        <button v-if="isAdministrador || isJefeCatedra" @click="inscriptos(vacante.id)" class="btn btn-secondary ml-2">
-          Ver inscriptos
-        </button>
       </div>
     </div>
+    <Popup dataTarget="loginPostulacionPopup" title="Iniciar Sesión" :showButtons="false">
+      <LogIn :postularse="true" :id_llamado="id_llamado" redirect="/vacantes" />
+    </Popup>
   </div>
 </template>
 
@@ -43,10 +43,14 @@ import axios from 'axios'
 import { mapGetters, mapActions } from 'vuex'
 import EventBus from '../../event-bus'
 export default {
+  components: {
+    LogIn: () => import('../LogIn.vue')
+  },
   data() {
     return {
       postulacionesDelUsuario: [],
-      vacantes: []
+      vacantes: [],
+      id_llamado: null
     }
   },
   computed: {
@@ -135,7 +139,8 @@ export default {
           }
         }
       } else {
-        this.logOut();
+        this.id_llamado = id_llamado;
+        window.$("#loginPostulacionPopup").modal('show');
       }
     },
 
@@ -163,7 +168,7 @@ export default {
   async created() {
     this.actualizarVacantes();
 
-    EventBus.$on('actualizarUltimasVacantes', function() {
+    EventBus.$on('actualizarVacantes', function() {
       this.actualizarVacantes();
     }.bind(this))
   }

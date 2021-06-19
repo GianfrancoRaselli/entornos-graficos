@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import axios from 'axios'
 import store from './store'
 
 Vue.use(Router)
@@ -18,9 +17,18 @@ const router = new Router({
       component: () => import('@/views/Inicio.vue'),
     },
     {
-      path: '/Vacantes',
+      path: '/vacantes',
       name: 'Vacantes',
       component: () => import('@/views/Vacancies.vue'),
+    },
+    {
+      path: '/administrarVacantes',
+      name: 'administrar Vacantes',
+      component: () => import('@/views/AdminVacancies.vue'),
+      meta: {
+        auth: true,
+        isAdministradorOrJefeCatedra: true
+      }
     },
     {
       path: '/perfil',
@@ -42,30 +50,16 @@ const router = new Router({
 })
 
 router.beforeEach(async (to, from, next) => {
-  let persona = null;
-  if (store.getters.authenticated) {
-    try {
-      let res = await axios.get('/personas/perfil',
-      {
-        headers: {
-          Authorization: 'Bearer ' + store.getters.user.api_token
-        }
-      });
-
-      persona = res.data[0];
-    } catch (err) {
-      if (err.response.status === 401) {
-        store.dispatch('logOut');
-      }
-    }
-  }
   let auth = to.matched.some(record => record.meta.auth);
   let notAuth = to.matched.some(record => record.meta.notAuth);
+  let isAdministradorOrJefeCatedra = to.matched.some(record => record.meta.isAdministradorOrJefeCatedra);
 
-  if (auth && !persona) {
+  if (auth && !store.getters.authenticated) {
     next('signin');
-  } else if (notAuth && persona) {
+  } else if (notAuth && store.getters.authenticated) {
     next('');
+  } else if (isAdministradorOrJefeCatedra && !(store.getters.isAdministrador || store.getters.isJefeCatedra)) {
+    next(from);
   } else {
     next();
   }

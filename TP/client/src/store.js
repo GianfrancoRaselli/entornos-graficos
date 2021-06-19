@@ -72,7 +72,7 @@ const store = new Vuex.Store({
     },
 
     isAdministrador (state) {
-      if (state.user.roles) {
+      if (state.user && state.user.roles) {
         for (let rol of state.user.roles) {
           if (rol.descripcion === 'Administrador') return true;
         }
@@ -81,7 +81,7 @@ const store = new Vuex.Store({
     },
 
     isJefeCatedra (state) {
-      if (state.user.roles) {
+      if (state.user && state.user.roles) {
         for (let rol of state.user.roles) {
           if (rol.descripcion === 'Jefe Catedra') return true;
         }
@@ -90,7 +90,7 @@ const store = new Vuex.Store({
     },
 
     isUsuario (state) {
-      if (state.user.roles) {
+      if (state.user && state.user.roles) {
         for (let rol of state.user.roles) {
           if (rol.descripcion === 'Usuario') return true;
         }

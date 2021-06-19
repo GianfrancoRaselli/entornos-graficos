@@ -36,7 +36,7 @@
       </div>
     </div>
     <Popup dataTarget="loginPostulacionPopup" title="Iniciar Sesión" :showButtons="false">
-      <LogIn :postularse="true" :id_llamado="id_llamado" />
+      <LogIn :postularse="true" :id_llamado="id_llamado" redirect="/" />
     </Popup>
   </div>
 </template>
@@ -171,7 +171,7 @@ export default {
   async created() {
     this.actualizarVacantes();
 
-    EventBus.$on('actualizarUltimasVacantes', function() {
+    EventBus.$on('actualizarVacantes', function() {
       this.actualizarVacantes();
     }.bind(this))
   }

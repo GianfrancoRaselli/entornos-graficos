@@ -29,16 +29,20 @@ class PostulacionController extends Controller
         if ($llamado) {
           $fechaDeHoy = strtotime(date('Y-m-d'));
           if ((strtotime($llamado->fecha_fin) >= $fechaDeHoy) && (strtotime($llamado->fecha_inicio) <= $fechaDeHoy)) {
-            try {
-              $postulacion = new Postulacion();
+            if ($llamado->vacantes > count($llamado->postulaciones)) {
+              try {
+                $postulacion = new Postulacion();
 
-              $postulacion->id_persona = auth()->user()->id;
-              $postulacion->id_llamado = $request->id_llamado;
-              $postulacion->estado = "Postulado";
-              
-              $postulacion->save();
-            } catch (Exception $e) {
-              return response()->json(['error' => $e->getMessage()], 406, []);
+                $postulacion->id_persona = auth()->user()->id;
+                $postulacion->id_llamado = $request->id_llamado;
+                $postulacion->estado = "Postulado";
+                
+                $postulacion->save();
+              } catch (Exception $e) {
+                return response()->json(['error' => $e->getMessage()], 406, []);
+              }
+            } else {
+              return response()->json(['error' => 'No hay vacantes disponibles'], 406, []);
             }
           } else {
             return response()->json(['error' => 'No se puede inscibir en esta fecha'], 406, []);

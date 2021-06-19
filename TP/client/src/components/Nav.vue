@@ -5,14 +5,14 @@
     </router-link>
     <ul class="desktop-nav" style="margin-left: auto;">
       <li class="nav-item" v-for="(item, index) in navItems" :key="index">
-        <utn-button :icon="item.icon" btnClass="btn btn-light" :to="item.routeTo">
+        <utn-button :icon="item.icon" btnClass="btn btn-light" :to="item.routeTo" v-if="item.show">
           {{ item.name }}
         </utn-button>
       </li>
     </ul>
     <ul class="mobile-nav">
       <li class="nav-item" v-for="(item, index) in navItems" :key="index">
-        <utn-button :icon="item.icon" btnClass="btn btn-light" :to="item.routeTo">
+        <utn-button :icon="item.icon" btnClass="btn btn-light" :to="item.routeTo" v-if="item.show">
           {{ item.name }}
         </utn-button>
       </li>
@@ -70,23 +70,27 @@
       LogIn: () => import('./LogIn.vue'),
       SignUp: () => import('./SignUp.vue'),
     },
-    data() {
-      return {
-        navItems: [
-          { name: 'Inicio', routeTo: 'Home', icon: 'fas fa-home' },
-          { name: 'Vacantes', routeTo: 'Vacantes', icon: 'fas fa-hand-pointer' },
-        ],
-        userNavItems: [
-          { name: 'Crear cuenta', routeTo: 'SignUp', icon: 'fas fa-user', btnClass: 'btn btn-light', target: '#signUpPopup' },
-          { name: 'Iniciar sesión', routeTo: 'SignIn', icon: 'fas fa-id-card', btnClass: 'btn btn-primary', target: '#loginPopup' },
-        ]
-      }
-    },
     computed: {
       ...mapGetters({
         authenticated: 'authenticated',
+        isAdministrador: 'isAdministrador',
+        isJefeCatedra: 'isJefeCatedra',
+        isUsuario: 'isUsuario',
         user: 'user',
       })
+    },
+    data() {
+      return {
+        navItems: [
+          { name: 'Inicio', routeTo: '/', icon: 'fas fa-home', show: true },
+          { name: 'Vacantes', routeTo: '/vacantes', icon: 'fas fa-hand-pointer', /*no funciona el show con los getters computed*/ show: !this.authenticated || this.isUsuario },
+          { name: 'Administrar llamados', routeTo: '/administrarVacantes', icon: 'fas fa-toolbox', show: this.isAdministrador || this.isJefeCatedra },
+        ],
+        userNavItems: [
+          { name: 'Crear cuenta', icon: 'fas fa-user', btnClass: 'btn btn-light', target: '#signUpPopup' },
+          { name: 'Iniciar sesión', icon: 'fas fa-id-card', btnClass: 'btn btn-primary', target: '#loginPopup' },
+        ]
+      }
     },
     methods: {
       ...mapActions({
@@ -97,6 +101,9 @@
         this.logOut();
       }
     },
+    created() {
+      console.log(this.isJefeCatedra);
+    }
   }
 </script>
 

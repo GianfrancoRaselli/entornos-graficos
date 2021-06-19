@@ -41,7 +41,8 @@
     name: 'SignIn',
     props: {
       postularse: { type: Boolean, default: false },
-      id_llamado: { type: Number }
+      id_llamado: { type: Number },
+      redirect: { type: String }
     },
     data() {
       return {
@@ -81,9 +82,9 @@
               }
             });
 
-            EventBus.$emit('actualizarUltimasVacantes');
+            EventBus.$emit('actualizarVacantes');
 
-            if (this.$route.path !== '/') this.$router.push('/');
+            if (this.$route.path !== this.redirect) this.$router.push(this.redirect);
             
             window.$("#loginPostulacionPopup").modal('hide');
             window.$('body').removeClass('modal-open');
@@ -95,9 +96,9 @@
             this.error = true;
           } else if (this.postularse && this.$store.getters.isUsuario) {
             if (err.response.data.error === 'El usuario ya se encuentra postulado al llamado') {
-              EventBus.$emit('actualizarUltimasVacantes');
+              EventBus.$emit('actualizarVacantes');
 
-              if (this.$route.path !== '/') this.$router.push('/');
+              if (this.$route.path !== this.redirect) this.$router.push(this.redirect);
 
               window.$("#loginPostulacionPopup").modal('hide');
               window.$('body').removeClass('modal-open');
