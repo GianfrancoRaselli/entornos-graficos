@@ -8,6 +8,21 @@ use Exception;
 
 class LlamadoController extends Controller
 {
+  public function buscarLlamado($id_llamado)
+  {
+    try {
+      $llamado = Llamado::find($id_llamado);
+      $llamado->catedra;
+      foreach ($llamado->postulaciones as $postulacion) {
+        $postulacion->persona;   
+      }
+
+      return response()->json($llamado);
+    } catch (Exception $e) {
+      return response()->json(['error' => $e->getMessage()], 406, []);
+    }
+  }
+
   public function buscarLlamados()
   {
     $fechaDeHoy = date('Y-m-d');

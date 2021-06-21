@@ -85,6 +85,7 @@ $app->routeMiddleware([
     'authAdmin' => App\Http\Middleware\AuthenticateAdmin::class,
     'authJefeCatedra' => App\Http\Middleware\AuthenticateJefeCatedra::class,
     'authUsuario' => App\Http\Middleware\AuthenticateUsuario::class,
+    'llamado' => App\Http\Middleware\LlamadoMiddleware::class,
 ]);
 
 /*

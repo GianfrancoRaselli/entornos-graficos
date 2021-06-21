@@ -20,6 +20,23 @@
         </button>
       </div>
     </div>
+    <div class="modal fade background-popup-fade" id="listInscriptosPopup" :aria-labelledby="title" aria-hidden="true">
+      <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">
+                {{ title }}
+              </h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <ListInscriptos :llamado="llamado" />
+            </div>
+          </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -27,9 +44,14 @@
 import axios from 'axios'
 import { mapGetters, mapActions } from 'vuex'
 export default {
+  components: {
+    ListInscriptos: () => import('../ListInscriptos.vue'),
+  },
   data() {
     return {
-      vacantes: []
+      vacantes: [],
+      llamado: null,
+      title: ''
     }
   },
   computed: {
@@ -50,6 +72,27 @@ export default {
         this.vacantes = res.data;
       } catch (err) {
         console.log(err.response.data.error);
+      }
+    },
+
+    async inscriptos(id_llamado) {
+      if (this.isAdministrador || this.isJefeCatedra) {
+        try {
+          let res = await axios.get('/llamados/buscarLlamado/' + id_llamado,
+          {
+            headers: {
+              Authorization: 'Bearer ' + this.$store.getters.user.api_token
+            }
+          });
+          this.llamado = res.data;
+          this.title = 'Inscriptos al llamado de ' + this.llamado.catedra.descripcion + ' - ' + this.llamado.fecha_inicio;
+
+          window.$("#listInscriptosPopup").modal('show');
+        } catch (err) {
+          console.log(err.response.data.error);
+        }
+      } else {
+        this.logOut();
       }
     }
   },
