@@ -9,6 +9,12 @@
           {{ item.name }}
         </utn-button>
       </li>
+        <utn-button icon="fas fa-hand-pointer" btnClass="btn btn-light" to="/vacantes" v-if="!authenticated || isUsuario">
+          Vacantes
+        </utn-button>
+        <utn-button icon="fas fa-toolbox" btnClass="btn btn-light" to="/administrarVacantes" v-if="isAdministrador || isJefeCatedra">
+          Administrar llamados
+        </utn-button>
     </ul>
     <ul class="mobile-nav">
       <li class="nav-item" v-for="(item, index) in navItems" :key="index">
@@ -16,6 +22,12 @@
           {{ item.name }}
         </utn-button>
       </li>
+        <utn-button icon="fas fa-hand-pointer" btnClass="btn btn-light" to="/vacantes" v-if="!authenticated || isUsuario">
+          Vacantes
+        </utn-button>
+        <utn-button icon="fas fa-toolbox" btnClass="btn btn-light" to="/administrarVacantes" v-if="isAdministrador || isJefeCatedra">
+          Administrar llamados
+        </utn-button>
     </ul>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -83,8 +95,10 @@
       return {
         navItems: [
           { name: 'Inicio', routeTo: '/', icon: 'fas fa-home', show: true },
-          { name: 'Vacantes', routeTo: '/vacantes', icon: 'fas fa-hand-pointer', /*no funciona el show con los getters computed*/ show: !this.authenticated || this.isUsuario },
-          { name: 'Administrar llamados', routeTo: '/administrarVacantes', icon: 'fas fa-toolbox', show: this.isAdministrador || this.isJefeCatedra },
+          // no pude hacer andar los show para que sean reactivos desde aca asi que los escribi directamente
+
+          /*{ name: 'Vacantes', routeTo: '/vacantes', icon: 'fas fa-hand-pointer', show: !this.authenticated || this.isUsuario },
+          { name: 'Administrar llamados', routeTo: '/administrarVacantes', icon: 'fas fa-toolbox', show: this.isAdministrador || this.isJefeCatedra },*/
         ],
         userNavItems: [
           { name: 'Crear cuenta', icon: 'fas fa-user', btnClass: 'btn btn-light', target: '#signUpPopup' },
@@ -101,9 +115,6 @@
         this.logOut();
       }
     },
-    created() {
-      console.log(this.isJefeCatedra);
-    }
   }
 </script>
 
