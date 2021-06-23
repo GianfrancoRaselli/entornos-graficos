@@ -127,8 +127,7 @@ export default {
           try {
             await axios.post('/postulaciones/agregarPostulacionDelUsuario',
             {
-              id_llamado,
-              curriculum_vitae: 'curriculum.jpg'
+              id_llamado
             },
             {
               headers: {

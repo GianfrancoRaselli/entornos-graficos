@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Postulacion;
 use App\Models\Llamado;
-use Illuminate\Support\Facades\DB;
 use Exception;
 
 class PostulacionController extends Controller

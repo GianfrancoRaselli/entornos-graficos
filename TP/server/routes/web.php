@@ -28,18 +28,20 @@ $router->group(['middleware' => ['auth']], function () use ($router) {
 
     $router->post('/personas/actualizarCV', 'PersonaController@actualizarCV');
 
+    $router->get('/llamados/buscarLlamadosAAdministrar', 'LlamadoController@buscarLlamadosAAdministrar');
+
     $router->group(['middleware' => ['authAdmin']], function () use ($router) {
         
     });
 
-    $router->group(['middleware' => ['authAdmin']], function () use ($router) {
+    $router->group(['middleware' => ['authJefeCatedra']], function () use ($router) {
         
     });
 
     $router->group(['middleware' => ['authUsuario']], function () use ($router) {
         $router->get('/postulaciones/buscarPostulacionesDelUsuario', 'PostulacionController@buscarPostulacionesDelUsuario');
     
-        $router->post('/postulaciones/agregarPostulacionDelUsuario', 'Postulac/{id_llamado}ionController@agregarPostulacionDelUsuario');
+        $router->post('/postulaciones/agregarPostulacionDelUsuario', 'PostulacionController@agregarPostulacionDelUsuario');
     
         $router->delete('/postulaciones/eliminarPostulacionDelUsuario', 'PostulacionController@eliminarPostulacionDelUsuario');
     });

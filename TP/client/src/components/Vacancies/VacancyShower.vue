@@ -84,7 +84,6 @@ export default {
     async buscarVacantes() {
       try {
         let res = await axios.get('/llamados/buscarLlamados');
-
         let vacantes = res.data;
 
         if (vacantes && vacantes.length > 0) {
@@ -124,8 +123,7 @@ export default {
           try {
             await axios.post('/postulaciones/agregarPostulacionDelUsuario',
             {
-              id_llamado,
-              curriculum_vitae: 'curriculum.jpg'
+              id_llamado
             },
             {
               headers: {

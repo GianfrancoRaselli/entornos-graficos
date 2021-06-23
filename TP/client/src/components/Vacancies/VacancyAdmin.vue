@@ -1,6 +1,6 @@
 <template>
   <div class="vacancies-list">
-    <p v-if="!vacantes.length">No hay vacantes registradas</p>
+    <p v-if="!vacantes.length">No tiene vacantes a su cargo</p>
     <div class="vacancies" v-if="vacantes.length">
       <div class="vacancy" v-for="(vacante, index) in vacantes" :key="index">
         <div class="descripcion">
@@ -68,7 +68,12 @@ export default {
 
     async buscarVacantes() {
       try {
-        let res = await axios.get('/llamados/buscarLlamados');
+        let res = await axios.get('/llamados/buscarLlamadosAAdministrar',
+        {
+          headers: {
+            Authorization: 'Bearer ' + this.$store.getters.user.api_token
+          }
+        });
         this.vacantes = res.data;
       } catch (err) {
         console.log(err.response.data.error);
@@ -85,7 +90,7 @@ export default {
             }
           });
           this.llamado = res.data;
-          this.title = 'Inscriptos al llamado de ' + this.llamado.catedra.descripcion + ' - ' + this.llamado.fecha_inicio;
+          this.title = 'Inscriptos al llamado de ' + this.llamado.catedra.descripcion + ' del ' + this.llamado.fecha_inicio;
 
           window.$("#listInscriptosPopup").modal('show');
         } catch (err) {
