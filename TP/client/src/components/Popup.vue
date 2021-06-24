@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="modal fade background-popup-fade" :id="dataTarget" :aria-labelledby="title" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-dialog modal-dialog-centered" :class="propClass">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">
@@ -35,7 +35,8 @@ export default {
     cancelBtn: { type: String, default: 'Cancelar' },
     acceptBtn: { type: String, default: 'Aceptar' },
     dataTarget: { type: String, required: true },
-    showButtons: { type: Boolean, default: true }
+    showButtons: { type: Boolean, default: true },
+    propClass: { type: String, default: '' },
   },
 }
 </script>

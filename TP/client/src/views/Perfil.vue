@@ -39,7 +39,7 @@
             <i class="fas fa-eye"></i> Ver CV
           </a>
         </div>
-        <div class="applications">
+        <div class="applications" v-if="tablePostulaciones.length > 0">
           <h4>Mis postulaciones</h4>
           <table class="table">
             <thead>
