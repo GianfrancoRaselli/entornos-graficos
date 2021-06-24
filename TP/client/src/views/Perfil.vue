@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="row d-flex justify-content-center animate__animated animate__pulse animate__fast">
+    <div class="d-flex justify-content-center animate__animated animate__pulse animate__fast">
       <div class="col-lg-12 w-100 profile-container">
         <div class="col-lg-3 data-box">
           <div class="profile-img">
@@ -44,30 +44,24 @@
           <table class="table">
             <thead>
               <tr>
-                <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
+                <th scope="col">#ID</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Fecha fin</th>
+                <th scope="col">Descripcion</th>
+                <th scope="col">Opciones</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
+              <tr v-for="(postulacion,index) in tablePostulaciones" :key="index">
+                <th scope="row">{{ postulacion.id }}</th>
+                <td>{{ postulacion.definicion }}</td>
+                <td>{{ postulacion.fecha_fin }}</td>
+                <td>{{ postulacion.descripcion }}</td>
+                <td>
+                  <utn-button @click="darmeDeBaja(postulacion.id)" btnClass="btn btn-danger">
+                    Darme de baja
+                  </utn-button>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -84,6 +78,7 @@
     name: 'Perfil',
     data() {
       return {
+        vacantes: [],
         user: {
           dni: '',
           nombre_usuario: '',
@@ -93,11 +88,65 @@
           curriculum_vitae: null,
           ruta_cv: '',
           roles: [],
+          postulaciones: [],
         },
+        tablePostulaciones: [],
         errorFormato: false
       }
     },
     methods: {
+      async buscarPostulacionesDelUsuario() {
+        if (this.$store.getters.authenticated && this.$store.getters.isUsuario) {
+          try {
+            let res = await axios.get('/postulaciones/buscarPostulacionesDelUsuario',
+            {
+              headers: {
+                Authorization: 'Bearer ' + this.$store.getters.user.api_token
+              }
+            });
+
+            this.user.postulaciones = res.data;
+            this.buscarVacantes();
+          } catch (err) {
+            console.log(err.response.data.error);
+          }
+        }
+      },
+      async buscarVacantes() {
+        try {
+          let res = await axios.get('/llamados/buscarLlamados');
+          let vacantes = res.data;
+
+          if (vacantes && vacantes.length > 0) {
+            for (let vacante of vacantes) {
+              vacante.usuarioPostulado = false;
+
+              if (this.user.postulaciones && this.user.postulaciones.length > 0) {
+                for (let postulacion of this.user.postulaciones) {
+                  if (vacante.id === postulacion.id_llamado) {
+                    vacante.usuarioPostulado = true;
+                    break;
+                  }
+                }
+              }
+            }
+          }
+          this.vacantes = vacantes;
+
+          for(let i=0;i<this.vacantes.length;i++){
+            for(let j=0;j<this.user.postulaciones.length;j++){
+              console.log('Ids: ',this.vacantes[i].id, this.user.postulaciones[j].id_llamado);
+              if(this.user.postulaciones[j].id_llamado == this.vacantes[i].id){
+                console.log('Coinciden: ',this.vacantes[i].id, this.user.postulaciones[j].id_llamado);
+                this.tablePostulaciones.push(this.vacantes[i]);
+              }
+            }
+          }
+          console.log('las vacantes del usuario', this.tablePostulaciones);
+        } catch (err) {
+          console.log(err);
+        }
+      },
       async buscarUsuario() {
         if (this.$store.getters.authenticated) {
           try {
@@ -173,7 +222,27 @@
         } else {
           this.errorFormato = true;
         }
-      }
+      },
+      async darmeDeBaja(id_llamado) {
+        if (this.$store.getters.authenticated) {
+          if (this.$store.getters.isUsuario) {
+            try {
+              await axios.delete('/postulaciones/eliminarPostulacionDelUsuario/' + id_llamado,
+              {
+                headers: {
+                  Authorization: 'Bearer ' + this.$store.getters.user.api_token
+                }
+              });
+              
+              this.actualizarVacantes();
+            } catch (err) {
+              console.log(err.response.data.error);
+            }
+          }
+        } else {
+          this.logOut();
+        }
+      },
     },
     created() {
       if (this.$route.query.key) {
@@ -196,6 +265,7 @@
         }
       }
       this.buscarUsuario();
+      this.buscarPostulacionesDelUsuario();
     }
   }
 </script>
