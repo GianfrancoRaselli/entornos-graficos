@@ -2,33 +2,49 @@
   <div class="vacancies-list">
     <p v-if="!vacantes.length">No hay vacantes</p>
     <div class="vacancies" v-if="vacantes.length">
-      <div class="vacancy" v-for="(vacante, index) in vacantes" :key="index">
+      <div class="vacancy" v-for="(vacante, index) in limitVacancies" :key="index">
         <div class="descripcion">
           <p>{{ vacante.descripcion }}</p>
         </div>
-        <div class="definicion">
-          <p>{{ vacante.definicion }}</p>
-        </div>
-        <div class="requisitos">
-          <p><i class="fas fa-check-circle"></i>&nbsp;<strong>Requisitos:</strong>&nbsp;{{ vacante.requisitos }}</p>
-        </div>
-        <div class="fecha-fin">
-          <p><i class="fas fa-calendar"></i>&nbsp;<strong>Fecha de cierre:</strong>&nbsp;{{ vacante.fecha_fin }}</p>
-        </div>
-        <div class="postulado alert alert-success" role="alert" v-if="vacante.usuarioPostulado">
-          Ya se encuentra postulado
-        </div>
-        <div class="pocas-vacantes" role="alert" v-if="!vacante.usuarioPostulado && vacante.vacantes_disponibles <= 3">
-          <p v-if="vacante.vacantes_disponibles > 1"><i class="fas fa-exclamation-circle"></i>&nbsp;¡Quedan solo {{ vacante.vacantes_disponibles }} vacantes!</p>
-          <p v-if="vacante.vacantes_disponibles === 1"><i class="fas fa-exclamation-circle"></i>&nbsp;¡Última vacante disponible!</p>
-        </div>
-        <div v-if="!authenticated || (authenticated && isUsuario)">
-          <button @click="postularme(vacante.id)" class="btn btn-primary" v-if="!vacante.usuarioPostulado">
-            Postularme
-          </button>
-          <button @click="darmeDeBaja(vacante.id)" class="btn btn-danger" v-if="vacante.usuarioPostulado">
-            Darme de baja
-          </button>
+        <div class="vacancy-content">
+          <div class="definicion">
+            <p>{{ vacante.definicion }}</p>
+          </div>
+          <div>
+            <p>
+              <i class="fas fa-check-circle"></i>&nbsp;<strong>Requisitos:</strong>&nbsp;{{ vacante.requisitos }}
+            </p>
+          </div>
+          <div class="fecha-fin">
+            <p>
+              <i class="fas fa-calendar"></i>&nbsp;<strong>Fecha de cierre:</strong>&nbsp;{{ vacante.fecha_fin }}
+            </p>
+          </div>
+          <div class="postulado alert alert-success" role="alert" v-if="vacante.usuarioPostulado">
+            Ya se encuentra postulado
+          </div>
+          <div class="pocas-vacantes" role="alert" v-if="!vacante.usuarioPostulado && vacante.vacantes_disponibles <= 3">
+            <p v-if="vacante.vacantes_disponibles > 1">
+              <i class="fas fa-exclamation-circle"></i>&nbsp;¡Quedan solo {{ vacante.vacantes_disponibles }} vacantes!
+            </p>
+            <p v-if="vacante.vacantes_disponibles === 1">
+              <i class="fas fa-exclamation-circle"></i>&nbsp;¡Última vacante disponible!
+            </p>
+          </div>
+          <div v-if="!authenticated" class="vacancy-options">
+            <utn-button data-toggle="modal" data-target="#loginPopup">
+              Postularme
+            </utn-button>
+              <LogIn />
+          </div>
+          <div class="vacancy-options" v-else>
+            <utn-button @click="postularme(vacante.id)" v-if="!vacante.usuarioPostulado">
+              Postularme
+            </utn-button>
+            <button @click="darmeDeBaja(vacante.id)" class="btn btn-danger" v-if="vacante.usuarioPostulado">
+              Darme de baja
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -57,7 +73,13 @@ export default {
     ...mapGetters({
       authenticated: 'authenticated',
       isUsuario: 'isUsuario',
-    })
+    }),
+    limitVacancies(){
+      return this.limit ? this.vacantes.slice(0,this.limit) : this.vacantes;
+    }
+  },
+  props: {
+    limit: { type: Number },
   },
   methods: {
     ...mapActions({
@@ -188,17 +210,30 @@ export default {
   .vacancy{
     width: 50%;
     padding:1rem;
-    border: black 2px solid;
-    border-radius: 15px;
-    background-color: rgb(240, 240, 240);
     font-size: 1.08rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .vacancy-content{
+    border: RGB(0, 122, 255) 2px solid;
+    border-radius: 0 0 15px 15px;
+    padding: .5rem 1rem
   }
 
   .descripcion{
     font-size:1.64rem;
     font-weight: 600;
+    border-radius: 15px 15px 0 0;
+    padding: 1rem 0.5rem 0rem 1rem;
+    background-color:RGB(0, 122, 255);
+    color: white;
   }
 
+  .vacancy-options{
+    display: flex;
+    justify-content: center;
+  }
   .pocas-vacantes{
     color: rgb(221, 44, 0);
   }
