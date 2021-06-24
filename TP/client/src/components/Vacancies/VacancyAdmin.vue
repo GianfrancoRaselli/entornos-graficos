@@ -32,7 +32,7 @@
               </button>
             </div>
             <div class="modal-body">
-              <ListInscriptos :llamado="llamado" />
+              <ListInscriptos :llamado="llamado" :editando="false" />
             </div>
           </div>
       </div>
