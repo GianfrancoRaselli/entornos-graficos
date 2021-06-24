@@ -43,7 +43,7 @@ $router->group(['middleware' => ['auth']], function () use ($router) {
     
         $router->post('/postulaciones/agregarPostulacionDelUsuario', 'PostulacionController@agregarPostulacionDelUsuario');
     
-        $router->delete('/postulaciones/eliminarPostulacionDelUsuario', 'PostulacionController@eliminarPostulacionDelUsuario');
+        $router->delete('/postulaciones/eliminarPostulacionDelUsuario/{id_llamado}', 'PostulacionController@eliminarPostulacionDelUsuario');
     });
 
     $router->group(['middleware' => ['llamado']], function () use ($router) {

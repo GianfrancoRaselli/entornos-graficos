@@ -45,7 +45,7 @@ class LlamadoController extends Controller
       'llamados.requisitos', 'catedras.descripcion', 'catedras.definicion')
       ->where([['fecha_inicio', '<=', $fechaDeHoy], ['fecha_fin', '>=', $fechaDeHoy]])
       ->groupBy('llamados.id', 'llamados.fecha_inicio', 'llamados.fecha_fin', 'llamados.vacantes', 'llamados.requisitos', 
-      'catedras.id', 'catedras.descripcion', 'catedras.definicion')->get();
+      'catedras.descripcion', 'catedras.definicion')->get();
 
       return response()->json($llamados);
     } catch (Exception $e) {
@@ -60,11 +60,12 @@ class LlamadoController extends Controller
       // puse 3 como numero de pocas vacantes (se puede cambiar)
       $llamados = Llamado::join('catedras', 'catedras.id', '=', 'llamados.id_catedra')
       ->leftJoin('postulaciones', 'postulaciones.id_llamado', '=', 'llamados.id')
-      ->select('llamados.id', 'llamados.fecha_inicio', 'llamados.fecha_fin', 'llamados.vacantes', DB::raw('(llamados.vacantes - count(postulaciones.id_llamado)) as vacantes_disponibles'), 'llamados.requisitos', 
-      'catedras.id', 'catedras.descripcion', 'catedras.definicion')
+      ->select('llamados.id', 'llamados.fecha_inicio', 'llamados.fecha_fin', 'llamados.vacantes',
+      DB::raw('(llamados.vacantes - count(postulaciones.id_llamado)) as vacantes_disponibles'),
+      'llamados.requisitos', 'catedras.descripcion', 'catedras.definicion')
       ->where([['fecha_inicio', '<=', $fechaDeHoy], ['fecha_fin', '>=', $fechaDeHoy]])
       ->groupBy('llamados.id', 'llamados.fecha_inicio', 'llamados.fecha_fin', 'llamados.vacantes', 'llamados.requisitos', 
-      'catedras.id', 'catedras.descripcion', 'catedras.definicion')->having(DB::raw('llamados.vacantes - count(postulaciones.id_llamado)'), '<=', 3)
+      'catedras.descripcion', 'catedras.definicion')->having(DB::raw('llamados.vacantes - count(postulaciones.id_llamado)'), '<=', 3)
       ->get();
 
       return response()->json($llamados);
@@ -80,7 +81,9 @@ class LlamadoController extends Controller
     foreach ($roles as $rol) {
       if ($rol->descripcion == 'Administrador') {
         try {
-          $llamados = Llamado::all();
+          $llamados = Llamado::join('catedras', 'catedras.id', '=', 'llamados.id_catedra')
+          ->select('llamados.id', 'llamados.fecha_inicio', 'llamados.fecha_fin', 'llamados.vacantes',
+          'llamados.requisitos', 'catedras.descripcion', 'catedras.definicion')->get();
     
           return response()->json($llamados);
         } catch (Exception $e) {
@@ -93,6 +96,8 @@ class LlamadoController extends Controller
       if ($rol->descripcion == 'Jefe Catedra') {
         try {
           $llamados = Llamado::join('catedras', 'catedras.id', '=', 'llamados.id_catedra')
+          ->select('llamados.id', 'llamados.fecha_inicio', 'llamados.fecha_fin', 'llamados.vacantes',
+          'llamados.requisitos', 'catedras.descripcion', 'catedras.definicion')
           ->where(['catedras.id_jefe_catedra', '=', auth()->user()->id])->get();
     
           return response()->json($llamados);
