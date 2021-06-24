@@ -1,35 +1,46 @@
 <template>
   <div>
-    <div style="width: 100%; margin-bottom: 1%;" v-if="error">
-      <div class="alert alert-danger alert-dismissible fade show"
-        style="width: fit-content; margin-top: 2%; margin-left: auto; margin-right: auto;" role="alert">
-        {{errorMessage}}
-        <button v-on:click="error = false" class="close btn btn-link" data-dismiss="alert"
-          style="color: black; text-decoration: none; font-size: 22px;" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+    <Popup dataTarget="loginPopup" title="Iniciar Sesión" :showButtons="false">
+      <div style="width: 100%; margin-bottom: 1%;" v-if="error">
+        <div class="alert alert-danger alert-dismissible fade show"
+          style="width: fit-content; margin-top: 2%; margin-left: auto; margin-right: auto;" role="alert">
+          {{errorMessage}}
+          <button v-on:click="error = false" class="close btn btn-link" data-dismiss="alert"
+            style="color: black; text-decoration: none; font-size: 22px;" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
       </div>
-    </div>
-    <div class="text-center animate__animated animate__flipInY animate__fast">
-      <div class="card-body">
-        <img src="../assets/img-signin.png" alt="Logo Inicio Sesion" class="card-img-top mx-auto m-2 rounded-circle w-25">
-        <form @submit.prevent="handleSubmit">
-          <div class="form-group">
-            <input type="text" v-model="user.nombre_usuario" placeholder="Nombre Usuario" class="form-control">
-          </div>
-          <br>
-          <div class="form-group">
-            <input type="password" v-model="user.clave" placeholder="Clave" class="form-control">
-          </div>
-          <br>
-          <div class="form-group">
-            <button class="btn btn-success btn-block">
-              Iniciar Sesión
-            </button>
-          </div>
-        </form>
+      <div class="text-center animate__animated animate__flipInY animate__fast">
+        <div class="card-body">
+          <img src="../assets/img-signin.png" alt="Logo Inicio Sesion" class="card-img-top mx-auto m-2 rounded-circle w-25">
+          <form @submit.prevent="handleSubmit">
+            <div class="form-group">
+              <input type="text" v-model="user.nombre_usuario" placeholder="Nombre Usuario" class="form-control">
+            </div>
+            <br>
+            <div class="form-group">
+              <input type="password" v-model="user.clave" placeholder="Clave" class="form-control">
+            </div>
+            <br>
+            <div class="form-group">
+              <button class="btn btn-success btn-block">
+                Iniciar Sesión
+              </button>
+            </div>
+            <div class="form-group">
+              <utn-button
+                data-toggle="modal"
+                btnClass="btn btn-link"
+                data-target="#signUpPopup">
+                  ¿No tienes cuenta? Regístrate!
+                </utn-button>
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
+    </Popup>
+                <SignUp />
   </div>
 </template>
 

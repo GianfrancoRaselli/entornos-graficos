@@ -63,12 +63,8 @@
         :key="index">
           {{ item.name }}
         </utn-button>
-        <Popup dataTarget="loginPopup" title="Iniciar Sesión" :showButtons="false">
           <LogIn />
-        </Popup>
-        <Popup dataTarget="signUpPopup" title="Registrarse" :showButtons="false">
           <SignUp />
-        </Popup>
       </ul>
     </div>
   </nav>

@@ -1,7 +1,7 @@
 <template>
   <div class="w-100 home-container">
     <CallToAction />
-    <LastVacancies />
+    <VacancyShower :limit="6" />
     <VisitUs/>
   </div>
 </template>
@@ -11,8 +11,8 @@
     name: 'Inicio',
     components: {
       CallToAction: () => import('../components/Home/CallToAction.vue'),
-      LastVacancies: () => import('../components/Home/LastVacancies.vue'),
       VisitUs: () => import('../components/Home/VisitUs.vue'),
+      VacancyShower: () => import('../components/Vacancies/VacancyShower.vue'),
     },
   }
 </script>
