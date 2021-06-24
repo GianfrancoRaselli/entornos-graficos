@@ -1,7 +1,7 @@
 <template>
   <div class="m-1">
     <router-link :to="to">
-      <button :class="btnClass">
+      <button :class="btnClass" @click="$emit('click', $event)">
         <i :class="icon" v-if="icon"></i>
         <slot />
       </button>
