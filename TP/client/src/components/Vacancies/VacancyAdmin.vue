@@ -1,5 +1,5 @@
 <template>
-  <div class="vacancies-list">
+  <div class="vacancies-list"><p v-if="llamado">
     <p v-if="!vacantes.length">No tiene vacantes a su cargo</p>
     <div class="vacancies" v-if="vacantes.length">
       <div class="vacancy" v-for="(vacante, index) in vacantes" :key="index">
@@ -90,6 +90,20 @@ export default {
             }
           });
           this.llamado = res.data;
+          for (let postulacion of this.llamado.postulaciones) {
+            if (postulacion.estado === "Elegido") {
+              postulacion.estadoEditado = "Aceptar";
+            } else if (postulacion.estado === "No elegido") {
+              postulacion.estadoEditado = "Rechazar";
+            } else {
+              postulacion.estadoEditado = postulacion.estado;
+            }
+            postulacion.puntajeEditado = postulacion.puntaje;
+            postulacion.comentariosEditado = postulacion.comentarios;
+            postulacion.estadoError = false;
+            postulacion.puntajeError = false;
+            postulacion.comentariosError = false;
+          }
           this.title = 'Inscriptos al llamado de ' + this.llamado.catedra.descripcion + ' del ' + this.llamado.fecha_inicio;
 
           window.$("#listInscriptosPopup").modal('show');

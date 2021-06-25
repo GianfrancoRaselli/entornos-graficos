@@ -42,7 +42,7 @@
               <div class="columna-sm">
                 <div v-if="!editando">
                   <div v-if="postulacion.puntaje">{{ postulacion.puntaje }}</div>
-                  <div>-</div>
+                  <div v-else>-</div>
                 </div>
                 <div v-else>
                   <input type="number" class="form-control" :class="{ errorClass: postulacion.puntajeError }" min="0" max="100" v-model="postulacion.puntajeEditado">
@@ -53,7 +53,7 @@
               <div class="columna-lg">
                 <div v-if="!editando">
                   <div v-if="postulacion.comentarios">{{ postulacion.comentarios }}</div>
-                  <div>-</div>
+                  <div v-else>-</div>
                 </div>
                 <div v-else>
                   <textarea class="form-control" cols="60" v-model="postulacion.comentariosEditado"></textarea>
@@ -78,6 +78,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   props: {
     llamado: { required: true },
@@ -90,7 +91,7 @@ export default {
     cancelar() {
       this.editando = false;
     },
-    guardar() {
+    async guardar() {
       if ((this.$store.getters.isAdministrador || this.$store.getters.isJefeCatedra) 
       && this.llamado && this.llamado.postulaciones && this.llamado.postulaciones.length > 0) {
         let error = false;
@@ -101,12 +102,29 @@ export default {
             postulacion.estadoError = true;
             error = true;
           }
-          if (!postulacion.puntajeEditado || postulacion.puntajeEditado < 0 || postulacion.puntajeEditado > 100) {
+          if (!postulacion.puntajeEditado || isNaN(postulacion.puntajeEditado) || postulacion.puntajeEditado % 1 != 0 || postulacion.puntajeEditado < 0 || postulacion.puntajeEditado > 100) {
             postulacion.puntajeError = true;
             error = true;
           }
-          console.log(error);
         }
+
+        if (!error) {
+            try {
+              let res = await axios.post('/llamados/calificarLlamado',
+              {
+                llamado: this.llamado
+              },
+              {
+                headers: {
+                  Authorization: 'Bearer ' + this.$store.getters.user.api_token
+                }
+              });
+              this.llamado = res.data;
+              this.editando = false;
+            } catch (err) {
+              console.log(err.response.data.error);
+            }
+          }
       }
     }
   }
@@ -127,6 +145,6 @@ export default {
   }
 
   .errorClass {
-    background-color: rgb(218, 139, 139);
+    background-color: rgb(228, 167, 167);
   }
 </style>

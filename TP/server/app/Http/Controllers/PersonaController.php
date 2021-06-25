@@ -26,9 +26,9 @@ class PersonaController extends Controller
         ) {
             if (!Persona::where('dni', $request->dni)->first()) {
                 if (!Persona::where('nombre_usuario', $request->nombre_usuario)->first()) {
-                    DB::beginTransaction();
-
                     try {
+                        DB::beginTransaction();
+
                         $persona = new Persona();
 
                         $persona->dni = $request->dni;
