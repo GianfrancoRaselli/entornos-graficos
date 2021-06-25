@@ -72,6 +72,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   data() {
     return {
@@ -85,8 +86,44 @@ export default {
     calificar() {
       this.editando = true;
     },
-    cancelarEdicion() {
+    cancelar() {
       this.editando = false;
+    },
+    async guardar() {
+      if ((this.$store.getters.isAdministrador || this.$store.getters.isJefeCatedra) 
+      && this.llamado && this.llamado.postulaciones && this.llamado.postulaciones.length > 0) {
+        let error = false;
+        for (let postulacion of this.llamado.postulaciones) {
+          postulacion.estadoError = false;
+          postulacion.puntajeError = false;
+          if (!postulacion.estadoEditado) {
+            postulacion.estadoError = true;
+            error = true;
+          }
+          if (!postulacion.puntajeEditado || isNaN(postulacion.puntajeEditado) || postulacion.puntajeEditado % 1 != 0 || postulacion.puntajeEditado < 0 || postulacion.puntajeEditado > 100) {
+            postulacion.puntajeError = true;
+            error = true;
+          }
+        }
+
+        if (!error) {
+            try {
+              let res = await axios.post('/llamados/calificarLlamado',
+              {
+                llamado: this.llamado
+              },
+              {
+                headers: {
+                  Authorization: 'Bearer ' + this.$store.getters.user.api_token
+                }
+              });
+              this.llamado = res.data;
+              this.editando = false;
+            } catch (err) {
+              console.log(err.response.data.error);
+            }
+          }
+      }
     }
   }
 }

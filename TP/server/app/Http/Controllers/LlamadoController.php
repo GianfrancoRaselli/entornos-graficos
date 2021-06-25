@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\Llamado;
+use App\Models\Postulacion;
 use Illuminate\Support\Facades\DB;
 use Exception;
 
@@ -24,7 +26,7 @@ class LlamadoController extends Controller
   
         $llamado->catedra;
         foreach ($llamado->postulaciones as $postulacion) {
-          $postulacion->persona;   
+          $postulacion->persona;
         }  
       }
 
@@ -104,6 +106,37 @@ class LlamadoController extends Controller
         } catch (Exception $e) {
           return response()->json(['error' => $e->getMessage()], 406, []);
         }
+      }
+    }
+  }
+
+  public function calificarLlamado(Request $request)
+  {
+    if ($request->llamado) {
+      try {
+        DB::beginTransaction();
+
+        foreach ($request->llamado["postulaciones"] as $postulacion) {
+          $postulacionAEditar = Postulacion::find($postulacion["id"]);
+
+          if ($postulacion["estadoEditado"] == "Aceptar") {
+            $postulacionAEditar->estado = "Elegido";
+          } else if ($postulacion["estadoEditado"] == "Rechazar") {
+            $postulacionAEditar->estado = "No elegido";
+          }
+          $postulacionAEditar->puntaje = $postulacion["puntajeEditado"];
+          $postulacionAEditar->comentarios = $postulacion["comentariosEditado"];
+
+          $postulacionAEditar->save();
+        }
+
+        DB::commit();
+
+        return $this->buscarLlamado($request->llamado["id"]);
+      } catch (Exception $e) {
+        DB::rollback();
+
+        return response()->json(['error' => $e->getMessage()], 406, []);
       }
     }
   }

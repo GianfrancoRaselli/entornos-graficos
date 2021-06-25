@@ -46,7 +46,11 @@ $router->group(['middleware' => ['auth']], function () use ($router) {
         $router->delete('/postulaciones/eliminarPostulacionDelUsuario/{id_llamado}', 'PostulacionController@eliminarPostulacionDelUsuario');
     });
 
-    $router->group(['middleware' => ['llamado']], function () use ($router) {
+    $router->group(['middleware' => ['calificarLlamado']], function () use ($router) {
+        $router->post('/llamados/calificarLlamado', 'LlamadoController@calificarLlamado');
+    });
+
+    $router->group(['middleware' => ['buscarLlamado']], function () use ($router) {
         $router->get('/llamados/buscarLlamado/{id_llamado}', 'LlamadoController@buscarLlamado');
     });
 });
