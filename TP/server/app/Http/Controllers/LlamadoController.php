@@ -131,8 +131,6 @@ class LlamadoController extends Controller
         }
 
         DB::commit();
-
-        return $this->buscarLlamado($request->llamado["id"]);
       } catch (Exception $e) {
         DB::rollback();
 

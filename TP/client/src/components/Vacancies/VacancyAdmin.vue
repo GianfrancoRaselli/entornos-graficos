@@ -27,12 +27,11 @@
           <div class="vacancy-options">
             <utn-button
             data-toggle="modal"
-            @click="inscriptos(vacante.id)"
-            data-target="#listInscriptos">
+            @click="buscarInscriptos(vacante.id, vacante.descripcion, vacante.fecha_inicio)">
               Ver inscriptos
             </utn-button>
             <Popup dataTarget="listInscriptos" :title="title" :showButtons="false" propClass="modal-xl">
-              <ListInscriptos :llamado="llamado" :editando="false" />
+              <ListInscriptos />
             </Popup>
           </div>
         </div>
@@ -43,7 +42,8 @@
 
 <script>
 import axios from 'axios'
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
+import EventBus from '../../event-bus'
 export default {
   components: {
     ListInscriptos: () => import('../ListInscriptos.vue'),
@@ -51,7 +51,6 @@ export default {
   data() {
     return {
       vacantes: [],
-      llamado: null,
       title: ''
     }
   },
@@ -63,10 +62,6 @@ export default {
     })
   },
   methods: {
-    ...mapActions({
-        logOut: 'logOut'
-      }),
-
     async buscarVacantes() {
       try {
         let res = await axios.get('/llamados/buscarLlamadosAAdministrar',
@@ -81,39 +76,10 @@ export default {
       }
     },
 
-    async inscriptos(id_llamado) {
-      if (this.isAdministrador || this.isJefeCatedra) {
-        try {
-          let res = await axios.get('/llamados/buscarLlamado/' + id_llamado,
-          {
-            headers: {
-              Authorization: 'Bearer ' + this.$store.getters.user.api_token
-            }
-          });
-          this.llamado = res.data;
-          for (let postulacion of this.llamado.postulaciones) {
-            if (postulacion.estado === "Elegido") {
-              postulacion.estadoEditado = "Aceptar";
-            } else if (postulacion.estado === "No elegido") {
-              postulacion.estadoEditado = "Rechazar";
-            } else {
-              postulacion.estadoEditado = postulacion.estado;
-            }
-            postulacion.puntajeEditado = postulacion.puntaje;
-            postulacion.comentariosEditado = postulacion.comentarios;
-            postulacion.estadoError = false;
-            postulacion.puntajeError = false;
-            postulacion.comentariosError = false;
-          }
-          this.title = 'Inscriptos al llamado de ' + this.llamado.catedra.descripcion + ' del ' + this.llamado.fecha_inicio;
-
-          window.$("#listInscriptosPopup").modal('show');
-        } catch (err) {
-          console.log(err.response.data.error);
-        }
-      } else {
-        this.logOut();
-      }
+    buscarInscriptos(id_llamado, desc, fecha_inicio) {
+      this.title = 'Inscriptos al llamado de ' + desc + ' del ' + fecha_inicio;
+      EventBus.$emit('buscarInscriptos', id_llamado);
+      window.$("#listInscriptos").modal('show');
     }
   },
   async created() {

@@ -79,12 +79,49 @@
 
 <script>
 import axios from 'axios'
+import EventBus from '../event-bus'
 export default {
-  props: {
-    llamado: { required: true },
-    editando: { required: true, default: false }
+  data() {
+    return {
+      llamado: null,
+      editando: false
+    }
   },
   methods: {
+    async buscarInscriptos(id_llamado) {
+      if (this.$store.getters.isAdministrador || this.$store.getters.isJefeCatedra) {
+        try {
+          let res = await axios.get('/llamados/buscarLlamado/' + id_llamado,
+          {
+            headers: {
+              Authorization: 'Bearer ' + this.$store.getters.user.api_token
+            }
+          });
+
+          this.llamado = res.data;
+          for (let postulacion of this.llamado.postulaciones) {
+            if (postulacion.estado === "Elegido") {
+              postulacion.estadoEditado = "Aceptar";
+            } else if (postulacion.estado === "No elegido") {
+              postulacion.estadoEditado = "Rechazar";
+            } else {
+              postulacion.estadoEditado = postulacion.estado;
+            }
+            postulacion.puntajeEditado = postulacion.puntaje;
+            postulacion.comentariosEditado = postulacion.comentarios;
+            postulacion.estadoError = false;
+            postulacion.puntajeError = false;
+            postulacion.comentariosError = false;
+          }
+
+          this.editando = false;
+        } catch (err) {
+          console.log(err.response.data.error);
+        }
+      } else {
+        this.$store.dispatch('logOut');
+      }
+    },
     calificar() {
       this.editando = true;
     },
@@ -95,6 +132,7 @@ export default {
       if ((this.$store.getters.isAdministrador || this.$store.getters.isJefeCatedra) 
       && this.llamado && this.llamado.postulaciones && this.llamado.postulaciones.length > 0) {
         let error = false;
+        
         for (let postulacion of this.llamado.postulaciones) {
           postulacion.estadoError = false;
           postulacion.puntajeError = false;
@@ -102,14 +140,17 @@ export default {
             postulacion.estadoError = true;
             error = true;
           }
-          if (!postulacion.puntajeEditado || isNaN(postulacion.puntajeEditado) || postulacion.puntajeEditado % 1 != 0 || postulacion.puntajeEditado < 1 || postulacion.puntajeEditado > 100) {
+          if (!postulacion.puntajeEditado || isNaN(postulacion.puntajeEditado) || 
+          postulacion.puntajeEditado % 1 != 0 || postulacion.puntajeEditado < 1 ||
+          postulacion.puntajeEditado > 100) {
             postulacion.puntajeError = true;
             error = true;
           }
         }
+
         if (!error) {
           try {
-            let res = await axios.post('/llamados/calificarLlamado',
+            await axios.post('/llamados/calificarLlamado',
             {
               llamado: this.llamado
             },
@@ -118,30 +159,19 @@ export default {
                 Authorization: 'Bearer ' + this.$store.getters.user.api_token
               }
             });
-
-            this.llamado = res.data;
-            for (let postulacion of this.llamado.postulaciones) {
-              if (postulacion.estado === "Elegido") {
-                postulacion.estadoEditado = "Aceptar";
-              } else if (postulacion.estado === "No elegido") {
-                postulacion.estadoEditado = "Rechazar";
-              } else {
-                postulacion.estadoEditado = postulacion.estado;
-              }
-              postulacion.puntajeEditado = postulacion.puntaje;
-              postulacion.comentariosEditado = postulacion.comentarios;
-              postulacion.estadoError = false;
-              postulacion.puntajeError = false;
-              postulacion.comentariosError = false;
-            }
-
-            this.editando = false;
+            
+            this.buscarInscriptos(this.llamado.id);
           } catch (err) {
             console.log(err.response.data.error);
           }
         }
       }
     }
+  },
+  async created() {
+    EventBus.$on('buscarInscriptos', function(id_llamado) {
+      this.buscarInscriptos(id_llamado);
+    }.bind(this))
   }
 }
 </script>
