@@ -31,6 +31,15 @@ const router = new Router({
       }
     },
     {
+      path: '/agregarVacante',
+      name: 'agregar Vacante',
+      component: () => import('@/views/AddVacancy.vue'),
+      meta: {
+        auth: true,
+        isAdministrador: true
+      }
+    },
+    {
       path: '/perfil',
       name: 'Profile',
       component: () => import('@/views/Perfil.vue'),
@@ -52,12 +61,15 @@ const router = new Router({
 router.beforeEach(async (to, from, next) => {
   let auth = to.matched.some(record => record.meta.auth);
   let notAuth = to.matched.some(record => record.meta.notAuth);
+  let isAdministrador = to.matched.some(record => record.meta.isAdministrador);
   let isAdministradorOrJefeCatedra = to.matched.some(record => record.meta.isAdministradorOrJefeCatedra);
 
   if (auth && !store.getters.authenticated) {
     next('signin');
   } else if (notAuth && store.getters.authenticated) {
     next('');
+  } else if(isAdministrador && !(store.getters.isAdministrador)) {
+    next(from);
   } else if (isAdministradorOrJefeCatedra && !(store.getters.isAdministrador || store.getters.isJefeCatedra)) {
     next(from);
   } else {

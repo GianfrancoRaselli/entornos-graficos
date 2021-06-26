@@ -90,7 +90,7 @@
     data() {
       return {
         navItems: [
-          { name: 'Inicio', routeTo: '/', icon: 'fas fa-home', show: true },
+          { name: 'Inicio', routeTo: '/', icon: 'fas fa-home', show: this.authenticated },
           // no pude hacer andar los show para que sean reactivos desde aca asi que los escribi directamente
 
           /*{ name: 'Vacantes', routeTo: '/vacantes', icon: 'fas fa-hand-pointer', show: !this.authenticated || this.isUsuario },

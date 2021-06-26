@@ -44,7 +44,7 @@ import { mapGetters } from 'vuex'
 import EventBus from '../../event-bus'
 export default {
   components: {
-    ListInscriptos: () => import('../ListInscriptos.vue'),
+    ListInscriptos: () => import('./ListInscriptos.vue'),
   },
   data() {
     return {
