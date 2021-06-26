@@ -60,7 +60,7 @@
         errorMessage: '',
         user: {
           dni: '1234567892',
-          nombre_usuario: 'testing2',
+          nombre_usuario: 'testing',
           clave: 'test1232',
           nombre_apellido: 'Testing Tester2',
           email: 'testing@test2.com',

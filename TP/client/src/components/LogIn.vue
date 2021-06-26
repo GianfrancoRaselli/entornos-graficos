@@ -60,7 +60,7 @@
         error: false,
         errorMessage: '',
         user: {
-          nombre_usuario: 'testing2',
+          nombre_usuario: 'testing',
           clave: 'test1232',
         },
       }
