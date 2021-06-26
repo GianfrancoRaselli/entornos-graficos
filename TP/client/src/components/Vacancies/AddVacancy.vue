@@ -149,7 +149,7 @@ export default {
       if (_mes < 10) {
         mes = "0" + _mes;
       } else {
-        mes = _mes.toString;
+        mes = _mes;
       }
 
       let _dia = fecha.getDate();
@@ -159,7 +159,7 @@ export default {
       } else {
         dia = _dia;
       }
-console.log(anio + "-" + mes + "-" + dia);
+      
       return anio + "-" + mes + "-" + dia;
     }
   },
@@ -232,6 +232,8 @@ console.log(anio + "-" + mes + "-" + dia);
                 Authorization: "Bearer " + this.$store.getters.user.api_token
               }
             });
+
+            this.$router.push('/administrarVacantes');
           } catch (err) {
             this.errorMessage = err.response.data.error;
             this.error = true;
@@ -245,7 +247,7 @@ console.log(anio + "-" + mes + "-" + dia);
     }
   },
   created() {
-    this.buscarCatedras();
+   this.buscarCatedras();
   }
 };
 </script>
