@@ -19,9 +19,14 @@
               <i class="fas fa-check-circle"></i>&nbsp;<strong>Requisitos:</strong>&nbsp;{{ vacante.requisitos }}
             </p>
           </div>
+          <div class="fecha-inicio">
+            <p>
+              <i class="fas fa-calendar-check"></i>&nbsp;<strong>Fecha de inicio:</strong>&nbsp;{{ vacante.fecha_inicio }}
+            </p>
+          </div>
           <div class="fecha-fin">
             <p>
-              <i class="fas fa-calendar"></i>&nbsp;<strong>Fecha de cierre:</strong>&nbsp;{{ vacante.fecha_fin }}
+              <i class="fas fa-calendar-times"></i>&nbsp;<strong>Fecha de cierre:</strong>&nbsp;{{ vacante.fecha_fin }}
             </p>
           </div>
           <div class="vacancy-options">

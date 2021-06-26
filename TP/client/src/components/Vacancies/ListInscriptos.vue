@@ -36,7 +36,7 @@
                   {{ postulacion.estado }}
                 </div>
                 <div v-else>
-                  <select name="estado" class="form-control" :class="{ errorClass: postulacion.estadoError }" v-model="postulacion.estadoEditado">
+                  <select class="form-control" :class="{ errorClass: postulacion.estadoError }" v-model="postulacion.estadoEditado">
                     <option>Aceptar</option>
                     <option>Rechazar</option>
                   </select>
