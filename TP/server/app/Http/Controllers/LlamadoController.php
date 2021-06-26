@@ -153,20 +153,23 @@ class LlamadoController extends Controller
         if (strtotime($request->llamado["fecha_inicio"]) <= strtotime($request->llamado["fecha_fin"])) {
           if ($request->llamado["requisitos"]) {
             if ($request->llamado["vacantes"] && is_int($request->llamado["vacantes"]) && $request->llamado["vacantes"] > 0) {
-              if (Catedra::find($request->llamado["id_Catedra"])) {
-                $llamado = new Llamado();
+              try {
+                if (Catedra::find($request->llamado["id_Catedra"])) {
+                  $llamado = new Llamado();
+                  
+                  $llamado->fecha_inicio = $request->llamado["fecha_inicio"];
+                  $llamado->fecha_fin = $request->llamado["fecha_fin"];
+                  $llamado->requisitos = $request->llamado["requisitos"];
+                  $llamado->vacantes = $request->llamado["vacantes"];
+                  $llamado->id_llamado = $request->llamado["id_llamado"];
 
-                        $persona->dni = $request->dni;
-                        $persona->nombre_usuario = $request->nombre_usuario;
-                        $persona->clave = Hash::make($request->clave);
-                        $persona->nombre_apellido = $request->nombre_apellido;
-                        $persona->email = $request->email;
-                        $persona->telefono = $request->telefono;
-
-                        $persona->save();
-              } else {
-                return response()->json(['error' => 'La cátedra no existe'], 406, []);
-              }
+                  $llamado->save();
+                } else {
+                  return response()->json(['error' => 'La cátedra no existe'], 406, []);
+                }
+              } catch (Exception $e) {
+                return response()->json(['error' => $e->getMessage()], 406, []);
+            }
             } else {
               return response()->json(['error' => 'Las vacantes disponibles debe ser mayor a cero'], 406, []);
             }
