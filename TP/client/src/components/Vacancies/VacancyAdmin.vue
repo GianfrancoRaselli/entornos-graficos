@@ -25,9 +25,7 @@
             </p>
           </div>
           <div class="vacancy-options">
-            <utn-button
-            data-toggle="modal"
-            @click="buscarInscriptos(vacante.id, vacante.descripcion, vacante.fecha_inicio)">
+            <utn-button @click="buscarInscriptos(vacante.id, vacante.descripcion, vacante.fecha_inicio)">
               Ver inscriptos
             </utn-button>
             <Popup dataTarget="listInscriptos" :title="title" :showButtons="false" propClass="modal-xl">

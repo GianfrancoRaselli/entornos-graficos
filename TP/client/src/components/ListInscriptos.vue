@@ -2,9 +2,14 @@
   <div>
     <div class="inscriptos" v-if="llamado && llamado.postulaciones && llamado.postulaciones.length > 0">
       <div class="mb-2 buttons-nav">
-        <button class="btn btn-primary mr-1" @click="calificar" v-if="!editando"><i class="fas fa-edit"></i> Calificar</button>
-        <button class="btn btn-success ml-1" v-if="editando" @click="guardar"><i class="fas fa-save"></i> Guardar cambios</button>
-        <button class="btn btn-danger ml-1" v-if="editando" @click="cancelar"><i class="fas fa-times-circle"></i> Cancelar cambios</button>
+        <div v-if="llamado.finalizado">
+          <button class="btn btn-primary mr-1" @click="calificar" v-if="!editando"><i class="fas fa-edit"></i> Calificar</button>
+          <button class="btn btn-success ml-1" v-if="editando" @click="guardar"><i class="fas fa-save"></i> Guardar cambios</button>
+          <button class="btn btn-danger ml-1" v-if="editando" @click="cancelar"><i class="fas fa-times-circle"></i> Cancelar cambios</button>
+        </div>
+        <div v-else>
+          <p>El llamado cierra el: {{ llamado.fecha_fin }}</p>
+        </div>
       </div>
       <table class="table table-responsive table-striped table-hover table-bordered">
         <thead>
@@ -83,7 +88,16 @@ import EventBus from '../event-bus'
 export default {
   data() {
     return {
-      llamado: null,
+      llamado: {
+        id: '',
+        fecha_inicio: '',
+        fecha_fin: '',
+        rquisitos: '',
+        vacantes: 0,
+        finalizado: false,
+        catedra: null,
+        postulaciones: []
+      },
       editando: false
     }
   },
@@ -98,8 +112,14 @@ export default {
             }
           });
 
-          this.llamado = res.data;
-          for (let postulacion of this.llamado.postulaciones) {
+          this.llamado.id = res.data.id;
+          this.llamado.fecha_inicio = res.data.fecha_inicio;
+          this.llamado.fecha_fin = res.data.fecha_fin;
+          this.llamado.requisitos = res.data.requisitos;
+          this.llamado.vacantes = res.data.vacantes;
+          this.llamado.finalizado = res.data.finalizado;
+          this.llamado.catedra = res.data.catedra;
+          for (let postulacion of res.data.postulaciones) {
             if (postulacion.estado === "Elegido") {
               postulacion.estadoEditado = "Aceptar";
             } else if (postulacion.estado === "No elegido") {
@@ -112,8 +132,10 @@ export default {
             postulacion.estadoError = false;
             postulacion.puntajeError = false;
             postulacion.comentariosError = false;
-          }
 
+            this.llamado.postulaciones.push(postulacion);
+          }
+          
           this.editando = false;
         } catch (err) {
           console.log(err.response.data.error);
@@ -123,14 +145,16 @@ export default {
       }
     },
     calificar() {
-      this.editando = true;
+      if (this.llamado.finalizado) {
+        this.editando = true;
+      }
     },
     cancelar() {
       this.editando = false;
     },
     async guardar() {
-      if ((this.$store.getters.isAdministrador || this.$store.getters.isJefeCatedra) 
-      && this.llamado && this.llamado.postulaciones && this.llamado.postulaciones.length > 0) {
+      if ((this.$store.getters.isAdministrador || this.$store.getters.isJefeCatedra) && this.llamado 
+      && this.llamado.finalizado && this.llamado.postulaciones && this.llamado.postulaciones.length > 0) {
         let error = false;
         
         for (let postulacion of this.llamado.postulaciones) {

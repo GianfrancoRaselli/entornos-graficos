@@ -113,29 +113,35 @@ class LlamadoController extends Controller
   public function calificarLlamado(Request $request)
   {
     if ($request->llamado) {
-      try {
-        DB::beginTransaction();
+      if (Llamado::find($request->llamado->id)->fecha_fin < strtotime(date('Y-m-d'))) {
+        try {
+          DB::beginTransaction();
 
-        foreach ($request->llamado["postulaciones"] as $postulacion) {
-          $postulacionAEditar = Postulacion::find($postulacion["id"]);
+          foreach ($request->llamado["postulaciones"] as $postulacion) {
+            $postulacionAEditar = Postulacion::find($postulacion["id"]);
 
-          if ($postulacion["estadoEditado"] == "Aceptar") {
-            $postulacionAEditar->estado = "Elegido";
-          } else if ($postulacion["estadoEditado"] == "Rechazar") {
-            $postulacionAEditar->estado = "No elegido";
+            if ($postulacion["estadoEditado"] == "Aceptar") {
+              $postulacionAEditar->estado = "Elegido";
+            } else if ($postulacion["estadoEditado"] == "Rechazar") {
+              $postulacionAEditar->estado = "No elegido";
+            }
+            $postulacionAEditar->puntaje = $postulacion["puntajeEditado"];
+            $postulacionAEditar->comentarios = $postulacion["comentariosEditado"];
+
+            $postulacionAEditar->save();
           }
-          $postulacionAEditar->puntaje = $postulacion["puntajeEditado"];
-          $postulacionAEditar->comentarios = $postulacion["comentariosEditado"];
 
-          $postulacionAEditar->save();
+          DB::commit();
+        } catch (Exception $e) {
+          DB::rollback();
+
+          return response()->json(['error' => $e->getMessage()], 406, []);
         }
-
-        DB::commit();
-      } catch (Exception $e) {
-        DB::rollback();
-
-        return response()->json(['error' => $e->getMessage()], 406, []);
+      } else {
+        return response()->json(['error' => 'No se puede calificar el llamado en esta fecha'], 406, []);
       }
+    } else {
+      return response()->json(['error' => 'Envie un llamado'], 406, []);
     }
   }
 }

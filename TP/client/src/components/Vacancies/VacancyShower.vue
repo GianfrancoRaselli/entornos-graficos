@@ -234,6 +234,7 @@ export default {
     display: flex;
     justify-content: center;
   }
+  
   .pocas-vacantes{
     color: rgb(221, 44, 0);
   }
