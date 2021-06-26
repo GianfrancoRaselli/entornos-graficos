@@ -1,5 +1,5 @@
 <template>
-  <div class="vacancies-list"><p v-if="llamado">
+  <div class="vacancies-list">
     <p v-if="!vacantes.length">No tiene vacantes a su cargo</p>
     <div class="vacancies" v-if="vacantes.length">
       <div class="vacancy" v-for="(vacante, index) in vacantes" :key="index">
@@ -36,12 +36,12 @@
             <utn-button @click="eliminarVacante(vacante.id)" v-if="isAdministrador" btnClass="btn btn-danger">
               <i class="fas fa-trash-alt"></i> Eliminar Vacante
             </utn-button>
-            <Popup dataTarget="listInscriptos" :title="title" :showButtons="false" propClass="modal-xl">
-              <ListInscriptos />
-            </Popup>
           </div>
         </div>
       </div>
+      <Popup dataTarget="listInscriptos" :title="title" :showButtons="false" propClass="modal-xl">
+        <ListInscriptos />
+      </Popup>
     </div>
   </div>
 </template>
@@ -153,6 +153,7 @@ export default {
     display: flex;
     justify-content: center;
   }
+  
   .pocas-vacantes{
     color: rgb(221, 44, 0);
   }

@@ -17,9 +17,13 @@ $router->post('/personas/signUp', 'PersonaController@signUp');
 
 $router->post('/personas/signIn', 'PersonaController@signIn');
 
+$router->get('/llamados/buscarLlamadoCalificado/{id_llamado}', 'LlamadoController@buscarLlamadoCalificado');
+
 $router->get('/llamados/buscarLlamados', 'LlamadoController@buscarLlamados');
 
 $router->get('/llamados/buscarUltimasVacantes', 'LlamadoController@buscarUltimasVacantes');
+
+$router->get('/llamados/buscarLlamadosCalificados', 'LlamadoController@buscarLlamadosCalificados');
 
 $router->group(['middleware' => ['auth']], function () use ($router) {
     $router->get('/personas/perfil', 'PersonaController@perfil');
@@ -38,10 +42,6 @@ $router->group(['middleware' => ['auth']], function () use ($router) {
         $router->get('/catedras/buscarCatedras', 'CatedraController@buscarCatedras');
     });
 
-    $router->group(['middleware' => ['authJefeCatedra']], function () use ($router) {
-        
-    });
-
     $router->group(['middleware' => ['authUsuario']], function () use ($router) {
         $router->get('/postulaciones/buscarPostulacionesDelUsuario', 'PostulacionController@buscarPostulacionesDelUsuario');
     
@@ -50,11 +50,9 @@ $router->group(['middleware' => ['auth']], function () use ($router) {
         $router->delete('/postulaciones/eliminarPostulacionDelUsuario/{id_llamado}', 'PostulacionController@eliminarPostulacionDelUsuario');
     });
 
-    $router->group(['middleware' => ['calificarLlamado']], function () use ($router) {
-        $router->post('/llamados/calificarLlamado', 'LlamadoController@calificarLlamado');
-    });
-
-    $router->group(['middleware' => ['buscarLlamado']], function () use ($router) {
+    $router->group(['middleware' => ['llamado']], function () use ($router) {
         $router->get('/llamados/buscarLlamado/{id_llamado}', 'LlamadoController@buscarLlamado');
+
+        $router->post('/llamados/calificarLlamado', 'LlamadoController@calificarLlamado');
     });
 });

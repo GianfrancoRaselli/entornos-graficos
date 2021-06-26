@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Llamado;
 use App\Models\Postulacion;
 use App\Models\Catedra;
+use App\Models\Persona;
 use Illuminate\Support\Facades\DB;
 use Exception;
 
@@ -26,8 +27,45 @@ class LlamadoController extends Controller
         }
   
         $llamado->catedra;
+
         foreach ($llamado->postulaciones as $postulacion) {
-          $postulacion->persona;
+          $persona = Persona::find($postulacion->id_persona);
+
+          $postulacion->dni = $persona->dni;
+          $postulacion->nombre_apellido = $persona->nombre_apellido;
+          $postulacion->email = $persona->email;
+          $postulacion->telefono = $persona->telefono;
+          $postulacion->curriculum_vitae = $persona->curriculum_vitae;
+        }
+      }
+      
+      return response()->json($llamado);
+    } catch (Exception $e) {
+      return response()->json(['error' => $e->getMessage()], 406, []);
+    }
+  }
+
+  public function buscarLlamadoCalificado($id_llamado)
+  {
+    $fechaDeHoy = strtotime(date('Y-m-d'));
+
+    try {
+      $llamado = Llamado::where([['id', '=', $id_llamado], ['calificado', '=', true]])->first();
+
+      if ($llamado) {
+        if (strtotime($llamado->fecha_fin) < $fechaDeHoy) {
+          $llamado->finalizado = true;
+        } else {
+          $llamado->finalizado = false;
+        }
+  
+        $llamado->catedra;
+
+        foreach ($llamado->postulaciones as $postulacion) {
+          $persona = Persona::find($postulacion->id_persona);
+
+          $postulacion->dni = $persona->dni;
+          $postulacion->nombre_apellido = $persona->nombre_apellido;
         }  
       }
 
@@ -77,6 +115,20 @@ class LlamadoController extends Controller
     }
   }
 
+  public function buscarLlamadosCalificados()
+  {
+    try {
+      $llamados = Llamado::join('catedras', 'catedras.id', '=', 'llamados.id_catedra')
+      ->select('llamados.id', 'llamados.fecha_inicio', 'llamados.fecha_fin', 'llamados.vacantes',
+      'llamados.requisitos', 'catedras.descripcion', 'catedras.definicion')
+      ->where('calificado', '=', true)->get();
+    
+      return response()->json($llamados);
+    } catch (Exception $e) {
+      return response()->json(['error' => $e->getMessage()], 406, []);
+    }
+  }
+
   public function buscarLlamadosAAdministrar()
   {
     $roles = auth()->user()->roles;
@@ -101,7 +153,7 @@ class LlamadoController extends Controller
           $llamados = Llamado::join('catedras', 'catedras.id', '=', 'llamados.id_catedra')
           ->select('llamados.id', 'llamados.fecha_inicio', 'llamados.fecha_fin', 'llamados.vacantes',
           'llamados.requisitos', 'catedras.descripcion', 'catedras.definicion')
-          ->where(['catedras.id_jefe_catedra', '=', auth()->user()->id])->get();
+          ->where('catedras.id_jefe_catedra', '=', auth()->user()->id)->get();
     
           return response()->json($llamados);
         } catch (Exception $e) {
@@ -114,7 +166,8 @@ class LlamadoController extends Controller
   public function calificarLlamado(Request $request)
   {
     if ($request->llamado) {
-      if (Llamado::find($request->llamado["id"])->fecha_fin < strtotime(date('Y-m-d'))) {
+      $llamado = Llamado::find($request->llamado["id"]);
+      if ($llamado->fecha_fin < strtotime(date('Y-m-d'))) {
         try {
           DB::beginTransaction();
 
@@ -131,6 +184,9 @@ class LlamadoController extends Controller
 
             $postulacionAEditar->save();
           }
+
+          $llamado->calificado = true;
+          $llamado->save();
 
           DB::commit();
         } catch (Exception $e) {
@@ -161,6 +217,7 @@ class LlamadoController extends Controller
                   $llamado->fecha_fin = $request->llamado["fecha_fin"];
                   $llamado->requisitos = $request->llamado["requisitos"];
                   $llamado->vacantes = $request->llamado["vacantes"];
+                  $llamado->calificado = false;
                   $llamado->id_catedra = $request->llamado["id_catedra"];
 
                   $llamado->save();

@@ -1,6 +1,6 @@
 <template>
-  <div class="vacancies-list"><p v-if="llamado">
-    <p v-if="!vacantes.length">No tiene vacantes a su cargo</p>
+  <div class="vacancies-list">
+    <p v-if="!vacantes.length">No hay vacantes calificadas</p>
     <div class="vacancies" v-if="vacantes.length">
       <div class="vacancy" v-for="(vacante, index) in vacantes" :key="index">
         <div class="descripcion">
@@ -31,24 +31,20 @@
           </div>
           <div class="vacancy-options">
             <utn-button @click="buscarInscriptos(vacante.id, vacante.descripcion, vacante.fecha_inicio)">
-              <i class="fas fa-list"></i> Ver inscriptos
+              <i class="fas fa-list"></i> Ver orden de mérito
             </utn-button>
-            <utn-button @click="eliminarVacante(vacante.id)" v-if="isAdministrador" btnClass="btn btn-danger">
-              <i class="fas fa-trash-alt"></i> Eliminar Vacante
-            </utn-button>
-            <Popup dataTarget="listInscriptos" :title="title" :showButtons="false" propClass="modal-xl">
-              <ListInscriptos />
-            </Popup>
           </div>
         </div>
       </div>
+      <Popup dataTarget="listInscriptos" :title="title" :showButtons="false" propClass="modal-xl">
+        <ListInscriptos :edit="false" />
+      </Popup>
     </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-import { mapGetters } from 'vuex'
 import EventBus from '../../event-bus'
 export default {
   components: {
@@ -60,23 +56,10 @@ export default {
       title: ''
     }
   },
-  computed: {
-    ...mapGetters({
-      authenticated: 'authenticated',
-      isAdministrador: 'isAdministrador',
-      isJefeCatedra: 'isJefeCatedra'
-    })
-  },
   methods: {
-    async buscarVacantes() {
+    async buscarVacantesCalificadas() {
       try {
-        let res = await axios.get('/llamados/buscarLlamadosAAdministrar',
-        {
-          headers: {
-            Authorization: 'Bearer ' + this.$store.getters.user.api_token
-          }
-        });
-
+        let res = await axios.get('/llamados/buscarLlamadosCalificados');
         this.vacantes = res.data;
       } catch (err) {
         console.log(err.response.data.error);
@@ -88,28 +71,9 @@ export default {
       EventBus.$emit('buscarInscriptos', id_llamado);
       window.$("#listInscriptos").modal('show');
     },
-
-    async eliminarVacante(id_llamado) {
-      if (this.isAdministrador) {
-        try {
-          await axios.delete('/llamados/eliminarLlamado/' + id_llamado,
-          {
-            headers: {
-              Authorization: 'Bearer ' + this.$store.getters.user.api_token
-            }
-          });
-        } catch (err) {
-          console.log(err.response.data.error);
-        }
-
-        this.buscarVacantes();
-      } else {
-        this.$store.dispatch("logOut");
-      }
-    }
   },
   async created() {
-    this.buscarVacantes();
+    this.buscarVacantesCalificadas();
   }
 }
 </script>
@@ -153,6 +117,7 @@ export default {
     display: flex;
     justify-content: center;
   }
+
   .pocas-vacantes{
     color: rgb(221, 44, 0);
   }

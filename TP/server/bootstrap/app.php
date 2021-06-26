@@ -83,10 +83,8 @@ $app->middleware([
 $app->routeMiddleware([
     'auth' => App\Http\Middleware\Authenticate::class,
     'authAdmin' => App\Http\Middleware\AuthenticateAdmin::class,
-    'authJefeCatedra' => App\Http\Middleware\AuthenticateJefeCatedra::class,
     'authUsuario' => App\Http\Middleware\AuthenticateUsuario::class,
-    'calificarLlamado' => App\Http\Middleware\CalificarLlamadoMiddleware::class,
-    'buscarLlamado' => App\Http\Middleware\BuscarLlamadoMiddleware::class,
+    'llamado' => App\Http\Middleware\LlamadoMiddleware::class,
 ]);
 
 /*

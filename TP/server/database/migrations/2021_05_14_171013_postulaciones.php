@@ -17,7 +17,6 @@ class Postulaciones extends Migration
             $table->id();
             $table->enum('estado', ['Postulado', 'No elegido', 'Elegido']);
             $table->integer('puntaje')->nullable();
-            $table->integer('orden')->nullable();
             $table->string('comentarios')->nullable();
             $table->unsignedBigInteger('id_persona');
             $table->unsignedBigInteger('id_llamado');
