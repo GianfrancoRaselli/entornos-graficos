@@ -113,7 +113,7 @@ class LlamadoController extends Controller
   public function calificarLlamado(Request $request)
   {
     if ($request->llamado) {
-      if (Llamado::find($request->llamado->id)->fecha_fin < strtotime(date('Y-m-d'))) {
+      if (Llamado::find($request->llamado["id"])->fecha_fin < strtotime(date('Y-m-d'))) {
         try {
           DB::beginTransaction();
 

@@ -29,7 +29,7 @@
             <td><div class="columna-md">{{ postulacion.persona.dni }}</div></td>
             <td><div class="columna-md">{{ postulacion.persona.nombre_apellido }}</div></td>
             <td><div class="columna-md">{{ postulacion.persona.email }}</div></td>
-            <td><div class="columna-md">{{ postulacion.puntajeError }}</div></td>
+            <td><div class="columna-md">{{ postulacion.persona.telefono }}</div></td>
             <td>
               <div class="columna-md">
                 <div v-if="!editando">
@@ -119,6 +119,7 @@ export default {
           this.llamado.vacantes = res.data.vacantes;
           this.llamado.finalizado = res.data.finalizado;
           this.llamado.catedra = res.data.catedra;
+          this.llamado.postulaciones = [];
           for (let postulacion of res.data.postulaciones) {
             if (postulacion.estado === "Elegido") {
               postulacion.estadoEditado = "Aceptar";
@@ -160,7 +161,7 @@ export default {
         for (let postulacion of this.llamado.postulaciones) {
           postulacion.estadoError = false;
           postulacion.puntajeError = false;
-          if (!postulacion.estadoEditado) {
+          if (!(postulacion.estadoEditado === "Aceptar" || postulacion.estadoEditado === "Rechazar")) {
             postulacion.estadoError = true;
             error = true;
           }
