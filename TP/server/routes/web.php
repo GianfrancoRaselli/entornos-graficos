@@ -33,8 +33,6 @@ $router->group(['middleware' => ['auth']], function () use ($router) {
     $router->group(['middleware' => ['authAdmin']], function () use ($router) {
         $router->post('/llamados/agregarLlamado', 'LlamadoController@agregarLlamado');
 
-        $router->post('/llamados/editarLlamado/{id_llamado}', 'LlamadoController@editarLlamado');
-
         $router->delete('/llamados/eliminarLlamado/{id_llamado}', 'LlamadoController@eliminarLlamado');
 
         $router->get('/catedras/buscarCatedras', 'CatedraController@buscarCatedras');

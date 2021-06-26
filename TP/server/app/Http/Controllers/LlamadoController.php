@@ -152,16 +152,16 @@ class LlamadoController extends Controller
       if (strtotime($request->llamado["fecha_inicio"]) >= strtotime(date('Y-m-d'))) {
         if (strtotime($request->llamado["fecha_inicio"]) <= strtotime($request->llamado["fecha_fin"])) {
           if ($request->llamado["requisitos"]) {
-            if ($request->llamado["vacantes"] && is_int($request->llamado["vacantes"]) && $request->llamado["vacantes"] > 0) {
+            if ($request->llamado["vacantes"] && is_int((int) $request->llamado["vacantes"]) && $request->llamado["vacantes"] > 0) {
               try {
-                if (Catedra::find($request->llamado["id_Catedra"])) {
+                if (Catedra::find($request->llamado["id_catedra"])) {
                   $llamado = new Llamado();
                   
                   $llamado->fecha_inicio = $request->llamado["fecha_inicio"];
                   $llamado->fecha_fin = $request->llamado["fecha_fin"];
                   $llamado->requisitos = $request->llamado["requisitos"];
                   $llamado->vacantes = $request->llamado["vacantes"];
-                  $llamado->id_llamado = $request->llamado["id_llamado"];
+                  $llamado->id_catedra = $request->llamado["id_catedra"];
 
                   $llamado->save();
                 } else {
@@ -171,7 +171,7 @@ class LlamadoController extends Controller
                 return response()->json(['error' => $e->getMessage()], 406, []);
             }
             } else {
-              return response()->json(['error' => 'Las vacantes disponibles debe ser mayor a cero'], 406, []);
+              return response()->json(['error' => 'Las vacantes disponibles deben ser mayor a cero'], 406, []);
             }
           } else {
             return response()->json(['error' => 'Ingrese los requisitos'], 406, []);
@@ -184,21 +184,6 @@ class LlamadoController extends Controller
       }
     } else {
       return response()->json(['error' => 'Ingrese un llamado'], 406, []);
-    }
-  }
-
-  public function editarLlamado($id_llamado, Request $request)
-  {
-    if ($id_llamado) {
-      $llamado = Llamado::find($id_llamado);
-      if ($llamado) {
-        $llamado->postulaciones()->delete();
-        $llamado->delete();
-      } else {
-        return response()->json(['error' => 'No existe el llamado'], 406, []);
-      }
-    } else {
-      return response()->json(['error' => 'Ingrese el id del llamado a eliminar'], 406, []);
     }
   }
 
