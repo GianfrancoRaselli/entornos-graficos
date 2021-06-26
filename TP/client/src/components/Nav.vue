@@ -7,11 +7,14 @@
       <utn-button icon="fas fa-home" btnClass="btn btn-light" to="/">
         Inicio
       </utn-button>
+      <utn-button icon="fas fa-hand-pointer" btnClass="btn btn-light" to="/vacantes" v-if="!authenticated || isUsuario">
+        Vacantes
+      </utn-button>
       <utn-button icon="fas fa-list-ul" btnClass="btn btn-light" to="/requisitos">
         Requisitos
       </utn-button>
-      <utn-button icon="fas fa-hand-pointer" btnClass="btn btn-light" to="/vacantes" v-if="!authenticated || isUsuario">
-        Vacantes
+      <utn-button icon="fas fa-map-marker-alt" btnClass="btn btn-light" to="/contacto">
+        Contacto
       </utn-button>
       <utn-button icon="fas fa-toolbox" btnClass="btn btn-light" to="/administrarVacantes" v-if="isAdministrador || isJefeCatedra">
         Administrar vacantes
@@ -24,11 +27,14 @@
       <utn-button icon="fas fa-home" btnClass="btn btn-light" to="/">
         Inicio
       </utn-button>
+      <utn-button icon="fas fa-hand-pointer" btnClass="btn btn-light" to="/vacantes" v-if="!authenticated || isUsuario">
+        Vacantes
+      </utn-button>
       <utn-button icon="fas fa-list-ul" btnClass="btn btn-light" to="/requisitos">
         Requisitos
       </utn-button>
-      <utn-button icon="fas fa-hand-pointer" btnClass="btn btn-light" to="/vacantes" v-if="!authenticated || isUsuario">
-        Vacantes
+      <utn-button icon="fas fa-map-marker-alt" btnClass="btn btn-light" to="/contacto">
+        Contacto
       </utn-button>
       <utn-button icon="fas fa-toolbox" btnClass="btn btn-light" to="/administrarVacantes" v-if="isAdministrador || isJefeCatedra">
         Administrar vacantes

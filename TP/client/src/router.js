@@ -27,6 +27,11 @@ const router = new Router({
       component: () => import('@/views/Requirements.vue'),
     },
     {
+      path: '/contacto',
+      name: 'Contacto',
+      component: () => import('@/views/Contact.vue'),
+    },
+    {
       path: '/administrarVacantes',
       name: 'administrar Vacantes',
       component: () => import('@/views/AdminVacancies.vue'),
