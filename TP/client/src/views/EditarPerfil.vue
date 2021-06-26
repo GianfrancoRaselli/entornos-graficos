@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="row m-2">
-            <div class="col-md-4 mx-auto">
+            <div class="col-md-5 mx-auto">
                 <div class="card text-center animate__animated animate__flipInY animate__fast">
                     <div class="card-header">
                         <p style="font-size: 1.75rem;"><strong>Editar Perfil</strong></p>
