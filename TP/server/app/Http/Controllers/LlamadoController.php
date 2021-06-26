@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Llamado;
 use App\Models\Postulacion;
+use App\Models\Catedra;
 use Illuminate\Support\Facades\DB;
 use Exception;
 
@@ -147,17 +148,40 @@ class LlamadoController extends Controller
 
   public function agregarLlamado(Request $request)
   {
-    /*if ($id_llamado) {
-      $llamado = Llamado::find($id_llamado);
-      if ($llamado) {
-        $llamado->postulaciones()->delete();
-        $llamado->delete();
+    if ($request->llamado) {
+      if (strtotime($request->llamado["fecha_inicio"]) >= strtotime(date('Y-m-d'))) {
+        if (strtotime($request->llamado["fecha_inicio"]) <= strtotime($request->llamado["fecha_fin"])) {
+          if ($request->llamado["requisitos"]) {
+            if ($request->llamado["vacantes"] && is_int($request->llamado["vacantes"]) && $request->llamado["vacantes"] > 0) {
+              if (Catedra::find($request->llamado["id_Catedra"])) {
+                $llamado = new Llamado();
+
+                        $persona->dni = $request->dni;
+                        $persona->nombre_usuario = $request->nombre_usuario;
+                        $persona->clave = Hash::make($request->clave);
+                        $persona->nombre_apellido = $request->nombre_apellido;
+                        $persona->email = $request->email;
+                        $persona->telefono = $request->telefono;
+
+                        $persona->save();
+              } else {
+                return response()->json(['error' => 'La cátedra no existe'], 406, []);
+              }
+            } else {
+              return response()->json(['error' => 'Las vacantes disponibles debe ser mayor a cero'], 406, []);
+            }
+          } else {
+            return response()->json(['error' => 'Ingrese los requisitos'], 406, []);
+          }
+        } else {
+          return response()->json(['error' => 'La fecha de cierre no puede ser menor a la fecha de inicio'], 406, []);
+        }
       } else {
-        return response()->json(['error' => 'No existe el llamado'], 406, []);
+        return response()->json(['error' => 'La fecha de inicio no puede ser menor a la fecha actual'], 406, []);
       }
     } else {
-      return response()->json(['error' => 'Ingrese el id del llamado a eliminar'], 406, []);
-    }*/
+      return response()->json(['error' => 'Ingrese un llamado'], 406, []);
+    }
   }
 
   public function editarLlamado($id_llamado, Request $request)
