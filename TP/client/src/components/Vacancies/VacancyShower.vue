@@ -1,6 +1,9 @@
 <template>
   <div class="vacancies-list">
-    <p v-if="!vacantes.length">No hay vacantes</p>
+    <div v-if="!vacantes.length" class="alert alert-danger no-vacancies" role="alert">
+      <i class="fas fa-exclamation-triangle mt-5" style="font-size: 5rem"></i> 
+      <p class="mt-5 mb-5">No hay vacantes!</p>
+    </div>
     <div class="vacancies" v-if="vacantes.length">
       <div class="vacancy" v-for="(vacante, index) in limitVacancies" :key="index">
         <div class="descripcion">
@@ -237,6 +240,14 @@ export default {
   
   .pocas-vacantes{
     color: rgb(221, 44, 0);
+  }
+
+  .no-vacancies{
+    font-size: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 
   @media(max-width: 991px){
