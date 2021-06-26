@@ -4,30 +4,32 @@
       <img src="../assets/logo-utn.png" class="headerLogo" alt="Logo UTN" id="logo-utn">
     </router-link>
     <ul class="desktop-nav" style="margin-left: auto;">
-      <li class="nav-item" v-for="(item, index) in navItems" :key="index">
-        <utn-button :icon="item.icon" btnClass="btn btn-light" :to="item.routeTo" v-if="item.show">
-          {{ item.name }}
-        </utn-button>
-      </li>
-        <utn-button icon="fas fa-hand-pointer" btnClass="btn btn-light" to="/vacantes" v-if="!authenticated || isUsuario">
-          Vacantes
-        </utn-button>
-        <utn-button icon="fas fa-toolbox" btnClass="btn btn-light" to="/administrarVacantes" v-if="isAdministrador || isJefeCatedra">
-          Administrar llamados
-        </utn-button>
+      <utn-button icon="fas fa-home" btnClass="btn btn-light" to="/">
+        Inicio
+      </utn-button>
+      <utn-button icon="fas fa-hand-pointer" btnClass="btn btn-light" to="/vacantes" v-if="!authenticated || isUsuario">
+        Vacantes
+      </utn-button>
+      <utn-button icon="fas fa-toolbox" btnClass="btn btn-light" to="/administrarVacantes" v-if="isAdministrador || isJefeCatedra">
+        Administrar vacantes
+      </utn-button>
+      <utn-button icon="fas fa-plus-circle" btnClass="btn btn-light" to="/agregarVacante" v-if="isAdministrador">
+        Agregar vacante
+      </utn-button>
     </ul>
     <ul class="mobile-nav">
-      <li class="nav-item" v-for="(item, index) in navItems" :key="index">
-        <utn-button :icon="item.icon" btnClass="btn btn-light" :to="item.routeTo" v-if="item.show">
-          {{ item.name }}
-        </utn-button>
-      </li>
-        <utn-button icon="fas fa-hand-pointer" btnClass="btn btn-light" to="/vacantes" v-if="!authenticated || isUsuario">
-          Vacantes
-        </utn-button>
-        <utn-button icon="fas fa-toolbox" btnClass="btn btn-light" to="/administrarVacantes" v-if="isAdministrador || isJefeCatedra">
-          Administrar llamados
-        </utn-button>
+      <utn-button icon="fas fa-home" btnClass="btn btn-light" to="/">
+        Inicio
+      </utn-button>
+      <utn-button icon="fas fa-hand-pointer" btnClass="btn btn-light" to="/vacantes" v-if="!authenticated || isUsuario">
+        Vacantes
+      </utn-button>
+      <utn-button icon="fas fa-toolbox" btnClass="btn btn-light" to="/administrarVacantes" v-if="isAdministrador || isJefeCatedra">
+        Administrar vacantes
+      </utn-button>
+      <utn-button icon="fas fa-plus-circle" btnClass="btn btn-light" to="/agregarVacante" v-if="isAdministrador">
+        Agregar vacante
+      </utn-button>
     </ul>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -89,13 +91,6 @@
     },
     data() {
       return {
-        navItems: [
-          { name: 'Inicio', routeTo: '/', icon: 'fas fa-home', show: this.authenticated },
-          // no pude hacer andar los show para que sean reactivos desde aca asi que los escribi directamente
-
-          /*{ name: 'Vacantes', routeTo: '/vacantes', icon: 'fas fa-hand-pointer', show: !this.authenticated || this.isUsuario },
-          { name: 'Administrar llamados', routeTo: '/administrarVacantes', icon: 'fas fa-toolbox', show: this.isAdministrador || this.isJefeCatedra },*/
-        ],
         userNavItems: [
           { name: 'Crear cuenta', icon: 'fas fa-user', btnClass: 'btn btn-light', target: '#signUpPopup' },
           { name: 'Iniciar sesión', icon: 'fas fa-id-card', btnClass: 'btn btn-primary', target: '#loginPopup' },
@@ -110,7 +105,7 @@
       cerrarSesion() {
         this.logOut();
       }
-    },
+    }
   }
 </script>
 

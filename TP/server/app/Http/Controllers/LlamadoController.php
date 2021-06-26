@@ -144,4 +144,19 @@ class LlamadoController extends Controller
       return response()->json(['error' => 'Envie un llamado'], 406, []);
     }
   }
+
+  public function eliminarLlamado($id_llamado)
+  {
+    if ($id_llamado) {
+      $llamado = Llamado::find($id_llamado);
+      if ($llamado) {
+        $llamado->postulaciones()->delete();
+        $llamado->delete();
+      } else {
+        return response()->json(['error' => 'No existe el llamado'], 406, []);
+      }
+    } else {
+      return response()->json(['error' => 'Ingrese el id del llamado a eliminar'], 406, []);
+    }
+  }
 }

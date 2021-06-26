@@ -26,7 +26,10 @@
           </div>
           <div class="vacancy-options">
             <utn-button @click="buscarInscriptos(vacante.id, vacante.descripcion, vacante.fecha_inicio)">
-              Ver inscriptos
+              <i class="fas fa-list"></i> Ver inscriptos
+            </utn-button>
+            <utn-button @click="eliminarVacante(vacante.id)" v-if="isAdministrador" btnClass="btn btn-danger">
+              <i class="fas fa-trash-alt"></i> Eliminar Vacante
             </utn-button>
             <Popup dataTarget="listInscriptos" :title="title" :showButtons="false" propClass="modal-xl">
               <ListInscriptos />
@@ -68,6 +71,7 @@ export default {
             Authorization: 'Bearer ' + this.$store.getters.user.api_token
           }
         });
+
         this.vacantes = res.data;
       } catch (err) {
         console.log(err.response.data.error);
@@ -78,6 +82,25 @@ export default {
       this.title = 'Inscriptos al llamado de ' + desc + ' del ' + fecha_inicio;
       EventBus.$emit('buscarInscriptos', id_llamado);
       window.$("#listInscriptos").modal('show');
+    },
+
+    async eliminarVacante(id_llamado) {
+      if (this.isAdministrador) {
+        try {
+          await axios.delete('/llamados/eliminarLlamado/' + id_llamado,
+          {
+            headers: {
+              Authorization: 'Bearer ' + this.$store.getters.user.api_token
+            }
+          });
+        } catch (err) {
+          console.log(err.response.data.error);
+        }
+
+        this.buscarVacantes();
+      } else {
+        this.$store.dispatch("logOut");
+      }
     }
   },
   async created() {

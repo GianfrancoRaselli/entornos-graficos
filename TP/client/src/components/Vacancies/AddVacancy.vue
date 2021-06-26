@@ -3,8 +3,8 @@
     <nav aria-label="breadcrumb" class="m-auto" style="width: fit-content">
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
-          <router-link to="/administrarVacante"
-            ><i class="fas fa-id-card"></i> Vacantes</router-link
+          <router-link to="/administrarVacantes"
+            ><i class="fas fa-toolbox"></i> Administrar Vacantes</router-link
           >
         </li>
         <li class="breadcrumb-item active" aria-current="page">
@@ -44,7 +44,37 @@
                 <input
                   type="date"
                   v-model="llamado.fecha_inicio"
-                  placeholder="Teléfono"
+                  placeholder="Fecha Inicio"
+                  :min="fecha_hoy"
+                  class="form-control"
+                />
+              </div>
+              <br />
+              <div class="form-group" v-if="llamado.fecha_inicio">
+                <input
+                  type="date"
+                  v-model="llamado.fecha_fin"
+                  placeholder="Fecha Inicio"
+                  :min="llamado.fecha_inicio"
+                  class="form-control"
+                />
+              </div>
+              <br />
+              <div class="form-group">
+                <textarea
+                  type="text"
+                  v-model="llamado.requisitos"
+                  placeholder="Requisitos"
+                  class="form-control"
+                />
+              </div>
+              <br />
+              <div class="form-group">
+                <input
+                  type="number"
+                  v-model="llamado.vacantes"
+                  placeholder="Vacentes"
+                  min="1"
                   class="form-control"
                 />
               </div>
@@ -63,7 +93,7 @@
 </template>
 
 <script>
-import axios from "axios";
+//import axios from "axios";
 import { mapGetters } from "vuex";
 export default {
   data() {
@@ -83,13 +113,35 @@ export default {
     ...mapGetters({
       authenticated: "authenticated",
       isAdministrador: "isAdministrador"
-    })
+    }),
+
+    fecha_hoy() {
+      let fecha = new Date("June 2, 2021");
+      let anio = fecha.getFullYear();
+      let _mes = fecha.getMonth();
+      _mes = _mes + 1;
+      let mes = "";
+      if (_mes < 10) {
+        mes = "0" + _mes;
+      } else {
+        mes = _mes.toString;
+      }
+      let _dia = fecha.getDate();
+      let dia = "";
+      if (_dia < 10) {
+        dia = "0" + _dia;
+      } else {
+        dia = _dia.toString;
+      }
+
+      return anio + "-" + mes + "-" + dia;
+    }
   },
   methods: {
     async handleSubmit() {
       this.error = false;
 
-      if (this.authenticated && this.isAdministrador) {
+      /*if (this.authenticated && this.isAdministrador) {
         try {
           await axios.post("/llamados/agregarLlamado",
           {
@@ -106,7 +158,7 @@ export default {
         }
       } else {
         this.$store.dispatch("logOut");
-      }
+      }*/
     }
   }
 };

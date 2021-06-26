@@ -1,13 +1,13 @@
 <template>
   <div class="mt-5">
-    <AddVacancy />
+    <VacancyAdmin />
   </div>
 </template>
 
 <script>
 export default {
   components: {
-    AddVacancy: () => import('../components/Vacancies/AddVacancy.vue'),
+    VacancyAdmin: () => import('../components/Vacancies/VacancyAdmin.vue'),
   },
 }
 </script>
