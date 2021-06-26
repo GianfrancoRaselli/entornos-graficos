@@ -20,6 +20,17 @@ const router = new Router({
       path: '/vacantes',
       name: 'Vacantes',
       component: () => import('@/views/Vacancies.vue'),
+      meta: {
+        notAuthOrUsuario: true
+      }
+    },
+    {
+      path: '/ordenesMerito',
+      name: 'Ordenes de merito',
+      component: () => import('@/views/MeritOrders.vue'),
+      meta: {
+        notAuthOrUsuario: true
+      }
     },
     {
       path: '/requisitos',
@@ -33,7 +44,7 @@ const router = new Router({
     },
     {
       path: '/administrarVacantes',
-      name: 'administrar Vacantes',
+      name: 'Administrar Vacantes',
       component: () => import('@/views/AdminVacancies.vue'),
       meta: {
         auth: true,
@@ -42,7 +53,7 @@ const router = new Router({
     },
     {
       path: '/agregarVacante',
-      name: 'agregar Vacante',
+      name: 'Agregar Vacante',
       component: () => import('@/views/AddVacancy.vue'),
       meta: {
         auth: true,
@@ -51,7 +62,7 @@ const router = new Router({
     },
     {
       path: '/perfil',
-      name: 'Profile',
+      name: 'Perfil',
       component: () => import('@/views/Perfil.vue'),
       meta: {
         auth: true
@@ -59,7 +70,7 @@ const router = new Router({
     },
     {
       path: '/perfil/editar',
-      name: 'EditProfile',
+      name: 'Editar perfil',
       component: () => import('@/views/EditarPerfil.vue'),
       meta: {
         auth: true
@@ -70,13 +81,13 @@ const router = new Router({
 
 router.beforeEach(async (to, from, next) => {
   let auth = to.matched.some(record => record.meta.auth);
-  let notAuth = to.matched.some(record => record.meta.notAuth);
+  let notAuthOrUsuario = to.matched.some(record => record.meta.notAuthOrUsuario);
   let isAdministrador = to.matched.some(record => record.meta.isAdministrador);
   let isAdministradorOrJefeCatedra = to.matched.some(record => record.meta.isAdministradorOrJefeCatedra);
 
   if (auth && !store.getters.authenticated) {
     next('signin');
-  } else if (notAuth && store.getters.authenticated) {
+  } else if (notAuthOrUsuario && (store.getters.isAdministrador || store.getters.isJefeCatedra)) {
     next('');
   } else if(isAdministrador && !(store.getters.isAdministrador)) {
     next(from);

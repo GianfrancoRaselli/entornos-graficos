@@ -1,48 +1,10 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light px-3 w-100">
     <router-link to="/">
-      <img src="../assets/logo-utn.png" class="headerLogo" alt="Logo UTN" id="logo-utn">
+      <img src="../../assets/logo-utn.png" class="headerLogo" alt="Logo UTN" id="logo-utn">
     </router-link>
-    <ul class="desktop-nav" style="margin-left: auto;">
-      <utn-button icon="fas fa-home" btnClass="btn btn-light" to="/">
-        Inicio
-      </utn-button>
-      <utn-button icon="fas fa-hand-pointer" btnClass="btn btn-light" to="/vacantes" v-if="!authenticated || isUsuario">
-        Vacantes
-      </utn-button>
-      <utn-button icon="fas fa-list-ul" btnClass="btn btn-light" to="/requisitos">
-        Requisitos
-      </utn-button>
-      <utn-button icon="fas fa-map-marker-alt" btnClass="btn btn-light" to="/contacto">
-        Contacto
-      </utn-button>
-      <utn-button icon="fas fa-toolbox" btnClass="btn btn-light" to="/administrarVacantes" v-if="isAdministrador || isJefeCatedra">
-        Administrar vacantes
-      </utn-button>
-      <utn-button icon="fas fa-plus-circle" btnClass="btn btn-light" to="/agregarVacante" v-if="isAdministrador">
-        Agregar vacante
-      </utn-button>
-    </ul>
-    <ul class="mobile-nav">
-      <utn-button icon="fas fa-home" btnClass="btn btn-light" to="/">
-        Inicio
-      </utn-button>
-      <utn-button icon="fas fa-hand-pointer" btnClass="btn btn-light" to="/vacantes" v-if="!authenticated || isUsuario">
-        Vacantes
-      </utn-button>
-      <utn-button icon="fas fa-list-ul" btnClass="btn btn-light" to="/requisitos">
-        Requisitos
-      </utn-button>
-      <utn-button icon="fas fa-map-marker-alt" btnClass="btn btn-light" to="/contacto">
-        Contacto
-      </utn-button>
-      <utn-button icon="fas fa-toolbox" btnClass="btn btn-light" to="/administrarVacantes" v-if="isAdministrador || isJefeCatedra">
-        Administrar vacantes
-      </utn-button>
-      <utn-button icon="fas fa-plus-circle" btnClass="btn btn-light" to="/agregarVacante" v-if="isAdministrador">
-        Agregar vacante
-      </utn-button>
-    </ul>
+    <NavItems navItemsclass="desktop-nav" />
+    <NavItems navItemsclass="mobile-nav" />
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -77,8 +39,8 @@
         :key="index">
           {{ item.name }}
         </utn-button>
-          <LogIn />
-          <SignUp />
+        <LogIn />
+        <SignUp />
       </ul>
     </div>
   </nav>
@@ -89,8 +51,9 @@
   export default {
     name: 'Nav',
     components: {
-      LogIn: () => import('./LogIn.vue'),
-      SignUp: () => import('./SignUp.vue'),
+      NavItems: () => import('./NavItems.vue'),
+      LogIn: () => import('../LogIn.vue'),
+      SignUp: () => import('../SignUp.vue'),
     },
     computed: {
       ...mapGetters({
@@ -126,44 +89,17 @@
     width: 100px;
     margin: 0 25px;
   }
+
   .navbar{
     box-shadow: 0 4px 20px 0 rgba(0,0,0,.08);
   }
+
   .btn {
     width: 100%;
     text-align: left;
   }
+
   #btn-cerrar-sesion {
     color: red;
-  }
-
-  .desktop-nav{
-    list-style: none;
-    display: flex;
-    align-items: center;
-    margin: 0;
-  }
-
-  .mobile-nav{
-    display: none;
-  }
-
-  @media(max-width: 991px){
-    .desktop-nav{
-      display: none;
-    }
-    .mobile-nav{
-      display: flex;
-      position:fixed;
-      bottom: 0;
-      list-style: none;
-      box-shadow: 0 -4px 20px 0 rgba(0,0,0,.08);
-      justify-content: center;
-      background-color:white;
-      width: 100%;
-      margin: 0;
-      padding: 0;
-      left: 0;
-    }
   }
 </style>

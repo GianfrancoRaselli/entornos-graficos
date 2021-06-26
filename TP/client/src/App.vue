@@ -13,7 +13,7 @@
 <script>
   export default {
     components: {
-      Nav: () => import('./components/Nav.vue'),
+      Nav: () => import('./components/Nav/Nav.vue'),
       Footer: () => import('./components/Footer.vue'),
     },
     name: 'App',
