@@ -30,17 +30,16 @@
             </div>
             <div class="form-group">
               <utn-button
-                data-toggle="modal"
                 btnClass="btn btn-link"
-                data-target="#signUpPopup">
-                  ¿No tienes cuenta? Regístrate!
-                </utn-button>
+                @click="abrirSignUp"
+              >
+                ¿No tienes cuenta? Regístrate!
+              </utn-button>
             </div>
           </form>
         </div>
       </div>
     </Popup>
-                <SignUp />
   </div>
 </template>
 
@@ -117,6 +116,11 @@
             }
           }
         }
+      },
+
+      abrirSignUp() {
+        window.$("#loginPopup").modal('hide');
+        window.$("#signUpPopup").modal('show');
       }
     }
   }

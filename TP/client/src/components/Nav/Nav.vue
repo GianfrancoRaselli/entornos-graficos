@@ -31,12 +31,13 @@
       </ul>
       <ul v-else class="navbar-nav" style="margin-left: auto;">
         <utn-button
-        v-for="(item, index) in userNavItems"
-        data-toggle="modal"
-        :btnClass="item.btnClass"
-        :data-target="item.target"
-        :icon="item.icon"
-        :key="index">
+          v-for="(item, index) in userNavItems"
+          data-toggle="modal"
+          :btnClass="item.btnClass"
+          :data-target="item.target"
+          :icon="item.icon"
+          :key="index"
+        >
           {{ item.name }}
         </utn-button>
         <LogIn />
@@ -47,7 +48,7 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex'
+  import { mapGetters } from 'vuex'
   export default {
     name: 'Nav',
     components: {
@@ -73,12 +74,8 @@
       }
     },
     methods: {
-      ...mapActions({
-        logOut: 'logOut'
-      }),
-
       cerrarSesion() {
-        this.logOut();
+        this.$store.dispatch('logOut');
       }
     }
   }
