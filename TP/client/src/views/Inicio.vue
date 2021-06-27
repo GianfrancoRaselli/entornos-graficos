@@ -1,7 +1,7 @@
 <template>
   <div class="w-100 home-container">
     <CallToAction />
-    <VacancyShower :limit="6" />
+    <VacancyShower :ultimasVacantes="true" />
     <VisitUs/>
   </div>
 </template>

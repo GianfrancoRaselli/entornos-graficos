@@ -1,11 +1,12 @@
 <template>
   <div class="vacancies-list">
+    <h2 class="title-ultimas-vacantes" v-if="ultimasVacantes">¡Últimos cupos!</h2>
     <div v-if="!vacantes.length" class="alert alert-danger no-vacancies" role="alert">
       <i class="fas fa-exclamation-triangle mt-5" style="font-size: 5rem"></i> 
-      <p class="mt-5 mb-5">No hay vacantes!</p>
+      <p class="mt-5 mb-5">¡No hay vacantes!</p>
     </div>
     <div class="vacancies" v-if="vacantes.length">
-      <div class="vacancy" v-for="(vacante, index) in limitVacancies" :key="index">
+      <div class="vacancy" v-for="(vacante, index) in vacantes" :key="index">
         <div class="descripcion">
           <p>{{ vacante.descripcion }}</p>
         </div>
@@ -75,12 +76,13 @@ export default {
       isUsuario: 'isUsuario',
     }),
 
-    limitVacancies(){
+    /*limitVacancies(){
       return this.limit ? this.vacantes.slice(0, this.limit) : this.vacantes;
-    }
+    }*/
   },
   props: {
-    limit: { type: Number },
+    //limit: { type: Number },
+    ultimasVacantes: { type: Boolean, default: false }
   },
   methods: {
     ...mapActions({
@@ -106,7 +108,12 @@ export default {
 
     async buscarVacantes() {
       try {
-        let res = await axios.get('/llamados/buscarLlamados');
+        let res = null;
+        if (this.ultimasVacantes) {
+          res = await axios.get('/llamados/buscarUltimasVacantes');
+        } else {
+          res = await axios.get('/llamados/buscarLlamados');
+        }
         let vacantes = res.data;
 
         if (vacantes && vacantes.length > 0) {
@@ -197,18 +204,23 @@ export default {
 </script>
 
 <style>
-  .vacancies-list{
+  .title-ultimas-vacantes {
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .vacancies-list {
     width: 90%;
     margin: 25px auto;
   }
 
-  .vacancies{
+  .vacancies {
     display: flex;
     width: 100%;
     flex-wrap: wrap;
   }
 
-  .vacancy{
+  .vacancy {
     width: 50%;
     padding:1rem;
     font-size: 1.08rem;
@@ -216,13 +228,13 @@ export default {
     flex-direction: column;
   }
 
-  .vacancy-content{
+  .vacancy-content {
     border: RGB(0, 122, 255) 2px solid;
     border-radius: 0 0 15px 15px;
     padding: .5rem 1rem
   }
 
-  .descripcion{
+  .descripcion {
     font-size:1.64rem;
     font-weight: 600;
     border-radius: 15px 15px 0 0;
@@ -231,16 +243,16 @@ export default {
     color: white;
   }
 
-  .vacancy-options{
+  .vacancy-options {
     display: flex;
     justify-content: center;
   }
   
-  .pocas-vacantes{
+  .pocas-vacantes {
     color: rgb(221, 44, 0);
   }
 
-  .no-vacancies{
+  .no-vacancies {
     font-size: 2rem;
     display: flex;
     flex-direction: column;
@@ -248,7 +260,7 @@ export default {
     align-items: center;
   }
 
-  @media(max-width: 991px){
+  @media(max-width: 991px) {
     .vacancy{
       width: 100%;
     }
