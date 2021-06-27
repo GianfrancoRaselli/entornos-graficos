@@ -35,10 +35,10 @@
             </p>
           </div>
           <div v-if="!authenticated" class="vacancy-options">
-            <utn-button data-toggle="modal" data-target="#loginPopup">
+            <utn-button @click="postularme(vacante.id)">
               Postularme
             </utn-button>
-              <LogIn />
+            <LogIn dataTarget="loginPostulacionPopup" :postularse="true" :id_llamado="id_llamado" redirect="/perfil" />
           </div>
           <div class="vacancy-options" v-else>
             <utn-button @click="postularme(vacante.id)" v-if="!vacante.usuarioPostulado">
@@ -51,9 +51,6 @@
         </div>
       </div>
     </div>
-    <Popup dataTarget="loginPostulacionPopup" title="Iniciar Sesión" :showButtons="false">
-      <LogIn :postularse="true" :id_llamado="id_llamado" redirect="/vacantes" />
-    </Popup>
   </div>
 </template>
 
@@ -77,8 +74,9 @@ export default {
       authenticated: 'authenticated',
       isUsuario: 'isUsuario',
     }),
+
     limitVacancies(){
-      return this.limit ? this.vacantes.slice(0,this.limit) : this.vacantes;
+      return this.limit ? this.vacantes.slice(0, this.limit) : this.vacantes;
     }
   },
   props: {

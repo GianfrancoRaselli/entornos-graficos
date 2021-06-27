@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Popup dataTarget="loginPopup" title="Iniciar Sesión" :showButtons="false">
+    <Popup :dataTarget="dataTarget" title="Iniciar Sesión" :showButtons="false">
       <div style="width: 100%; margin-bottom: 1%;" v-if="error">
         <div class="alert alert-danger alert-dismissible fade show"
           style="width: fit-content; margin-top: 2%; margin-left: auto; margin-right: auto;" role="alert">
@@ -28,7 +28,7 @@
                 Iniciar Sesión
               </button>
             </div>
-            <div class="form-group">
+            <div class="form-group" v-if="!postularse">
               <utn-button
                 btnClass="btn btn-link"
                 @click="abrirSignUp"
@@ -48,11 +48,11 @@
   import { mapActions } from 'vuex'
   import EventBus from '../event-bus'
   export default {
-    name: 'SignIn',
     props: {
       postularse: { type: Boolean, default: false },
       id_llamado: { type: Number },
-      redirect: { type: String }
+      redirect: { type: String },
+      dataTarget: { type: String, default: 'loginPopup' }
     },
     data() {
       return {
