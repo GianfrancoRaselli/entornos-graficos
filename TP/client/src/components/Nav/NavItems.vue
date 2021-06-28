@@ -1,26 +1,26 @@
 <template>
   <ul :class="navItemsclass">
-    <utn-button icon="fas fa-home" btnClass="btn btn-light" to="/">
-      Inicio
-    </utn-button>
-    <utn-button icon="fas fa-list-ul" btnClass="btn btn-light" to="/requisitos">
-      Requisitos
-    </utn-button>
-    <utn-button icon="fas fa-map-marker-alt" btnClass="btn btn-light" to="/contacto">
-      Contacto
-    </utn-button>
-    <utn-button icon="fas fa-hand-pointer" btnClass="btn btn-light" to="/vacantes" v-if="!authenticated || isUsuario">
-      Vacantes
-    </utn-button>
-    <utn-button icon="fas fa-clipboard-list" btnClass="btn btn-light" to="/ordenesMerito" v-if="!authenticated || isUsuario">
-      Ordenes de mérito
-    </utn-button>
-    <utn-button icon="fas fa-toolbox" btnClass="btn btn-light" to="/administrarVacantes" v-if="isAdministrador || isJefeCatedra">
-      Administrar vacantes
-    </utn-button>
-    <utn-button icon="fas fa-plus-circle" btnClass="btn btn-light" to="/agregarVacante" v-if="isAdministrador">
-      Agregar vacante
-    </utn-button>
+    <router-link class="btn btn-light" to="/" exact="true">
+      <i class="fas fa-home"></i> Inicio
+    </router-link>
+    <router-link class="btn btn-light" to="/requisitos" exact="true">
+      <i class="fas fa-list-ul"></i> Requisitos
+    </router-link>
+    <router-link class="btn btn-light" to="/contacto" exact="true">
+      <i class="fas fa-map-marker-alt"></i> Contacto
+    </router-link>
+    <router-link class="btn btn-light" to="/vacantes" exact="true" v-if="!authenticated || isUsuario">
+      <i class="fas fa-hand-pointer"></i> Vacantes
+    </router-link>
+    <router-link class="btn btn-light" to="/ordenesMerito" exact="true" v-if="!authenticated || isUsuario">
+      <i class="fas fa-clipboard-list"></i> Ordenes de mérito
+    </router-link>
+    <router-link class="btn btn-light" to="/administrarVacantes" exact="true" v-if="isAdministrador || isJefeCatedra">
+      <i class="fas fa-toolbox"></i> Administrar vacantes
+    </router-link>
+    <router-link class="btn btn-light" to="/agregarVacante" exact="true" v-if="isAdministrador">
+      <i class="fas fa-plus-circle"></i> Agregar vacante
+    </router-link>
   </ul>
 </template>
 
@@ -42,7 +42,7 @@ export default {
 </script>
 
 <style>
-  .desktop-nav{
+  .desktop-nav {
     list-style: none;
     display: flex;
     align-items: center;
@@ -50,16 +50,16 @@ export default {
     margin-left: auto;
   }
 
-  .mobile-nav{
+  .mobile-nav {
     display: none;
   }
 
-  @media(max-width: 991px){
+  @media(max-width: 991px) {
     .desktop-nav{
       display: none;
     }
 
-    .mobile-nav{
+    .mobile-nav {
       display: flex;
       position:fixed;
       bottom: 0;
