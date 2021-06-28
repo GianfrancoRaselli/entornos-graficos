@@ -44,19 +44,19 @@
           <table class="table">
             <thead>
               <tr>
-                <th scope="col">#ID</th>
-                <th scope="col">Nombre</th>
+                <th scope="col">Nro</th>
+                <th scope="col">Cátedra</th>
+                <th scope="col">Definición</th>
                 <th scope="col">Fecha fin</th>
-                <th scope="col">Descripcion</th>
                 <th scope="col">Opciones</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(postulacion,index) in tablePostulaciones" :key="index">
-                <th scope="row">{{ postulacion.id }}</th>
+                <th scope="row">{{ ++index }}</th>
+                <td>{{ postulacion.descripcion }}</td>
                 <td>{{ postulacion.definicion }}</td>
                 <td>{{ postulacion.fecha_fin }}</td>
-                <td>{{ postulacion.descripcion }}</td>
                 <td>
                   <utn-button @click="darmeDeBaja(postulacion.id)" btnClass="btn btn-danger">
                     Darme de baja
@@ -112,6 +112,7 @@
           }
         }
       },
+
       async buscarVacantes() {
         try {
           let res = await axios.get('/llamados/buscarLlamados');
@@ -133,20 +134,19 @@
           }
           this.vacantes = vacantes;
 
-          for(let i=0;i<this.vacantes.length;i++){
-            for(let j=0;j<this.user.postulaciones.length;j++){
-              console.log('Ids: ',this.vacantes[i].id, this.user.postulaciones[j].id_llamado);
+          this.tablePostulaciones = []; 
+          for(let i=0; i < this.vacantes.length; i++){
+            for(let j=0; j < this.user.postulaciones.length; j++){
               if(this.user.postulaciones[j].id_llamado == this.vacantes[i].id){
-                console.log('Coinciden: ',this.vacantes[i].id, this.user.postulaciones[j].id_llamado);
                 this.tablePostulaciones.push(this.vacantes[i]);
               }
             }
           }
-          console.log('las vacantes del usuario', this.tablePostulaciones);
         } catch (err) {
           console.log(err);
         }
       },
+
       async buscarUsuario() {
         if (this.$store.getters.authenticated) {
           try {
@@ -173,9 +173,11 @@
           this.$store.dispatch('logOut');
         }
       },
+
       abrirModalCargarCV() {
         window.$("#cargarCV").modal('show');
       },
+
       async handleSubmitCV() {
         if (this.$store.getters.authenticated) {
           if (this.user.curriculum_vitae && !this.errorFormato) {
@@ -215,6 +217,7 @@
           this.$store.dispatch('logOut');
         }
       },
+
       obtenerArchivo(e) {
         if (e.target.files[0].name.split('.').pop() === 'pdf') {
           this.errorFormato = false;
@@ -223,6 +226,7 @@
           this.errorFormato = true;
         }
       },
+
       async darmeDeBaja(id_llamado) {
         if (this.$store.getters.authenticated) {
           if (this.$store.getters.isUsuario) {
@@ -234,7 +238,7 @@
                 }
               });
               
-              this.actualizarVacantes();
+              this.buscarPostulacionesDelUsuario();
             } catch (err) {
               console.log(err.response.data.error);
             }

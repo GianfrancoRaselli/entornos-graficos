@@ -33,7 +33,7 @@ const store = new Vuex.Store({
 
     async logOut ({ dispatch }) {
       await dispatch('attempt', null);
-      EventBus.$emit('actualizarUltimasVacantes');
+      EventBus.$emit('actualizarVacantes');
       router.push('/');
     },
 
