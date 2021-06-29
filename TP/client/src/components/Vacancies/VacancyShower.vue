@@ -5,51 +5,68 @@
       <i class="fas fa-exclamation-triangle mt-5" style="font-size: 5rem"></i> 
       <p class="mt-5 mb-5">¡No hay vacantes!</p>
     </div>
-    <div class="vacancies" v-if="vacantes.length">
-      <div class="vacancy" v-for="(vacante, index) in vacantes" :key="index">
-        <div class="descripcion">
-          <p>{{ vacante.descripcion }}</p>
+    <div v-if="vacantes.length">
+      <div class="vacancies">
+        <div class="vacancy" v-for="(vacante, index) in limitVacancies" :key="index">
+          <div class="descripcion">
+            <p>{{ vacante.descripcion }}</p>
+          </div>
+          <div class="vacancy-content">
+            <div class="definicion">
+              <p>{{ vacante.definicion }}</p>
+            </div>
+            <div>
+              <p>
+                <i class="fas fa-check-circle"></i>&nbsp;<strong>Requisitos:</strong>&nbsp;{{ vacante.requisitos }}
+              </p>
+            </div>
+            <div class="fecha-fin">
+              <p>
+                <i class="fas fa-calendar"></i>&nbsp;<strong>Fecha de cierre:</strong>&nbsp;{{ vacante.fecha_fin }}
+              </p>
+            </div>
+            <div class="postulado alert alert-success" role="alert" v-if="vacante.usuarioPostulado">
+              Ya se encuentra postulado
+            </div>
+            <div class="pocas-vacantes" role="alert" v-if="!vacante.usuarioPostulado && vacante.vacantes_disponibles <= 3">
+              <p v-if="vacante.vacantes_disponibles > 1">
+                <i class="fas fa-exclamation-circle"></i>&nbsp;¡Quedan solo {{ vacante.vacantes_disponibles }} vacantes!
+              </p>
+              <p v-if="vacante.vacantes_disponibles === 1">
+                <i class="fas fa-exclamation-circle"></i>&nbsp;¡Última vacante disponible!
+              </p>
+            </div>
+            <div v-if="!authenticated" class="vacancy-options">
+              <utn-button @click="postularme(vacante.id)">
+                Postularme
+              </utn-button>
+              <LogIn dataTarget="loginPostulacionPopup" :postularse="true" :id_llamado="id_llamado" redirect="/perfil" />
+            </div>
+            <div class="vacancy-options" v-else>
+              <utn-button @click="postularme(vacante.id)" v-if="!vacante.usuarioPostulado">
+                Postularme
+              </utn-button>
+              <button @click="darmeDeBaja(vacante.id)" class="btn btn-danger" v-if="vacante.usuarioPostulado">
+                Darme de baja
+              </button>
+            </div>
+          </div>
         </div>
-        <div class="vacancy-content">
-          <div class="definicion">
-            <p>{{ vacante.definicion }}</p>
-          </div>
-          <div>
-            <p>
-              <i class="fas fa-check-circle"></i>&nbsp;<strong>Requisitos:</strong>&nbsp;{{ vacante.requisitos }}
-            </p>
-          </div>
-          <div class="fecha-fin">
-            <p>
-              <i class="fas fa-calendar"></i>&nbsp;<strong>Fecha de cierre:</strong>&nbsp;{{ vacante.fecha_fin }}
-            </p>
-          </div>
-          <div class="postulado alert alert-success" role="alert" v-if="vacante.usuarioPostulado">
-            Ya se encuentra postulado
-          </div>
-          <div class="pocas-vacantes" role="alert" v-if="!vacante.usuarioPostulado && vacante.vacantes_disponibles <= 3">
-            <p v-if="vacante.vacantes_disponibles > 1">
-              <i class="fas fa-exclamation-circle"></i>&nbsp;¡Quedan solo {{ vacante.vacantes_disponibles }} vacantes!
-            </p>
-            <p v-if="vacante.vacantes_disponibles === 1">
-              <i class="fas fa-exclamation-circle"></i>&nbsp;¡Última vacante disponible!
-            </p>
-          </div>
-          <div v-if="!authenticated" class="vacancy-options">
-            <utn-button @click="postularme(vacante.id)">
-              Postularme
-            </utn-button>
-            <LogIn dataTarget="loginPostulacionPopup" :postularse="true" :id_llamado="id_llamado" redirect="/perfil" />
-          </div>
-          <div class="vacancy-options" v-else>
-            <utn-button @click="postularme(vacante.id)" v-if="!vacante.usuarioPostulado">
-              Postularme
-            </utn-button>
-            <button @click="darmeDeBaja(vacante.id)" class="btn btn-danger" v-if="vacante.usuarioPostulado">
-              Darme de baja
-            </button>
-          </div>
-        </div>
+      </div>
+      <div class="w-100 mt-2">
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-center">
+            <li class="page-item" :class="{ disabled: pag===1 }">
+              <a class="page-link" href="#" tabindex="-1" @click.prevent="disminuirPag">Anterior</a>
+            </li>
+            <li class="page-item" v-for="n in numeros" :key="n">
+              <a class="page-link" href="#" @click.prevent="pag=n">{{ n }}</a>
+              </li>
+            <li class="page-item" :class="{ disabled: pag===Math.ceil(vacantes.length/limit) }">
+              <a class="page-link" href="#" @click.prevent="aumentarPag">Siguiente</a>
+            </li>
+          </ul>
+        </nav>
       </div>
     </div>
   </div>
@@ -67,7 +84,8 @@ export default {
     return {
       postulacionesDelUsuario: [],
       vacantes: [],
-      id_llamado: null
+      id_llamado: null,
+      pag: 1
     }
   },
   computed: {
@@ -76,18 +94,30 @@ export default {
       isUsuario: 'isUsuario',
     }),
 
-    /*limitVacancies(){
-      return this.limit ? this.vacantes.slice(0, this.limit) : this.vacantes;
-    }*/
+    limitVacancies() {
+      return this.vacantes.slice(this.pag*this.limit-this.limit, this.pag*this.limit);
+    },
+
+    numeros() {
+      return Math.ceil(this.vacantes.length/this.limit);
+    }
   },
   props: {
-    //limit: { type: Number },
+    limit: { type: Number, default: 12 },
     ultimasVacantes: { type: Boolean, default: false }
   },
   methods: {
     ...mapActions({
-        logOut: 'logOut'
-      }),
+      logOut: 'logOut'
+    }),
+
+    disminuirPag() {
+      if (this.pag>1) this.pag--;
+    },
+
+    aumentarPag() {
+      if (this.pag<Math.ceil(this.vacantes.length/this.limit)) this.pag++;
+    },
 
     async buscarPostulacionesDelUsuario() {
       if (this.$store.getters.authenticated && this.$store.getters.isUsuario) {
@@ -140,6 +170,7 @@ export default {
     async actualizarVacantes() {
       this.postulacionesDelUsuario = [];
       this.vacantes = [];
+      this.pag = 1;
 
       if (this.$store.getters.authenticated && this.$store.getters.isUsuario) {
         await this.buscarPostulacionesDelUsuario();
