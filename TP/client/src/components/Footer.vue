@@ -2,13 +2,12 @@
   <footer>
     <div class="footer-container">
       <div class="col">
-        Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni
+        <p class="title"><strong>FACULTAD REGIONAL ROSARIO</strong></p>
+        <p><strong>Universidad Tecnológica Nacional</strong></p>
       </div>
       <div class="col">
-        Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni
-      </div>
-      <div class="col">
-        Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni
+        <p><router-link class="link" to="/contacto">Contacto</router-link>: ZEBALLOS 1341 - S2000BQA - ROSARIO</p>
+        <p>Télefono directo: 0341 - 4481871</p>
       </div>
     </div>
   </footer>
@@ -21,7 +20,23 @@
 </script>
 
 <style>
-  .footer-container{
+  .title {
+    font-size: x-large;
+  }
+
+  .col {
+    text-align: center;
+  }
+
+  .link {
+    color: RGBA(255, 255, 255, .5);
+  }
+
+  .link:hover {
+    color: RGBA(255, 255, 255, .5);
+  }
+
+  .footer-container {
     display: flex;
     background-color: RGBA(0, 0, 0, .8);
     color: RGBA(255, 255, 255, .5);
