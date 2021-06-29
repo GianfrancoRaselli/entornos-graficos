@@ -15,26 +15,32 @@
         <div class="card-body">
           <form @submit.prevent="handleSubmit">
             <div class="form-group">
+              <label><strong>DNI</strong></label>
               <input type="text" v-model="user.dni" placeholder="DNI" class="form-control" autofocus>
             </div>
             <br>
             <div class="form-group">
+              <label><strong>Nombre Usuario</strong></label>
               <input type="text" v-model="user.nombre_usuario" placeholder="Nombre Usuario" class="form-control">
             </div>
             <br>
             <div class="form-group">
+              <label><strong>Clave</strong></label>
               <input type="password" v-model="user.clave" placeholder="Clave" class="form-control">
             </div>
             <br>
             <div class="form-group">
+              <label><strong>Nombre y Apellido</strong></label>
               <input type="text" v-model="user.nombre_apellido" placeholder="Nombre y Apellido" class="form-control" autofocus>
             </div>
             <br>
             <div class="form-group">
+              <label><strong>Email</strong></label>
               <input type="email" v-model="user.email" placeholder="Email" class="form-control">
             </div>
             <br>
             <div class="form-group">
+              <label><strong>Teléfono</strong></label>
               <input type="text" v-model="user.telefono" placeholder="Teléfono" class="form-control">
             </div>
             <br>

@@ -13,13 +13,15 @@
       </div>
       <div class="text-center animate__animated animate__flipInY animate__fast">
         <div class="card-body">
-          <img src="../assets/img-signin.png" alt="Logo Inicio Sesion" class="card-img-top mx-auto m-2 rounded-circle w-25">
+          <img src="../assets/img-signin.png" alt="Logo Inicio Sesion" class="card-img-top mx-auto m-4 rounded-circle w-25">
           <form @submit.prevent="handleSubmit">
             <div class="form-group">
+              <label><strong>Nombre Usuario</strong></label>
               <input type="text" v-model="user.nombre_usuario" placeholder="Nombre Usuario" class="form-control">
             </div>
             <br>
             <div class="form-group">
+              <label><strong>Clave</strong></label>
               <input type="password" v-model="user.clave" placeholder="Clave" class="form-control">
             </div>
             <br>
@@ -33,7 +35,7 @@
                 btnClass="btn btn-link"
                 @click="abrirSignUp"
               >
-                ¿No tienes cuenta? Regístrate!
+                ¿No tienes cuenta? ¡Regístrate!
               </utn-button>
             </div>
           </form>

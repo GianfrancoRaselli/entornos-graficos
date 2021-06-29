@@ -68,8 +68,8 @@
     data() {
       return {
         userNavItems: [
-          { name: 'Crear cuenta', icon: 'fas fa-user', btnClass: 'btn btn-light', target: '#signUpPopup' },
-          { name: 'Iniciar sesión', icon: 'fas fa-id-card', btnClass: 'btn btn-primary', target: '#loginPopup' },
+          { name: 'Crear cuenta', icon: 'fas fa-user-plus', btnClass: 'btn btn-light', target: '#signUpPopup' },
+          { name: 'Iniciar sesión', icon: 'fas fa-sign-in-alt', btnClass: 'btn btn-primary', target: '#loginPopup' },
         ]
       }
     },
