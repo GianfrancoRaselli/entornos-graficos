@@ -46,7 +46,7 @@
               <utn-button @click="postularme(vacante.id)" v-if="!vacante.usuarioPostulado">
                 Postularme
               </utn-button>
-              <button @click="darmeDeBaja(vacante.id)" class="btn btn-danger" v-if="vacante.usuarioPostulado">
+              <button @click="modalDarmeDeBaja(vacante)" class="btn btn-danger" v-if="vacante.usuarioPostulado">
                 Darme de baja
               </button>
             </div>
@@ -77,6 +77,7 @@
 
 <script>
 import axios from 'axios'
+import Swal from 'sweetalert2'
 import { mapGetters, mapActions } from 'vuex'
 import EventBus from '../../event-bus'
 export default {
@@ -234,6 +235,20 @@ export default {
         this.id_llamado = id_llamado;
         window.$("#loginPostulacionPopup").modal('show');
       }
+    },
+
+    modalDarmeDeBaja(vacante) {
+      Swal.fire({
+        title: '¿Seguro desea darse de baja del llamado de ' + vacante.descripcion + ' del ' + vacante.fecha_inicio + '?',
+        showDenyButton: true,
+        showCancelButton: true,
+        showConfirmButton: false,
+        denyButtonText: `Darme de baja`,
+      }).then((result) => {
+        if (result.isDenied) {
+          this.darmeDeBaja(vacante.id);
+        }
+      })
     },
 
     async darmeDeBaja(id_llamado) {

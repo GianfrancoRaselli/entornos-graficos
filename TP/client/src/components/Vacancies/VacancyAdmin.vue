@@ -33,7 +33,7 @@
             <utn-button @click="buscarInscriptos(vacante.id, vacante.descripcion, vacante.fecha_inicio)">
               <i class="fas fa-list"></i> Ver inscriptos
             </utn-button>
-            <utn-button @click="eliminarVacante(vacante.id)" v-if="isAdministrador" btnClass="btn btn-danger">
+            <utn-button @click="modalEliminarVacante(vacante)" v-if="isAdministrador" btnClass="btn btn-danger">
               <i class="fas fa-trash-alt"></i> Eliminar Vacante
             </utn-button>
           </div>
@@ -48,6 +48,7 @@
 
 <script>
 import axios from 'axios'
+import Swal from 'sweetalert2'
 import { mapGetters } from 'vuex'
 import EventBus from '../../event-bus'
 export default {
@@ -87,6 +88,20 @@ export default {
       this.title = 'Inscriptos al llamado de ' + desc + ' del ' + fecha_inicio;
       EventBus.$emit('buscarInscriptos', id_llamado);
       window.$("#listInscriptos").modal('show');
+    },
+
+    modalEliminarVacante(vacante) {
+      Swal.fire({
+        title: '¿Seguro desea eliminar el llamado de ' + vacante.descripcion + ' del ' + vacante.fecha_inicio + '?',
+        showDenyButton: true,
+        showCancelButton: true,
+        showConfirmButton: false,
+        denyButtonText: `Eliminar`,
+      }).then((result) => {
+        if (result.isDenied) {
+          this.eliminarVacante(vacante.id);
+        }
+      })
     },
 
     async eliminarVacante(id_llamado) {

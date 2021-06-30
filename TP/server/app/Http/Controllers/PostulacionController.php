@@ -31,10 +31,10 @@ class PostulacionController extends Controller
   public function agregarPostulacionDelUsuario(Request $request)
   {
     if ($request->id_llamado) {
-      if (!Trabajo::where([['id_persona', auth()->user()->id], ['id_llamado', $request->id_llamado]])->first()) {
-        if(!Postulacion::where([['id_persona', auth()->user()->id], ['id_llamado', $request->id_llamado]])->first()) {
-          $llamado = Llamado::find($request->id_llamado);
-          if ($llamado) {
+      $llamado = Llamado::find($request->id_llamado);
+      if ($llamado) {
+        if (!Trabajo::where([['id_persona', auth()->user()->id], ['id_catedra', $llamado->catedra->id]])->first()) {
+          if(!Postulacion::where([['id_persona', auth()->user()->id], ['id_llamado', $request->id_llamado]])->first()) {
             $fechaDeHoy = strtotime(date('Y-m-d'));
             if ((strtotime($llamado->fecha_fin) >= $fechaDeHoy) && (strtotime($llamado->fecha_inicio) <= $fechaDeHoy)) {
               if ($llamado->vacantes > count($llamado->postulaciones)) {
@@ -56,13 +56,13 @@ class PostulacionController extends Controller
               return response()->json(['error' => 'No se puede inscibir en esta fecha'], 406, []);
             }
           } else {
-            return response()->json(['error' => 'No existe el llamado'], 406, []);
+            return response()->json(['error' => 'El usuario ya se encuentra postulado al llamado'], 406, []);
           }
         } else {
-          return response()->json(['error' => 'El usuario ya se encuentra postulado al llamado'], 406, []);
+          return response()->json(['error' => 'El usuario ya forma parte de la cátedra'], 406, []);
         }
       } else {
-        return response()->json(['error' => 'El usuario ya forma parte de la cátedra'], 406, []);
+        return response()->json(['error' => 'No existe el llamado'], 406, []);
       }
     } else {
       return response()->json(['error' => 'Ingrese todos los datos requeridos'], 406, []);
