@@ -33,22 +33,17 @@
           <div class="card-body">
             <form @submit.prevent="handleSubmit">
               <div class="form-group">
-                <input type="text" v-model="user.dni" placeholder="DNI" class="form-control" autofocus>
-              </div>
-              <br>
-              <div class="form-group">
+                <label>Nombre Usuario</label>
                 <input type="text" v-model="user.nombre_usuario" placeholder="Nombre Usuario" class="form-control">
               </div>
               <br>
               <div class="form-group">
-                <input type="text" v-model="user.nombre_apellido" placeholder="Nombre y Apellido" class="form-control" autofocus>
-              </div>
-              <br>
-              <div class="form-group">
+                <label>Email</label>
                 <input type="email" v-model="user.email" placeholder="Email" class="form-control">
               </div>
               <br>
               <div class="form-group">
+                <label>Teléfono</label>
                 <input type="text" v-model="user.telefono" placeholder="Teléfono" class="form-control">
               </div>
               <br>
@@ -75,9 +70,8 @@
         error: false,
         errorMessage: '',
         user: {
-          dni: '',
           nombre_usuario: '',
-          nombre_apellido: '',
+          clave: '',
           email: '',
           telefono: ''
         }
@@ -97,8 +91,6 @@
                 Authorization: 'Bearer ' + this.$store.getters.user.api_token
               }
             });
-            this.user.dni = res.data[0].dni;
-            this.user.nombre_usuario = res.data[0].nombre_usuario;
             this.user.nombre_apellido = res.data[0].nombre_apellido;
             this.user.email = res.data[0].email;
             this.user.telefono = res.data[0].telefono;

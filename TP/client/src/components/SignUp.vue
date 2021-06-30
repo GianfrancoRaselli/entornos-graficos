@@ -45,6 +45,13 @@
             </div>
             <br>
             <div class="form-group">
+              <label for="labelInputCV">Curriculum Vitae</label>
+              <input type="file" @change="obtenerArchivo" placeholder="CV" class="form-control" accept="pdf" required/>
+              <small class="form-text text-muted" v-if="!errorFormato"><p>Ingrese su CV en formado PDF</p></small>
+              <medium class="form-text text-muted" v-if="errorFormato"><p class="error">Ingrese su CV en formado PDF</p></medium>
+            </div>
+            <br>
+            <div class="form-group">
               <button class="btn btn-success btn-block">
                 Crear Cuenta
               </button>
@@ -64,6 +71,7 @@
       return {
         error: false,
         errorMessage: '',
+        errorFormato: false,
         user: {
           dni: '1234567892',
           nombre_usuario: 'testing',
@@ -71,6 +79,7 @@
           nombre_apellido: 'Testing Tester2',
           email: 'testing@test2.com',
           telefono: '123456789',
+          curriculum_vitae: null,
           rol: 'Usuario',
         }
       }
@@ -84,18 +93,40 @@
         try {
           this.error = false;
 
-          await this.signUp(this.user);
+          if (!this.errorFormato) {
+            let formData = new FormData();
+            for (let clave in this.user){
+              formData.append(clave, this.user[clave]);
+            }
 
-          this.$router.push({ path: '/perfil', query: { key: 'signup' } });
-          
-          window.$("#signUpPopup").modal('hide');
-          window.$('body').removeClass('modal-open');
-          window.$('.modal-backdrop').remove();
+            await this.signUp(formData);
+
+            this.$router.push({ path: '/perfil', query: { key: 'signup' } });
+            
+            window.$("#signUpPopup").modal('hide');
+            window.$('body').removeClass('modal-open');
+            window.$('.modal-backdrop').remove();
+          }
         } catch (err) {
           this.errorMessage = err.response.data.error;
           this.error = true;
         }
-      }
+      },
+
+      obtenerArchivo(e) {
+        if (e.target.files[0].name.split('.').pop() === 'pdf') {
+          this.errorFormato = false;
+          this.user.curriculum_vitae = e.target.files[0];
+        } else {
+          this.errorFormato = true;
+        }
+      },
     }
   }
 </script>
+
+<style>
+  .error {
+    color: red;
+  }
+</style>

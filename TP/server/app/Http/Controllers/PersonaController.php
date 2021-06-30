@@ -23,6 +23,8 @@ class PersonaController extends Controller
             && $request->email
             && $request->telefono
             && $request->rol
+            && $request->curriculum_vitae
+            && $request->hasFile('curriculum_vitae')
         ) {
             if (!Persona::where('dni', $request->dni)->first()) {
                 if (!Persona::where('nombre_usuario', $request->nombre_usuario)->first()) {
@@ -39,6 +41,11 @@ class PersonaController extends Controller
                         $persona->telefono = $request->telefono;
 
                         $persona->save();
+
+                        $file = $request->file('curriculum_vitae');
+                        $name = 'CV_' . Str::random(5) . $persona->id . Str::random(5) . '.pdf';
+                        $file->move(base_path('public') . '/CVs/', $name);
+                        $persona->curriculum_vitae = $name;
 
                         $persona->api_token = Str::random(30) . $persona->id . Str::random(30);
 
