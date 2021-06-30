@@ -84,6 +84,7 @@
 
 <script>
 import axios from 'axios'
+import Swal from 'sweetalert2'
 import EventBus from '../../event-bus'
 export default {
   props: {
@@ -179,6 +180,8 @@ export default {
         }
 
         if (!error) {
+          this.calificandoLlamado(true);
+
           try {
             await axios.post('/llamados/calificarLlamado',
             {
@@ -189,12 +192,43 @@ export default {
                 Authorization: 'Bearer ' + this.$store.getters.user.api_token
               }
             });
+
+            this.calificandoLlamado(false);
             
             this.buscarInscriptos(this.llamado.id);
           } catch (err) {
+            this.calificandoLlamado(false);
+
             console.log(err.response.data.error);
           }
         }
+      }
+    },
+
+    calificandoLlamado (calificandoLlamado) {
+      if (calificandoLlamado) {
+        let timerInterval
+        Swal.fire({
+          title: 'Calificando llamado',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading()
+            timerInterval = setInterval(() => {
+              const content = Swal.getHtmlContainer()
+              if (content) {
+                const b = content.querySelector('b')
+                if (b) {
+                  b.textContent = Swal.getTimerLeft()
+                }
+              }
+            }, 100)
+          },
+          willClose: () => {
+            clearInterval(timerInterval)
+          }
+        })
+      } else {
+        Swal.close();
       }
     }
   },

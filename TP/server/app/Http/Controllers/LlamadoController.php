@@ -9,6 +9,12 @@ use App\Models\Catedra;
 use App\Models\Persona;
 use Illuminate\Support\Facades\DB;
 use Exception;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+
+require __DIR__.'/../../../config/PHPMailer/Exception.php';
+require __DIR__.'/../../../config/PHPMailer/PHPMailer.php';
+require __DIR__.'/../../../config/PHPMailer/SMTP.php';
 
 class LlamadoController extends Controller
 {
@@ -168,6 +174,8 @@ class LlamadoController extends Controller
     if ($request->llamado) {
       $llamado = Llamado::find($request->llamado["id"]);
       if ($llamado->fecha_fin < strtotime(date('Y-m-d'))) {
+        $postulacionesAEnviarCorreo = [];
+
         try {
           DB::beginTransaction();
 
@@ -183,6 +191,8 @@ class LlamadoController extends Controller
             $postulacionAEditar->comentarios = $postulacion["comentariosEditado"];
 
             $postulacionAEditar->save();
+            
+            $postulacionesAEnviarCorreo[] = $postulacionAEditar;
           }
 
           $llamado->calificado = true;
@@ -194,11 +204,74 @@ class LlamadoController extends Controller
 
           return response()->json(['error' => $e->getMessage()], 406, []);
         }
+
+        try {
+          $this->enviarMails($postulacionesAEnviarCorreo);
+        } catch (Exception $e) {
+          return response()->json(['error' => 'Error al enviar correos electrónicos'], 406, []);
+        }
       } else {
         return response()->json(['error' => 'No se puede calificar el llamado en esta fecha'], 406, []);
       }
     } else {
       return response()->json(['error' => 'Envie un llamado'], 406, []);
+    }
+  }
+
+  private function enviarMails($postulacionesAEnviarCorreo) {
+    if (count($postulacionesAEnviarCorreo) > 0) {
+      $mail = new PHPMailer(true);
+
+      $mail->SMTPDebug = SMTP::DEBUG_SERVER; 
+      $mail->isSMTP();
+      $mail->Host = 'smtp.gmail.com';
+      $mail->SMTPAuth = true;
+      $mail->Username = 'utn.facultad.regional.rosario@gmail.com';
+      $mail->Password = 'utn-rosario';
+      $mail->SMTPSecure = 'tls';
+      $mail->Port = 587;
+      $mail->SMTPOptions = array (
+        'ssl' => array (
+          'verify_peer' => false,
+          'verify_peer_name' => false,
+          'allow_self_signed' => true
+        )
+      );
+
+      $mail->setFrom('utn.facultad.regional.rosario@gmail.com', 'UTN - FRRO');
+
+      $mail->isHTML(true);
+      $mail->CharSet = 'UTF-8';
+
+      foreach ($postulacionesAEnviarCorreo as $postulacion) {
+        $mail->addAddress($postulacion->persona->email);
+
+        $mail->Subject = 'Orden de mérito - ' . $postulacion->llamado->catedra->descripcion;
+        if ($postulacion->comentarios) {
+          $mail->Body = '
+                        <div style="font-size: large;">
+                          <p>¡Buen día!</p>
+                          <ul>
+                            <ul>Estado: <b>' . $postulacion->estado .'</b></ul>
+                            <ul>Calificación: ' . $postulacion->puntaje . '%</ul>
+                            <ul>Comentarios: ' . $postulacion->comentarios . '</ul>
+                          </ul>
+                        </div>
+                        ';
+        } else {
+          $mail->Body = '
+                        <div style="font-size: large;">
+                          <p>¡Buen día!</p>
+                          <ul>
+                            <li>Estado: <b>' . $postulacion->estado .'</b></li>
+                            <li>Calificación: ' . $postulacion->puntaje . '%</li>
+                          </ul>
+                        </div>
+                        ';
+        }
+
+        $mail->send();
+      }
     }
   }
 
