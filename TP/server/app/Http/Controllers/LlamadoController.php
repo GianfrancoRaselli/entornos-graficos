@@ -134,7 +134,7 @@ class LlamadoController extends Controller
     try {
       $llamados = Llamado::join('catedras', 'catedras.id', '=', 'llamados.id_catedra')
       ->select('llamados.id', 'llamados.fecha_inicio', 'llamados.fecha_fin', 'llamados.vacantes',
-      'llamados.requisitos', 'catedras.descripcion', 'catedras.definicion')
+      'llamados.requisitos', 'catedras.id as id_catedra', 'catedras.descripcion', 'catedras.definicion')
       ->where('calificado', '=', true)->get();
     
       return response()->json($llamados);

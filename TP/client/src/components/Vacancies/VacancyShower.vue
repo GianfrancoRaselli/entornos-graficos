@@ -7,7 +7,7 @@
     </div>
     <div v-if="vacantes.length">
       <div class="vacancies">
-        <div class="vacancy" v-for="(vacante, index) in limitVacancies" :key="index">
+        <div class="vacancy" v-for="(vacante, index) in limitVacantes" :key="index">
           <div class="descripcion">
             <p>{{ vacante.descripcion }}</p>
           </div>
@@ -99,7 +99,7 @@ export default {
       isUsuario: 'isUsuario',
     }),
 
-    limitVacancies() {
+    limitVacantes() {
       return this.vacantes.slice(this.pag*this.limit-this.limit, this.pag*this.limit);
     },
 

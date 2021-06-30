@@ -45,7 +45,7 @@
             </div>
             <br>
             <div class="form-group">
-              <label for="labelInputCV">Curriculum Vitae</label>
+              <label><strong>Curriculum Vitae</strong></label>
               <input type="file" @change="obtenerArchivo" placeholder="CV" class="form-control" accept="pdf" required/>
               <small class="form-text text-muted" v-if="!errorFormato"><p>Ingrese su CV en formado PDF</p></small>
               <medium class="form-text text-muted" v-if="errorFormato"><p class="error">Ingrese su CV en formado PDF</p></medium>
