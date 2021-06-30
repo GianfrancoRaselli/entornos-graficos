@@ -4,15 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Trabajan extends Model
+class Trabajo extends Model
 {
     protected $table = "personas_catedras";
 
     protected $fillable = [
         'id_persona',
-        'id_catedra',
-        'fecha_desde',
-        'fecha_hasta'
+        'id_catedra'
     ];
 
     public $timestamps = false;

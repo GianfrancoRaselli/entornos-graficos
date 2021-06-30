@@ -27,7 +27,8 @@ class Persona extends Model implements AuthenticatableContract, AuthorizableCont
         'nombre_apellido',
         'email',
         'telefono',
-        'api_token'
+        'api_token',
+        'curriculum_vitae'
     ];
 
     /**
@@ -53,6 +54,6 @@ class Persona extends Model implements AuthenticatableContract, AuthorizableCont
 
     public function trabajos()
     {
-        return $this->hasMany('App\Models\Trabajan', 'id_persona');
+        return $this->hasMany('App\Models\Trabajo', 'id_persona');
     }
 }

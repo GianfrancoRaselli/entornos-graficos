@@ -11,7 +11,9 @@ class Llamado extends Model
     protected $fillable = [
         'fecha_inicio',
         'fecha_fin',
+        'requisitos',
         'vacantes',
+        'calificado',
         'id_catedra'
     ];
 

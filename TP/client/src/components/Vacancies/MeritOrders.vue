@@ -37,7 +37,7 @@
         </div>
       </div>
       <Popup dataTarget="listInscriptos" :title="title" :showButtons="false" propClass="modal-xl">
-        <ListInscriptos :edit="false" />
+        <ListInscriptos :edit_mode="false" />
       </Popup>
     </div>
   </div>

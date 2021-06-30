@@ -42,13 +42,16 @@
               </utn-button>
               <LogIn dataTarget="loginPostulacionPopup" :postularse="true" :id_llamado="id_llamado" redirect="/perfil" />
             </div>
-            <div class="vacancy-options" v-else>
+            <div class="vacancy-options" v-else-if="isUsuario && !vacante.usuarioTrabajaEnLaCatedra">
               <utn-button @click="postularme(vacante.id)" v-if="!vacante.usuarioPostulado">
                 Postularme
               </utn-button>
               <button @click="darmeDeBaja(vacante.id)" class="btn btn-danger" v-if="vacante.usuarioPostulado">
                 Darme de baja
               </button>
+            </div>
+            <div v-else-if="isUsuario && vacante.usuarioTrabajaEnLaCatedra">
+              <p>Ya forma parte de la cátedra</p>
             </div>
           </div>
         </div>
@@ -83,6 +86,7 @@ export default {
   data() {
     return {
       postulacionesDelUsuario: [],
+      trabajosDelUsuario: [],
       vacantes: [],
       id_llamado: null,
       pag: 1
@@ -136,6 +140,23 @@ export default {
       }
     },
 
+    async buscarTrabajosDelUsuario() {
+      if (this.$store.getters.authenticated && this.$store.getters.isUsuario) {
+        try {
+          let res = await axios.get('/trabajos/buscarTrabajosDelUsuario',
+          {
+            headers: {
+              Authorization: 'Bearer ' + this.$store.getters.user.api_token
+            }
+          });
+
+          this.trabajosDelUsuario = res.data;
+        } catch (err) {
+          console.log(err.response.data.error);
+        }
+      }
+    },
+
     async buscarVacantes() {
       try {
         let res = null;
@@ -149,11 +170,21 @@ export default {
         if (vacantes && vacantes.length > 0) {
           for (let vacante of vacantes) {
             vacante.usuarioPostulado = false;
+            vacante.usuarioTrabajaEnLaCatedra = false;
 
             if (this.postulacionesDelUsuario && this.postulacionesDelUsuario.length > 0) {
               for (let postulacion of this.postulacionesDelUsuario) {
                 if (vacante.id === postulacion.id_llamado) {
                   vacante.usuarioPostulado = true;
+                  break;
+                }
+              }
+            }
+
+            if (this.trabajosDelUsuario && this.trabajosDelUsuario.length > 0) {
+              for (let trabajo of this.trabajosDelUsuario) {
+                if (vacante.id_catedra === trabajo.id_catedra) {
+                  vacante.usuarioTrabajaEnLaCatedra = true;
                   break;
                 }
               }
@@ -169,11 +200,13 @@ export default {
 
     async actualizarVacantes() {
       this.postulacionesDelUsuario = [];
+      this.trabajosDelUsuario = [];
       this.vacantes = [];
       this.pag = 1;
 
       if (this.$store.getters.authenticated && this.$store.getters.isUsuario) {
         await this.buscarPostulacionesDelUsuario();
+        await this.buscarTrabajosDelUsuario();
       }
       await this.buscarVacantes();
     },

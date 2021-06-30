@@ -48,6 +48,8 @@ $router->group(['middleware' => ['auth']], function () use ($router) {
         $router->post('/postulaciones/agregarPostulacionDelUsuario', 'PostulacionController@agregarPostulacionDelUsuario');
     
         $router->delete('/postulaciones/eliminarPostulacionDelUsuario/{id_llamado}', 'PostulacionController@eliminarPostulacionDelUsuario');
+
+        $router->get('/trabajos/buscarTrabajosDelUsuario', 'TrabajoController@buscarTrabajosDelUsuario');
     });
 
     $router->group(['middleware' => ['llamado']], function () use ($router) {

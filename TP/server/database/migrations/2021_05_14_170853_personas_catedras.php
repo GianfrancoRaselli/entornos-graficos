@@ -17,10 +17,8 @@ class PersonasCatedras extends Migration
             $table->id();
             $table->unsignedBigInteger('id_persona');
             $table->unsignedBigInteger('id_catedra');
-            $table->date('fecha_desde');
-            $table->date('fecha_hasta')->nullable();
 
-            $table->unique(['id_persona', 'id_catedra', 'fecha_desde']);
+            $table->unique(['id_persona', 'id_catedra']);
 
             $table->foreign('id_persona')->references('id')->on('personas');
             $table->foreign('id_catedra')->references('id')->on('catedras');

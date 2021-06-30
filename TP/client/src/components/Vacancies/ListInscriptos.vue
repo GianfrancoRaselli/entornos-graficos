@@ -1,11 +1,16 @@
 <template>
   <div>
     <div class="inscriptos" v-if="llamado && llamado.postulaciones && llamado.postulaciones.length > 0">
-      <div class="mb-2 buttons-nav" v-if="edit">
+      <div class="mb-2 buttons-nav" v-if="edit_mode">
         <div v-if="llamado.finalizado">
-          <button class="btn btn-primary mr-1" @click="calificar" v-if="!editando"><i class="fas fa-edit"></i> Calificar</button>
-          <button class="btn btn-success ml-1" v-if="editando" @click="guardar"><i class="fas fa-save"></i> Guardar cambios</button>
-          <button class="btn btn-danger ml-1" v-if="editando" @click="cancelar"><i class="fas fa-times-circle"></i> Cancelar cambios</button>
+          <div v-if="!llamado.calificado">
+            <button class="btn btn-primary mr-1" @click="calificar" v-if="!editando"><i class="fas fa-edit"></i> Calificar</button>
+            <button class="btn btn-success ml-1" v-if="editando" @click="guardar"><i class="fas fa-save"></i> Guardar cambios</button>
+            <button class="btn btn-danger ml-1" v-if="editando" @click="cancelar"><i class="fas fa-times-circle"></i> Cancelar cambios</button>
+          </div>
+          <div v-else>
+            <p>El llamado ya se encuentra calificado</p>
+          </div>
         </div>
         <div v-else>
           <p>El llamado cierra el: {{ llamado.fecha_fin }}</p>
@@ -16,26 +21,26 @@
           <tr>
             <th>DNI</th>
             <th>Nombre y apellido</th>
-            <th v-if="edit">Email</th>
-            <th v-if="edit">Teléfono</th>
+            <th v-if="edit_mode">Email</th>
+            <th v-if="edit_mode">Teléfono</th>
             <th>Estado</th>
             <th>Calificación</th>
             <th>Comentarios</th>
-            <th v-if="edit">Acción</th>
+            <th v-if="edit_mode">Acción</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(postulacion, index) in llamado.postulaciones" :key="index">
             <td><div class="columna-md">{{ postulacion.dni }}</div></td>
             <td><div class="columna-md">{{ postulacion.nombre_apellido }}</div></td>
-            <td v-if="edit"><div class="columna-md">{{ postulacion.email }}</div></td>
-            <td v-if="edit"><div class="columna-md">{{ postulacion.telefono }}</div></td>
+            <td v-if="edit_mode"><div class="columna-md">{{ postulacion.email }}</div></td>
+            <td v-if="edit_mode"><div class="columna-md">{{ postulacion.telefono }}</div></td>
             <td>
               <div class="columna-md">
                 <div v-if="!editando">
                   {{ postulacion.estado }}
                 </div>
-                <div v-else-if="edit">
+                <div v-else-if="edit_mode">
                   <select class="form-control" :class="{ errorClass: postulacion.estadoError }" v-model="postulacion.estadoEditado">
                     <option>Aceptar</option>
                     <option>Rechazar</option>
@@ -49,7 +54,7 @@
                   <div v-if="postulacion.puntaje">{{ postulacion.puntaje }}</div>
                   <div v-else>-</div>
                 </div>
-                <div v-else-if="edit">
+                <div v-else-if="edit_mode">
                   <input type="number" class="form-control" :class="{ errorClass: postulacion.puntajeError }" min="0" max="100" v-model="postulacion.puntajeEditado">
                 </div>
               </div>
@@ -60,12 +65,12 @@
                   <div v-if="postulacion.comentarios">{{ postulacion.comentarios }}</div>
                   <div v-else>-</div>
                 </div>
-                <div v-else-if="edit">
+                <div v-else-if="edit_mode">
                   <textarea class="form-control" cols="60" v-model="postulacion.comentariosEditado"></textarea>
                 </div>
               </div>
             </td>
-            <td v-if="edit">
+            <td v-if="edit_mode">
               <div class="columna-md">
                 <a id="btn-ver-cv" class="btn btn-secondary" v-if="postulacion.curriculum_vitae" :href="'http://localhost/Entornos Graficos/entornos-graficos-2021/TP/server/public/CVs/' + postulacion.persona.curriculum_vitae" target="_blank">
                   <i class="fas fa-eye"></i> Ver CV
@@ -88,7 +93,7 @@ import Swal from 'sweetalert2'
 import EventBus from '../../event-bus'
 export default {
   props: {
-    edit: { type: Boolean, default: true },
+    edit_mode: { type: Boolean, default: true },
   },
   data() {
     return {
@@ -98,6 +103,7 @@ export default {
         fecha_fin: '',
         rquisitos: '',
         vacantes: 0,
+        calificado: false,
         finalizado: false,
         catedra: null,
         postulaciones: []
@@ -110,14 +116,14 @@ export default {
       try {
         let res = null;
 
-        if (this.edit && (this.$store.getters.isAdministrador || this.$store.getters.isJefeCatedra)) {
+        if (this.edit_mode && (this.$store.getters.isAdministrador || this.$store.getters.isJefeCatedra)) {
           res = await axios.get('/llamados/buscarLlamado/' + id_llamado,
           {
             headers: {
               Authorization: 'Bearer ' + this.$store.getters.user.api_token
             }
           });
-        } else if (!this.edit) {
+        } else if (!this.edit_mode) {
           res = await axios.get('/llamados/buscarLlamadoCalificado/' + id_llamado);
         }
 
@@ -126,24 +132,27 @@ export default {
         this.llamado.fecha_fin = res.data.fecha_fin;
         this.llamado.requisitos = res.data.requisitos;
         this.llamado.vacantes = res.data.vacantes;
+        this.llamado.calificado = res.data.calificado;
         this.llamado.finalizado = res.data.finalizado;
         this.llamado.catedra = res.data.catedra;
         this.llamado.postulaciones = [];
-        for (let postulacion of res.data.postulaciones) {
-          if (postulacion.estado === "Elegido") {
-            postulacion.estadoEditado = "Aceptar";
-          } else if (postulacion.estado === "No elegido") {
-            postulacion.estadoEditado = "Rechazar";
-          } else {
-            postulacion.estadoEditado = postulacion.estado;
-          }
-          postulacion.puntajeEditado = postulacion.puntaje;
-          postulacion.comentariosEditado = postulacion.comentarios;
-          postulacion.estadoError = false;
-          postulacion.puntajeError = false;
-          postulacion.comentariosError = false;
+        if (res.data.postulaciones) {
+          for (let postulacion of res.data.postulaciones) {
+            if (postulacion.estado === "Elegido") {
+              postulacion.estadoEditado = "Aceptar";
+            } else if (postulacion.estado === "No elegido") {
+              postulacion.estadoEditado = "Rechazar";
+            } else {
+              postulacion.estadoEditado = postulacion.estado;
+            }
+            postulacion.puntajeEditado = postulacion.puntaje;
+            postulacion.comentariosEditado = postulacion.comentarios;
+            postulacion.estadoError = false;
+            postulacion.puntajeError = false;
+            postulacion.comentariosError = false;
 
-          this.llamado.postulaciones.push(postulacion);
+            this.llamado.postulaciones.push(postulacion);
+          }
         }
           
         this.editando = false;
@@ -152,7 +161,7 @@ export default {
       }
     },
     calificar() {
-      if (this.edit && this.llamado.finalizado && (this.$store.getters.isAdministrador || this.$store.getters.isJefeCatedra)) {
+      if (this.edit_mode && this.llamado.finalizado && !this.llamado.calificado && (this.$store.getters.isAdministrador || this.$store.getters.isJefeCatedra)) {
         this.editando = true;
       }
     },
@@ -160,8 +169,8 @@ export default {
       this.editando = false;
     },
     async guardar() {
-      if ((this.$store.getters.isAdministrador || this.$store.getters.isJefeCatedra) && this.edit && this.llamado 
-      && this.llamado.finalizado && this.llamado.postulaciones && this.llamado.postulaciones.length > 0) {
+      if ((this.$store.getters.isAdministrador || this.$store.getters.isJefeCatedra) && this.edit_mode && this.llamado 
+      && this.llamado.finalizado && !this.llamado.calificado && this.llamado.postulaciones && this.llamado.postulaciones.length > 0) {
         let error = false;
         
         for (let postulacion of this.llamado.postulaciones) {

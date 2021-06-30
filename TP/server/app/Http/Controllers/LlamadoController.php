@@ -7,6 +7,7 @@ use App\Models\Llamado;
 use App\Models\Postulacion;
 use App\Models\Catedra;
 use App\Models\Persona;
+use App\Models\Trabajo;
 use Illuminate\Support\Facades\DB;
 use Exception;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -34,14 +35,21 @@ class LlamadoController extends Controller
   
         $llamado->catedra;
 
-        foreach ($llamado->postulaciones as $postulacion) {
-          $persona = Persona::find($postulacion->id_persona);
+        foreach ($llamado->postulaciones as $key => $postulacion) {
+          if (!($llamado->calificado) && Trabajo::where([['id_persona', $postulacion->persona->id], ['id_catedra', $llamado->catedra->id]])->first()) {
+            $postulacion->delete();
+            unset($llamado->postulaciones, $key);
+          }
+        }
 
-          $postulacion->dni = $persona->dni;
-          $postulacion->nombre_apellido = $persona->nombre_apellido;
-          $postulacion->email = $persona->email;
-          $postulacion->telefono = $persona->telefono;
-          $postulacion->curriculum_vitae = $persona->curriculum_vitae;
+        foreach ($llamado->postulaciones as $postulacion) {
+            $persona = Persona::find($postulacion->id_persona);
+
+            $postulacion->dni = $persona->dni;
+            $postulacion->nombre_apellido = $persona->nombre_apellido;
+            $postulacion->email = $persona->email;
+            $postulacion->telefono = $persona->telefono;
+            $postulacion->curriculum_vitae = $persona->curriculum_vitae;
         }
       }
       
@@ -89,10 +97,10 @@ class LlamadoController extends Controller
       ->leftJoin('postulaciones', 'postulaciones.id_llamado', '=', 'llamados.id')
       ->select('llamados.id', 'llamados.fecha_inicio', 'llamados.fecha_fin', 'llamados.vacantes',
       DB::raw('(llamados.vacantes - count(postulaciones.id_llamado)) as vacantes_disponibles'),
-      'llamados.requisitos', 'catedras.descripcion', 'catedras.definicion')
+      'llamados.requisitos', 'catedras.id as id_catedra', 'catedras.descripcion', 'catedras.definicion')
       ->where([['fecha_inicio', '<=', $fechaDeHoy], ['fecha_fin', '>=', $fechaDeHoy]])
       ->groupBy('llamados.id', 'llamados.fecha_inicio', 'llamados.fecha_fin', 'llamados.vacantes', 'llamados.requisitos', 
-      'catedras.descripcion', 'catedras.definicion')->get();
+      'catedras.id', 'catedras.descripcion', 'catedras.definicion')->get();
 
       return response()->json($llamados);
     } catch (Exception $e) {
@@ -109,9 +117,9 @@ class LlamadoController extends Controller
       ->leftJoin('postulaciones', 'postulaciones.id_llamado', '=', 'llamados.id')
       ->select('llamados.id', 'llamados.fecha_inicio', 'llamados.fecha_fin', 'llamados.vacantes',
       DB::raw('(llamados.vacantes - count(postulaciones.id_llamado)) as vacantes_disponibles'),
-      'llamados.requisitos', 'catedras.descripcion', 'catedras.definicion')
+      'llamados.requisitos', 'catedras.id as id_catedra', 'catedras.descripcion', 'catedras.definicion')
       ->where([['fecha_inicio', '<=', $fechaDeHoy], ['fecha_fin', '>=', $fechaDeHoy]])
-      ->groupBy('llamados.id', 'llamados.fecha_inicio', 'llamados.fecha_fin', 'llamados.vacantes', 'llamados.requisitos', 
+      ->groupBy('llamados.id', 'llamados.fecha_inicio', 'llamados.fecha_fin', 'llamados.vacantes', 'llamados.requisitos', 'catedras.id', 
       'catedras.descripcion', 'catedras.definicion')->having(DB::raw('llamados.vacantes - count(postulaciones.id_llamado)'), '<=', 3)
       ->get();
 
@@ -144,7 +152,7 @@ class LlamadoController extends Controller
         try {
           $llamados = Llamado::join('catedras', 'catedras.id', '=', 'llamados.id_catedra')
           ->select('llamados.id', 'llamados.fecha_inicio', 'llamados.fecha_fin', 'llamados.vacantes',
-          'llamados.requisitos', 'catedras.descripcion', 'catedras.definicion')->get();
+          'llamados.requisitos', 'llamados.calificado', 'catedras.descripcion', 'catedras.definicion')->get();
     
           return response()->json($llamados);
         } catch (Exception $e) {
@@ -158,7 +166,7 @@ class LlamadoController extends Controller
         try {
           $llamados = Llamado::join('catedras', 'catedras.id', '=', 'llamados.id_catedra')
           ->select('llamados.id', 'llamados.fecha_inicio', 'llamados.fecha_fin', 'llamados.vacantes',
-          'llamados.requisitos', 'catedras.descripcion', 'catedras.definicion')
+          'llamados.requisitos', 'llamados.calificado', 'catedras.descripcion', 'catedras.definicion')
           ->where('catedras.id_jefe_catedra', '=', auth()->user()->id)->get();
     
           return response()->json($llamados);
@@ -173,45 +181,58 @@ class LlamadoController extends Controller
   {
     if ($request->llamado) {
       $llamado = Llamado::find($request->llamado["id"]);
-      if ($llamado->fecha_fin < strtotime(date('Y-m-d'))) {
-        $postulacionesAEnviarCorreo = [];
+      if (!$llamado->calificado) {
+        if ($llamado->fecha_fin < strtotime(date('Y-m-d'))) {
+          $postulacionesAEnviarCorreo = [];
 
-        try {
-          DB::beginTransaction();
+          try {
+            DB::beginTransaction();
 
-          foreach ($request->llamado["postulaciones"] as $postulacion) {
-            $postulacionAEditar = Postulacion::find($postulacion["id"]);
+            foreach ($request->llamado["postulaciones"] as $postulacion) {
+              $postulacionAEditar = Postulacion::find($postulacion["id"]);
 
-            if ($postulacion["estadoEditado"] == "Aceptar") {
-              $postulacionAEditar->estado = "Elegido";
-            } else if ($postulacion["estadoEditado"] == "Rechazar") {
-              $postulacionAEditar->estado = "No elegido";
+              if (Trabajo::where([['id_persona', $postulacionAEditar->persona->id], ['id_catedra', $llamado->catedra->id]])->first()) {
+                $postulacionAEditar->delete();
+              } else {
+                if ($postulacion["estadoEditado"] == "Aceptar") {
+                  $postulacionAEditar->estado = "Elegido";
+                  
+                  $trabajo = new Trabajo();
+                  $trabajo->id_persona = $postulacionAEditar->persona->id;
+                  $trabajo->id_catedra = $llamado->catedra->id;
+                  $trabajo->save();
+                } else if ($postulacion["estadoEditado"] == "Rechazar") {
+                  $postulacionAEditar->estado = "No elegido";
+                }
+                $postulacionAEditar->puntaje = $postulacion["puntajeEditado"];
+                $postulacionAEditar->comentarios = $postulacion["comentariosEditado"];
+  
+                $postulacionAEditar->save();
+                
+                $postulacionesAEnviarCorreo[] = $postulacionAEditar;
+              }
             }
-            $postulacionAEditar->puntaje = $postulacion["puntajeEditado"];
-            $postulacionAEditar->comentarios = $postulacion["comentariosEditado"];
 
-            $postulacionAEditar->save();
-            
-            $postulacionesAEnviarCorreo[] = $postulacionAEditar;
+            $llamado->calificado = true;
+            $llamado->save();
+
+            DB::commit();
+          } catch (Exception $e) {
+            DB::rollback();
+
+            return response()->json(['error' => $e->getMessage()], 406, []);
           }
 
-          $llamado->calificado = true;
-          $llamado->save();
-
-          DB::commit();
-        } catch (Exception $e) {
-          DB::rollback();
-
-          return response()->json(['error' => $e->getMessage()], 406, []);
-        }
-
-        try {
-          $this->enviarMails($postulacionesAEnviarCorreo);
-        } catch (Exception $e) {
-          return response()->json(['error' => 'Error al enviar correos electrónicos'], 406, []);
+          try {
+            $this->enviarMails($postulacionesAEnviarCorreo);
+          } catch (Exception $e) {
+            return response()->json(['error' => 'Error al enviar correos electrónicos'], 406, []);
+          }
+        } else {
+          return response()->json(['error' => 'No se puede calificar el llamado en esta fecha'], 406, []);
         }
       } else {
-        return response()->json(['error' => 'No se puede calificar el llamado en esta fecha'], 406, []);
+        return response()->json(['error' => 'El llamado ya fue calificado'], 406, []);
       }
     } else {
       return response()->json(['error' => 'Envie un llamado'], 406, []);
@@ -227,7 +248,7 @@ class LlamadoController extends Controller
       $mail->Host = 'smtp.gmail.com';
       $mail->SMTPAuth = true;
       $mail->Username = 'utn.facultad.regional.rosario@gmail.com';
-      $mail->Password = 'utn-rosario';
+      $mail->Password = env('MAIL_PASSWORD');
       $mail->SMTPSecure = 'tls';
       $mail->Port = 587;
       $mail->SMTPOptions = array (
