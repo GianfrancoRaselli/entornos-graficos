@@ -73,7 +73,7 @@ import { mapGetters } from "vuex";
 export default {
   props: {
     desktop: { type: Boolean, default: true },
-    navItemsclass: { required: true, type: String }
+    navItemsclass: { type: String, default: 'navbar-nav' }
   },
   computed: {
     ...mapGetters({

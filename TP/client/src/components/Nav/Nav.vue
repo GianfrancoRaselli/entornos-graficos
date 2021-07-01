@@ -8,7 +8,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-      <NavItems navItemsclass="navbar-nav"/>
+      <NavItems/>
       <ul v-if="authenticated" class="navbar-nav" style="margin-left: auto;">
         <li class="nav-item">
           <utn-button btnClass="dropdown-toggle btn btn-outline-primary" id="navbarDropdown" icon="fas fa-user" data-toggle="dropdown"
