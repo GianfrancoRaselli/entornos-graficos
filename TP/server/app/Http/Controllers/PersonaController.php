@@ -182,7 +182,7 @@ class PersonaController extends Controller
     public function buscarPersonasNoVerificadas()
     {
         try {
-            $personas = Persona::where('verificado', false)->get();
+            $personas = Persona::where('verificada', false)->get();
 
             return response()->json($personas);
         } catch (Exception $e) {
