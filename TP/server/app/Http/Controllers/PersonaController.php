@@ -47,7 +47,7 @@ class PersonaController extends Controller
                         $persona->nombre_apellido = $request->nombre_apellido;
                         $persona->email = $request->email;
                         $persona->telefono = $request->telefono;
-                        $persona->verificado = false;
+                        $persona->verificada = false;
 
                         $persona->save();
 
@@ -91,12 +91,16 @@ class PersonaController extends Controller
                 $persona = Persona::where('nombre_usuario', $request->nombre_usuario)->first();
 
                 if ($persona) {
-                    if (Hash::check($request->clave, $persona->clave)) {
-                        $persona->roles;
+                    if ($persona->verificada) {
+                        if (Hash::check($request->clave, $persona->clave)) {
+                            $persona->roles;
 
-                        return response()->json($persona, 200);
+                            return response()->json($persona, 200);
+                        } else {
+                            return response()->json(['error' => 'Clave incorrecta'], 406, []);
+                        }
                     } else {
-                        return response()->json(['error' => 'Clave incorrecta'], 406, []);
+                        return response()->json(['error' => 'Persona pendiente de verificación'], 406, []);
                     }
                 } else {
                     return response()->json(['error' => 'Persona no encontrada'], 406, []);
@@ -193,7 +197,7 @@ class PersonaController extends Controller
                 $persona = Persona::find($request->id_persona);
                 
                 if ($persona) {
-                    $persona->verificado = true;
+                    $persona->verificada = true;
                     $persona->save();
                     $this->enviarMailVerificacionIdentidad($persona, true);
                 }

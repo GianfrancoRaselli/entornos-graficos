@@ -24,7 +24,7 @@ class Personas extends Migration
             $table->string('telefono');
             $table->string('api_token')->unique()->nullable()->collation('utf8mb4_bin');
             $table->string('curriculum_vitae')->unique()->nullable();
-            $table->boolean('verificado');
+            $table->boolean('verificada');
         });
     }
 

@@ -34,7 +34,7 @@ class AuthServiceProvider extends ServiceProvider
             if ($request->header('Authorization')) {
                 if (count(explode(' ', $request->header('Authorization'))) == 2) {
                     $token = explode(' ', $request->header('Authorization'))[1];
-                    return Persona::where([['api_token', $token], ['verificado', true]])->first();
+                    return Persona::where([['api_token', $token], ['verificada', true]])->first();
                 }
             }
         });
