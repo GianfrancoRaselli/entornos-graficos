@@ -255,7 +255,7 @@ export default {
   }
 
   .columna-md {
-    width: 160px;
+    width: 200px;
   }
 
   .columna-sm {
@@ -264,5 +264,9 @@ export default {
 
   .errorClass {
     background-color: rgb(228, 167, 167);
+  }
+
+  tbody {
+    word-wrap: break-word;
   }
 </style>
