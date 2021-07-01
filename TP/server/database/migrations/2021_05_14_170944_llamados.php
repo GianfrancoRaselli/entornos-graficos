@@ -17,7 +17,7 @@ class Llamados extends Migration
             $table->id();
             $table->date('fecha_inicio');
             $table->date('fecha_fin');
-            $table->string('requisitos');
+            $table->string('requisitos', 300);
             $table->integer('vacantes');
             $table->boolean('calificado');
             $table->unsignedBigInteger('id_catedra');

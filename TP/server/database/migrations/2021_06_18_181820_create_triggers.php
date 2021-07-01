@@ -43,6 +43,22 @@ class CreateTriggers extends Migration
                     END;
                 END IF;
             END;
+
+            CREATE TRIGGER validar_vacantes BEFORE INSERT ON llamados FOR EACH ROW
+            BEGIN
+                IF NEW.vacantes < 1 OR NEW.vacantes > 100
+                THEN
+                    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El número de vacantes debe estar entre 1 y 100';
+                END IF;
+            END;
+
+            CREATE TRIGGER validar_puntaje BEFORE INSERT ON postulaciones FOR EACH ROW
+            BEGIN
+                IF NEW.puntaje < 1 OR NEW.puntaje > 100
+                THEN
+                    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El puntaje debe estar entre 1 y 100';
+                END IF;
+            END;
         ");
     }
 
@@ -56,6 +72,8 @@ class CreateTriggers extends Migration
         DB::unprepared("DROP TRIGGER IF EXISTS is_jefe_catedra;
                         DROP TRIGGER IF EXISTS insert_jefe_catedra;
                         DROP TRIGGER IF EXISTS delete_jefe_catedra;
-                        DROP TRIGGER IF EXISTS update_jefe_catedra;");
+                        DROP TRIGGER IF EXISTS update_jefe_catedra;
+                        DROP TRIGGER IF EXISTS validar_vacantes;
+                        DROP TRIGGER IF EXISTS validar_puntaje;");
     }
 }
