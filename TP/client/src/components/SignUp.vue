@@ -1,11 +1,11 @@
 <template>
   <div>
     <Popup dataTarget="signUpPopup" title="Registrarse" :showButtons="false">
-      <div style="width: 100%; margin-bottom: 1%;" v-if="error">
+      <div style="width: 100%; margin-bottom: 1%;" v-if="errorMessage">
         <div class="alert alert-danger alert-dismissible fade show"
           style="width: fit-content; margin-top: 2%; margin-left: auto; margin-right: auto;" role="alert">
-          {{errorMessage}}
-          <button @click="error = false" class="close btn btn-link" data-dismiss="alert"
+          {{ errorMessage }}
+          <button @click="errorMessage = ''" class="close btn btn-link" data-dismiss="alert"
             style="color: black; text-decoration: none; font-size: 22px;" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -83,7 +83,6 @@
     name: 'SignUp',
     data() {
       return {
-        error: false,
         errorMessage: '',
         errorDNI: '',
         errorFormatoDNI: false,
@@ -112,61 +111,88 @@
 
       async handleSubmit() {
         try {
-          this.error = false;
+          this.errorMessage = '';
+          let error = false;
 
-          if (!this.user.dni) {
-            this.error = true;
-            this.errorDNI = 'Ingrese su número de DNI';
-          } else {
+          if (
+            this.user.dni
+            && this.user.dni.length >= 1
+            && this.user.dni.length <= 30
+            && !isNaN(this.user.dni)
+          ) {
             this.errorDNI = '';
+          } else {
+            this.errorDNI = 'Número de DNI incorrecto';
+            error = true;
           }
 
-          if (!this.user.imagen_dni || this.errorFormatoDNI) {
-            this.error = true;
+          if (!this.user.imagen_dni) {
             this.errorFormatoDNI = true;
+            error = true;
           }
 
-          if (!this.user.nombre_usuario) {
-            this.error = true;
-            this.errorNombreUsuario = 'Ingrese un nombre de usuario';
-          } else {
+          if (
+            this.user.nombre_usuario
+            && this.user.nombre_usuario.length >= 6
+            && this.user.nombre_usuario.length <= 20
+          ) {
             this.errorNombreUsuario = '';
+          } else {
+            this.errorNombreUsuario = 'Ingrese un nombre de usuario entre 6 y 20 caracteres';
+            error = true;
           }
 
-          if (!this.user.clave) {
-            this.error = true;
-            this.errorClave = 'Ingrese una clave';
-          } else {
+          if (
+            this.user.clave
+            && this.user.clave.length >= 8
+            && this.user.clave.length <= 32
+          ) {
             this.errorClave = '';
+          } else {
+            this.errorClave = 'Ingrese una clave entre 8 y 32 caracteres';
+            error = true;
           }
 
-          if (!this.user.nombre_apellido) {
-            this.error = true;
-            this.errorNombreApellido = 'Ingrese su nombre y apellido como figura en el DNI';
-          } else {
+          if (
+            this.user.nombre_apellido
+            && this.user.nombre_apellido.length >= 3
+            && this.user.nombre_apellido.length <= 80
+          ) {
             this.errorNombreApellido = '';
+          } else {
+            this.errorNombreApellido = 'Nombre y apellido incorrecto';
+            error = true;
           }
 
-          if (!this.user.email) {
-            this.error = true;
-            this.errorEmail = 'Ingrese su correo electrónico';
-          } else {
+          if (
+            this.user.email
+            && this.user.email.length <= 60
+            && this.validarEmail(this.user.email)
+          ) {
             this.errorEmail = '';
+          } else {
+            this.errorEmail = 'Ingrese un correo electrónico válido';
+            error = true;
           }
 
-          if (!this.user.telefono) {
-            this.error = true;
-            this.errorTelefono = 'Ingrese su teléfono';
-          } else {
+          if (
+            this.user.telefono
+            && this.user.telefono.length >= 4
+            && this.user.telefono.length <= 60
+            && !isNaN(this.user.telefono)
+          ) {
             this.errorTelefono = '';
+          } else {
+            this.errorTelefono = 'Ingrese un número de teléfono válido sin espacios';
+            error = true;
           }
 
           if (!this.user.curriculum_vitae) {
-            this.error = true;
             this.errorFormatoCV = true;
+            error = true;
           }
 
-          if (!this.error) {
+          if (!error) {
             let formData = new FormData();
             for (let clave in this.user){
               formData.append(clave, this.user[clave]);
@@ -184,11 +210,19 @@
               'success'
             )
           } else {
-            this.errorMessage = 'Corrija los campos con errores';
+            this.errorMessage = 'Solucione los campos con errores';
           }
         } catch (err) {
           this.errorMessage = err.response.data.error;
           this.error = true;
+        }
+      },
+
+      validarEmail(email) {
+        if (/^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i.test(email)) { //eslint-disable-line
+          return true;
+        } else {
+          return false;
         }
       },
 
