@@ -22,7 +22,7 @@
       <i class="fas fa-plus-circle"></i> Agregar vacante
     </router-link>
     <router-link class="btn btn-light" to="/verificarIdentidades" exact="true" v-if="isAdministrador">
-      <i class="fas fa-plus-circle"></i> Verificar identidades
+      <i class="fas fa-user-check"></i> Verificar identidades
     </router-link>
   </ul>
 </template>

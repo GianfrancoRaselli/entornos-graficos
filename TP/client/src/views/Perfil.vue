@@ -40,7 +40,7 @@
             <i class="fas fa-eye"></i> Ver CV
           </a>
         </div>
-        <div class="applications" v-if="tablePostulaciones.length > 0">
+        <div class="applications" v-if="isUsuario && tablePostulaciones.length">
           <h4>Mis postulaciones</h4>
           <table class="table">
             <thead>
@@ -74,6 +74,7 @@
 
 <script>
   import axios from 'axios'
+  import { mapGetters } from "vuex";
   import Swal from 'sweetalert2'
   export default {
     data() {
@@ -91,6 +92,11 @@
         tablePostulaciones: [],
         errorFormato: false
       }
+    },
+    computed: {
+      ...mapGetters({
+        isUsuario: 'isUsuario'
+      })
     },
     methods: {
       async buscarPostulacionesDelUsuario() {

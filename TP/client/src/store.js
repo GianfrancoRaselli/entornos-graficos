@@ -41,8 +41,9 @@ const store = new Vuex.Store({
       const res = await axios.post('/personas/editarPerfil',
       {
         nombre_usuario: personalInformation.nombre_usuario,
-        claveNueva: personalInformation.claveNueva,
         clave: personalInformation.clave,
+        cambiar_clave: personalInformation.cambiar_clave,
+        nueva_clave: personalInformation.nueva_clave,
         email: personalInformation.email,
         telefono: personalInformation.telefono
       },

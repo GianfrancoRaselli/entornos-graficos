@@ -13,9 +13,9 @@ use Illuminate\Support\Str;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 
-require __DIR__.'/../../../config/PHPMailer/Exception.php';
-require __DIR__.'/../../../config/PHPMailer/PHPMailer.php';
-require __DIR__.'/../../../config/PHPMailer/SMTP.php';
+require __DIR__ . '/../../../config/PHPMailer/Exception.php';
+require __DIR__ . '/../../../config/PHPMailer/PHPMailer.php';
+require __DIR__ . '/../../../config/PHPMailer/SMTP.php';
 
 
 class PersonaController extends Controller
@@ -126,34 +126,43 @@ class PersonaController extends Controller
 
     public function editarPerfil(Request $request)
     {
-        if ($request->dni && $request->nombre_usuario && $request->nombre_apellido && $request->email && $request->telefono) {
-            if (!Persona::where([['dni', $request->dni], ['id', '<>', auth()->user()->id]])->first()) {
-                if (!Persona::where([['nombre_usuario', $request->nombre_usuario], ['id', '<>', auth()->user()->id]])->first()) {
-                    try {
-                        $persona = Persona::find(auth()->user()->id);
+        if (
+            $request->nombre_usuario
+            && $request->clave
+            && $request->cambiar_clave !== null
+            && $request->email
+            && $request->telefono
+            && (!$request->cambiar_clave ||
+               ($request->cambiar_clave && $request->nueva_clave))
+        ) {
+            try {
+                $persona = Persona::find(auth()->user()->id);
 
-                        $persona->dni = $request->dni;
+                if (Hash::check($request->clave, $persona->clave)) {
+                    if (!Persona::where([['nombre_usuario', $request->nombre_usuario], ['id', '<>', auth()->user()->id]])->first()) {
                         $persona->nombre_usuario = $request->nombre_usuario;
-                        $persona->nombre_apellido = $request->nombre_apellido;
                         $persona->email = $request->email;
                         $persona->telefono = $request->telefono;
+                        if ($request->cambiar_clave) {
+                            $persona->clave = Hash::make($request->nueva_clave);
+                        }
 
                         $persona->save();
 
                         $persona->roles;
 
                         return response()->json($persona);
-                    } catch (Exception $e) {
-                        return response()->json(['error' => $e->getMessage()], 406, []);
+                    } else {
+                        return response()->json(['error' => 'El nombre de usuario ya se encuentra registrado'], 406, []);
                     }
                 } else {
-                    return response()->json(['error' => 'El nombre de usuario ya se encuentra registrado'], 406, []);
+                    return response()->json(['error' => 'Clave incorrecta'], 406, []);
                 }
-            } else {
-                return response()->json(['error' => 'El DNI ya se encuentra registrado'], 406, []);
+            } catch (Exception $e) {
+                return response()->json(['error' => $e->getMessage()], 406, []);
             }
         } else {
-            return response()->json(['error' => 'Ingrese todos los datos de la persona'], 406, []);
+            return response()->json(['error' => 'Ingrese todos los datos requeridos'], 406, []);
         }
     }
 
@@ -194,7 +203,7 @@ class PersonaController extends Controller
         if ($request->id_persona) {
             try {
                 $persona = Persona::find($request->id_persona);
-                
+
                 if ($persona) {
                     $persona->verificada = true;
                     $persona->save();
@@ -213,7 +222,7 @@ class PersonaController extends Controller
         if ($request->id_persona) {
             try {
                 $persona = Persona::find($request->id_persona);
-                
+
                 if ($persona) {
                     $persona->delete();
                     $this->enviarMailVerificacionIdentidad($persona, false);
@@ -226,52 +235,53 @@ class PersonaController extends Controller
         }
     }
 
-    private function enviarMailVerificacionIdentidad($persona, $aceptada) {
+    private function enviarMailVerificacionIdentidad($persona, $aceptada)
+    {
         if ($persona) {
-          $mail = new PHPMailer(true);
-    
-          $mail->SMTPDebug = SMTP::DEBUG_SERVER; 
-          $mail->isSMTP();
-          $mail->Host = 'smtp.gmail.com';
-          $mail->SMTPAuth = true;
-          $mail->Username = 'utn.facultad.regional.rosario@gmail.com';
-          $mail->Password = env('MAIL_PASSWORD');
-          $mail->SMTPSecure = 'tls';
-          $mail->Port = 587;
-          $mail->SMTPOptions = array (
-            'ssl' => array (
-              'verify_peer' => false,
-              'verify_peer_name' => false,
-              'allow_self_signed' => true
-            )
-          );
-          $mail->setFrom('utn.facultad.regional.rosario@gmail.com', 'UTN - FRRO');
-          $mail->AddAddress($persona->email);
-          $mail->isHTML(true);
-          $mail->CharSet = 'UTF-8';
-          $mail->Subject = 'Verificación Identidad';
-          if ($aceptada) {
-            $mail->Body = '
+            $mail = new PHPMailer(true);
+
+            $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = 'utn.facultad.regional.rosario@gmail.com';
+            $mail->Password = env('MAIL_PASSWORD');
+            $mail->SMTPSecure = 'tls';
+            $mail->Port = 587;
+            $mail->SMTPOptions = array(
+                'ssl' => array(
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true
+                )
+            );
+            $mail->setFrom('utn.facultad.regional.rosario@gmail.com', 'UTN - FRRO');
+            $mail->AddAddress($persona->email);
+            $mail->isHTML(true);
+            $mail->CharSet = 'UTF-8';
+            $mail->Subject = 'Verificación Identidad';
+            if ($aceptada) {
+                $mail->Body = '
             <div style="font-size: large;">
               <p>¡Buen día!</p>
-              <p>La identidad de <strong>' . $persona->nombre_apellido . '</strong> con DNI N° <strong>' . 
-              $persona->dni . '</strong> fue verificada exitosamente.</p>
+              <p>La identidad de <strong>' . $persona->nombre_apellido . '</strong> con DNI N° <strong>' .
+                    $persona->dni . '</strong> fue verificada exitosamente.</p>
               <p>Ya puede ingresar al sistema con el usuario: ' . $persona->nombre_usuario . '</p>
               <p><a href="http://localhost:8080/" target="_blank">UTN - Facultad Regional Rosario</a></p>
             </div>
             ';
-          } else {
-            $mail->Body = '
+            } else {
+                $mail->Body = '
             <div style="font-size: large;">
               <p>¡Buen día!</p>
-              <p>No se ha podido verificar la identidad de <strong>' . $persona->nombre_apellido . '</strong> con DNI N° <strong>' . 
-              $persona->dni . '</strong> del usuario: ' . $persona->nombre_usuario . '.</p>
+              <p>No se ha podido verificar la identidad de <strong>' . $persona->nombre_apellido . '</strong> con DNI N° <strong>' .
+                    $persona->dni . '</strong> del usuario: ' . $persona->nombre_usuario . '.</p>
               <p>Si considera que es un error contáctese directamente con la facultad.</p>
             </div>
             ';
-          }
-    
-          $mail->send();
+            }
+
+            $mail->send();
         }
-      }
+    }
 }
