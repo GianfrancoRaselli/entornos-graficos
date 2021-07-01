@@ -10,6 +10,7 @@
             <p>DNI: {{ user.dni }}</p>
             <p>Nombre y apellido: {{ user.nombre_apellido }}</p>
             <p>Email: {{ user.email }}</p>
+            <p>Teléfono: {{ user.telefono }}</p>
           </div>
           <utn-button icon="fas fa-edit" to="perfil/editar" btnClass="btn btn-light" id="btn-editar-usuario">
             Editar
@@ -75,19 +76,16 @@
   import axios from 'axios'
   import Swal from 'sweetalert2'
   export default {
-    name: 'Perfil',
     data() {
       return {
         vacantes: [],
         user: {
           dni: '',
-          nombre_usuario: '',
           nombre_apellido: '',
           email: '',
           telefono: '',
           curriculum_vitae: null,
           ruta_cv: '',
-          roles: [],
           postulaciones: [],
         },
         tablePostulaciones: [],
@@ -158,14 +156,12 @@
             });
             
             this.user.dni = res.data.dni;
-            this.user.nombre_usuario = res.data.nombre_usuario;
             this.user.nombre_apellido = res.data.nombre_apellido;
             this.user.email = res.data.email;
             this.user.telefono = res.data.telefono;
             if (res.data.curriculum_vitae) {
               this.user.ruta_cv = 'http://localhost/Entornos Graficos/entornos-graficos-2021/TP/server/public/CVs/' + res.data.curriculum_vitae;
             }
-            this.user.roles = res.data.roles;
           } catch (err) {
               console.log(err.response.data.error);
           }

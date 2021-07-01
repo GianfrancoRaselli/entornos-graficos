@@ -117,7 +117,6 @@ class PersonaController extends Controller
     {
         try {
             $persona = Persona::find(auth()->user()->id);
-            $persona->roles;
 
             return response()->json($persona);
         } catch (Exception $e) {
