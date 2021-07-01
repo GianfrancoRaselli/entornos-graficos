@@ -224,7 +224,7 @@ class LlamadoController extends Controller
           }
 
           try {
-            $this->enviarMails($postulacionesAEnviarCorreo);
+            $this->enviarMails($llamado, $postulacionesAEnviarCorreo);
           } catch (Exception $e) {
             return response()->json(['error' => 'Error al enviar correos electrónicos'], 406, []);
           }
@@ -239,7 +239,7 @@ class LlamadoController extends Controller
     }
   }
 
-  private function enviarMails($postulacionesAEnviarCorreo) {
+  private function enviarMails($llamado, $postulacionesAEnviarCorreo) {
     if (count($postulacionesAEnviarCorreo) > 0) {
       $mail = new PHPMailer(true);
 
@@ -258,41 +258,23 @@ class LlamadoController extends Controller
           'allow_self_signed' => true
         )
       );
-
       $mail->setFrom('utn.facultad.regional.rosario@gmail.com', 'UTN - FRRO');
-
       $mail->isHTML(true);
       $mail->CharSet = 'UTF-8';
+      $mail->Subject = 'Orden de mérito - ' . $llamado->catedra->descripcion;
+      $mail->Body = '
+                    <div style="font-size: large;">
+                      <p>¡Buen día!</p>
+                      <p>Ya puede ver los resultados del llamado a cubir vacantes de la cátedra de ' . 
+                      $llamado->catedra->descripcion . ' del ' . $llamado->fecha_inicio . ' en: <a href="http://localhost:8080/ordenesMerito" target="_blank">calificaciones</a></p>
+                    </div>
+                    ';
 
       foreach ($postulacionesAEnviarCorreo as $postulacion) {
-        $mail->addAddress($postulacion->persona->email);
-
-        $mail->Subject = 'Orden de mérito - ' . $postulacion->llamado->catedra->descripcion;
-        if ($postulacion->comentarios) {
-          $mail->Body = '
-                        <div style="font-size: large;">
-                          <p>¡Buen día!</p>
-                          <ul>
-                            <ul>Estado: <b>' . $postulacion->estado .'</b></ul>
-                            <ul>Calificación: ' . $postulacion->puntaje . '%</ul>
-                            <ul>Comentarios: ' . $postulacion->comentarios . '</ul>
-                          </ul>
-                        </div>
-                        ';
-        } else {
-          $mail->Body = '
-                        <div style="font-size: large;">
-                          <p>¡Buen día!</p>
-                          <ul>
-                            <li>Estado: <b>' . $postulacion->estado .'</b></li>
-                            <li>Calificación: ' . $postulacion->puntaje . '%</li>
-                          </ul>
-                        </div>
-                        ';
-        }
-
-        $mail->send();
+        $mail->AddAddress($postulacion->persona->email);
       }
+
+      $mail->send();
     }
   }
 
