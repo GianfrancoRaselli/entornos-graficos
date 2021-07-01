@@ -20,7 +20,7 @@ class PersonasRoles extends Migration
 
             $table->unique(['id_persona', 'id_rol']);
 
-            $table->foreign('id_persona')->references('id')->on('personas');
+            $table->foreign('id_persona')->references('id')->on('personas')->onDelete('cascade');;
             $table->foreign('id_rol')->references('id')->on('roles');
         });
     }

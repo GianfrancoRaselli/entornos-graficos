@@ -15,40 +15,53 @@
         <div class="card-body">
           <form @submit.prevent="handleSubmit">
             <div class="form-group">
-              <label><strong>DNI</strong></label>
-              <input type="text" v-model="user.dni" placeholder="DNI" class="form-control" autofocus>
+              <label><strong>Número DNI</strong></label>
+              <input type="text" v-model="user.dni" placeholder="Número DNI" class="form-control" required autofocus>
+              <medium class="form-text text-muted" v-if="errorDNI"><p class="error">{{ errorDNI }}</p></medium>
+            </div>
+            <br>
+            <div class="form-group">
+              <label><strong>Imagen del DNI</strong></label>
+              <input type="file" @change="obtenerArchivoDNI" placeholder="CV" class="form-control" accept="pdf" required>
+              <small class="form-text text-muted" v-if="!errorFormatoDNI"><p>Ingrese su DNI en formado PDF</p></small>
+              <medium class="form-text text-muted" v-if="errorFormatoDNI"><p class="error">Ingrese su DNI en formado PDF</p></medium>
             </div>
             <br>
             <div class="form-group">
               <label><strong>Nombre Usuario</strong></label>
-              <input type="text" v-model="user.nombre_usuario" placeholder="Nombre Usuario" class="form-control">
+              <input type="text" v-model="user.nombre_usuario" placeholder="Nombre Usuario" class="form-control" required>
+              <medium class="form-text text-muted" v-if="errorNombreUsuario"><p class="error">{{ errorNombreUsuario }}</p></medium>
             </div>
             <br>
             <div class="form-group">
               <label><strong>Clave</strong></label>
-              <input type="password" v-model="user.clave" placeholder="Clave" class="form-control">
+              <input type="password" v-model="user.clave" placeholder="Clave" class="form-control" required>
+              <medium class="form-text text-muted" v-if="errorClave"><p class="error">{{ errorClave }}</p></medium>
             </div>
             <br>
             <div class="form-group">
               <label><strong>Nombre y Apellido</strong></label>
-              <input type="text" v-model="user.nombre_apellido" placeholder="Nombre y Apellido" class="form-control" autofocus>
+              <input type="text" v-model="user.nombre_apellido" placeholder="Nombre y Apellido" class="form-control" required>
+              <medium class="form-text text-muted" v-if="errorNombreApellido"><p class="error">{{ errorNombreApellido }}</p></medium>
             </div>
             <br>
             <div class="form-group">
               <label><strong>Email</strong></label>
-              <input type="email" v-model="user.email" placeholder="Email" class="form-control">
+              <input type="email" v-model="user.email" placeholder="Email" class="form-control" required>
+              <medium class="form-text text-muted" v-if="errorEmail"><p class="error">{{ errorEmail }}</p></medium>
             </div>
             <br>
             <div class="form-group">
               <label><strong>Teléfono</strong></label>
-              <input type="text" v-model="user.telefono" placeholder="Teléfono" class="form-control">
+              <input type="text" v-model="user.telefono" placeholder="Teléfono" class="form-control" required>
+              <medium class="form-text text-muted" v-if="errorTelefono"><p class="error">{{ errorTelefono }}</p></medium>
             </div>
             <br>
             <div class="form-group">
               <label><strong>Curriculum Vitae</strong></label>
-              <input type="file" @change="obtenerArchivo" placeholder="CV" class="form-control" accept="pdf" required/>
-              <small class="form-text text-muted" v-if="!errorFormato"><p>Ingrese su CV en formado PDF</p></small>
-              <medium class="form-text text-muted" v-if="errorFormato"><p class="error">Ingrese su CV en formado PDF</p></medium>
+              <input type="file" @change="obtenerArchivoCV" placeholder="CV" class="form-control" accept="pdf" required>
+              <small class="form-text text-muted" v-if="!errorFormatoCV"><p>Ingrese su CV en formado PDF</p></small>
+              <medium class="form-text text-muted" v-if="errorFormatoCV"><p class="error">Ingrese su CV en formado PDF</p></medium>
             </div>
             <br>
             <div class="form-group">
@@ -65,22 +78,30 @@
 
 <script>
   import { mapActions } from 'vuex'
+  import Swal from 'sweetalert2'
   export default {
     name: 'SignUp',
     data() {
       return {
         error: false,
         errorMessage: '',
-        errorFormato: false,
+        errorDNI: '',
+        errorFormatoDNI: false,
+        errorNombreUsuario: '',
+        errorClave: '',
+        errorNombreApellido: '',
+        errorEmail: '',
+        errorTelefono: '',
+        errorFormatoCV: false,
         user: {
-          dni: '1234567892',
+          dni: '5526652626',
+          imagen_dni: null,
           nombre_usuario: 'testing',
           clave: 'test1232',
-          nombre_apellido: 'Testing Tester2',
-          email: 'testing@test2.com',
+          nombre_apellido: 'hsdfujkjd',
+          email: 'gianrase@hotmail.com',
           telefono: '123456789',
-          curriculum_vitae: null,
-          rol: 'Usuario',
+          curriculum_vitae: null
         }
       }
     },
@@ -93,19 +114,77 @@
         try {
           this.error = false;
 
-          if (!this.errorFormato) {
+          if (!this.user.dni) {
+            this.error = true;
+            this.errorDNI = 'Ingrese su número de DNI';
+          } else {
+            this.errorDNI = '';
+          }
+
+          if (!this.user.imagen_dni || this.errorFormatoDNI) {
+            this.error = true;
+            this.errorFormatoDNI = true;
+          }
+
+          if (!this.user.nombre_usuario) {
+            this.error = true;
+            this.errorNombreUsuario = 'Ingrese un nombre de usuario';
+          } else {
+            this.errorNombreUsuario = '';
+          }
+
+          if (!this.user.clave) {
+            this.error = true;
+            this.errorClave = 'Ingrese una clave';
+          } else {
+            this.errorClave = '';
+          }
+
+          if (!this.user.nombre_apellido) {
+            this.error = true;
+            this.errorNombreApellido = 'Ingrese su nombre y apellido como figura en el DNI';
+          } else {
+            this.errorNombreApellido = '';
+          }
+
+          if (!this.user.email) {
+            this.error = true;
+            this.errorEmail = 'Ingrese su correo electrónico';
+          } else {
+            this.errorEmail = '';
+          }
+
+          if (!this.user.telefono) {
+            this.error = true;
+            this.errorTelefono = 'Ingrese su teléfono';
+          } else {
+            this.errorTelefono = '';
+          }
+
+          if (!this.user.curriculum_vitae) {
+            this.error = true;
+            this.errorFormatoCV = true;
+          }
+
+          if (!this.error) {
             let formData = new FormData();
             for (let clave in this.user){
               formData.append(clave, this.user[clave]);
             }
-
+            
             await this.signUp(formData);
-
-            this.$router.push({ path: '/perfil', query: { key: 'signup' } });
             
             window.$("#signUpPopup").modal('hide');
             window.$('body').removeClass('modal-open');
             window.$('.modal-backdrop').remove();
+
+            Swal.fire(
+              'Persona registrada',
+              'Cuando se verifiquen los datos se le notificará por correo electrónico',
+              'success'
+            )
+          } else {
+            this.errorMessage = 'Corrija los campos con errores';
           }
         } catch (err) {
           this.errorMessage = err.response.data.error;
@@ -113,12 +192,21 @@
         }
       },
 
-      obtenerArchivo(e) {
+      obtenerArchivoDNI(e) {
         if (e.target.files[0].name.split('.').pop() === 'pdf') {
-          this.errorFormato = false;
+          this.errorFormatoDNI = false;
+          this.user.imagen_dni = e.target.files[0];
+        } else {
+          this.errorFormatoDNI = true;
+        }
+      },
+
+      obtenerArchivoCV(e) {
+        if (e.target.files[0].name.split('.').pop() === 'pdf') {
+          this.errorFormatoCV = false;
           this.user.curriculum_vitae = e.target.files[0];
         } else {
-          this.errorFormato = true;
+          this.errorFormatoCV = true;
         }
       },
     }

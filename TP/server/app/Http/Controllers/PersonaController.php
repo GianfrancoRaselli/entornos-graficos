@@ -10,6 +10,13 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+
+require __DIR__.'/../../../config/PHPMailer/Exception.php';
+require __DIR__.'/../../../config/PHPMailer/PHPMailer.php';
+require __DIR__.'/../../../config/PHPMailer/SMTP.php';
+
 
 class PersonaController extends Controller
 {
@@ -17,12 +24,13 @@ class PersonaController extends Controller
     {
         if (
             $request->dni
+            && $request->imagen_dni
+            && $request->hasFile('imagen_dni')
             && $request->nombre_usuario
             && $request->clave
             && $request->nombre_apellido
             && $request->email
             && $request->telefono
-            && $request->rol
             && $request->curriculum_vitae
             && $request->hasFile('curriculum_vitae')
         ) {
@@ -39,23 +47,27 @@ class PersonaController extends Controller
                         $persona->nombre_apellido = $request->nombre_apellido;
                         $persona->email = $request->email;
                         $persona->telefono = $request->telefono;
+                        $persona->verificado = false;
 
                         $persona->save();
 
-                        $file = $request->file('curriculum_vitae');
-                        $name = 'CV_' . Str::random(5) . $persona->id . Str::random(5) . '.pdf';
-                        $file->move(base_path('public') . '/CVs/', $name);
-                        $persona->curriculum_vitae = $name;
+                        $fileDNI = $request->file('imagen_dni');
+                        $nameDNI = 'DNI_' . Str::random(5) . $persona->id . Str::random(5) . '.pdf';
+                        $fileDNI->move(base_path('public') . '/DNIs/', $nameDNI);
+                        $persona->imagen_dni = $nameDNI;
+
+                        $fileCV = $request->file('curriculum_vitae');
+                        $nameCV = 'CV_' . Str::random(5) . $persona->id . Str::random(5) . '.pdf';
+                        $fileCV->move(base_path('public') . '/CVs/', $nameCV);
+                        $persona->curriculum_vitae = $nameCV;
 
                         $persona->api_token = Str::random(30) . $persona->id . Str::random(30);
 
                         $persona->save();
 
-                        $persona->roles()->attach(Rol::where('descripcion', $request->rol)->first()->id);
+                        $persona->roles()->attach(Rol::where('descripcion', 'Usuario')->first()->id);
 
                         DB::commit();
-
-                        return response()->json([$persona, $persona->roles], 200);
                     } catch (Exception $e) {
                         DB::rollback();
 
@@ -80,7 +92,9 @@ class PersonaController extends Controller
 
                 if ($persona) {
                     if (Hash::check($request->clave, $persona->clave)) {
-                        return response()->json([$persona, $persona->roles], 200);
+                        $persona->roles;
+
+                        return response()->json($persona, 200);
                     } else {
                         return response()->json(['error' => 'Clave incorrecta'], 406, []);
                     }
@@ -99,8 +113,9 @@ class PersonaController extends Controller
     {
         try {
             $persona = Persona::find(auth()->user()->id);
+            $persona->roles;
 
-            return response()->json([$persona, $persona->roles]);
+            return response()->json($persona);
         } catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()], 406, []);
         }
@@ -122,7 +137,9 @@ class PersonaController extends Controller
 
                         $persona->save();
 
-                        return response()->json([$persona, $persona->roles]);
+                        $persona->roles;
+
+                        return response()->json($persona);
                     } catch (Exception $e) {
                         return response()->json(['error' => $e->getMessage()], 406, []);
                     }
@@ -157,4 +174,101 @@ class PersonaController extends Controller
             return response()->json(['error' => 'Envie su curriculum vitae'], 406, []);
         }
     }
+
+    public function buscarPersonasNoVerificadas()
+    {
+        try {
+            $personas = Persona::where('verificado', false)->get();
+
+            return response()->json($personas);
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 406, []);
+        }
+    }
+
+    public function aceptarPersona(Request $request)
+    {
+        if ($request->id_persona) {
+            try {
+                $persona = Persona::find($request->id_persona);
+                
+                if ($persona) {
+                    $persona->verificado = true;
+                    $persona->save();
+                    $this->enviarMailVerificacionIdentidad($persona, true);
+                }
+            } catch (Exception $e) {
+                return response()->json(['error' => $e->getMessage()], 406, []);
+            }
+        } else {
+            return response()->json(['error' => 'Ingrese el ID de la persona a aceptar'], 406, []);
+        }
+    }
+
+    public function rechazarPersona(Request $request)
+    {
+        if ($request->id_persona) {
+            try {
+                $persona = Persona::find($request->id_persona);
+                
+                if ($persona) {
+                    $persona->delete();
+                    $this->enviarMailVerificacionIdentidad($persona, false);
+                }
+            } catch (Exception $e) {
+                return response()->json(['error' => $e->getMessage()], 406, []);
+            }
+        } else {
+            return response()->json(['error' => 'Ingrese el ID de la persona a rechazar'], 406, []);
+        }
+    }
+
+    private function enviarMailVerificacionIdentidad($persona, $aceptada) {
+        if ($persona) {
+          $mail = new PHPMailer(true);
+    
+          $mail->SMTPDebug = SMTP::DEBUG_SERVER; 
+          $mail->isSMTP();
+          $mail->Host = 'smtp.gmail.com';
+          $mail->SMTPAuth = true;
+          $mail->Username = 'utn.facultad.regional.rosario@gmail.com';
+          $mail->Password = env('MAIL_PASSWORD');
+          $mail->SMTPSecure = 'tls';
+          $mail->Port = 587;
+          $mail->SMTPOptions = array (
+            'ssl' => array (
+              'verify_peer' => false,
+              'verify_peer_name' => false,
+              'allow_self_signed' => true
+            )
+          );
+          $mail->setFrom('utn.facultad.regional.rosario@gmail.com', 'UTN - FRRO');
+          $mail->AddAddress($persona->email);
+          $mail->isHTML(true);
+          $mail->CharSet = 'UTF-8';
+          $mail->Subject = 'Verificación Identidad';
+          if ($aceptada) {
+            $mail->Body = '
+            <div style="font-size: large;">
+              <p>¡Buen día!</p>
+              <p>La identidad de <strong>' . $persona->nombre_apellido . '</strong> con DNI N° <strong>' . 
+              $persona->dni . '</strong> fue verificada exitosamente.</p>
+              <p>Ya puede ingresar al sistema con el usuario: ' . $persona->nombre_usuario . '</p>
+              <p><a href="http://localhost:8080/" target="_blank">UTN - Facultad Regional Rosario</a></p>
+            </div>
+            ';
+          } else {
+            $mail->Body = '
+            <div style="font-size: large;">
+              <p>¡Buen día!</p>
+              <p>No se ha podido verificar la identidad de <strong>' . $persona->nombre_apellido . '</strong> con DNI N° <strong>' . 
+              $persona->dni . '</strong> del usuario ' . $persona->nombre_usuario . '.</p>
+              <p>Si considera que es un error contáctese directamente con la facultad.</p>
+            </div>
+            ';
+          }
+    
+          $mail->send();
+        }
+      }
 }

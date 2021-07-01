@@ -72,7 +72,7 @@
             </td>
             <td v-if="edit_mode">
               <div class="columna-md">
-                <a id="btn-ver-cv" class="btn btn-secondary" v-if="postulacion.curriculum_vitae" :href="'http://localhost/Entornos Graficos/entornos-graficos-2021/TP/server/public/CVs/' + postulacion.persona.curriculum_vitae" target="_blank">
+                <a id="btn-ver-cv" class="btn btn-secondary" :href="'http://localhost/Entornos Graficos/entornos-graficos-2021/TP/server/public/CVs/' + postulacion.curriculum_vitae" target="_blank">
                   <i class="fas fa-eye"></i> Ver CV
                 </a>
               </div>
@@ -266,7 +266,7 @@ export default {
     background-color: rgb(228, 167, 167);
   }
 
-  tbody {
+  table {
     word-wrap: break-word;
   }
 </style>

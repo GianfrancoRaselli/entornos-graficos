@@ -157,15 +157,15 @@
               }
             });
             
-            this.user.dni = res.data[0].dni;
-            this.user.nombre_usuario = res.data[0].nombre_usuario;
-            this.user.nombre_apellido = res.data[0].nombre_apellido;
-            this.user.email = res.data[0].email;
-            this.user.telefono = res.data[0].telefono;
-            if (res.data[0].curriculum_vitae) {
-              this.user.ruta_cv = 'http://localhost/Entornos Graficos/entornos-graficos-2021/TP/server/public/CVs/' + res.data[0].curriculum_vitae;
+            this.user.dni = res.data.dni;
+            this.user.nombre_usuario = res.data.nombre_usuario;
+            this.user.nombre_apellido = res.data.nombre_apellido;
+            this.user.email = res.data.email;
+            this.user.telefono = res.data.telefono;
+            if (res.data.curriculum_vitae) {
+              this.user.ruta_cv = 'http://localhost/Entornos Graficos/entornos-graficos-2021/TP/server/public/CVs/' + res.data.curriculum_vitae;
             }
-            this.user.roles = res.data[0].roles;
+            this.user.roles = res.data.roles;
           } catch (err) {
               console.log(err.response.data.error);
           }
@@ -250,22 +250,14 @@
     },
     created() {
       if (this.$route.query.key) {
-        if (this.$route.query.key === 'signup') {
+        if (this.$route.query.key === 'signin') {
           Swal.fire({
             position: 'center',
             icon: 'success',
-            title: 'Persona registrada correctamente',
+            title: '¡Bienvenido!',
             showConfirmButton: false,
-            timer: 3000
+            timer: 2000
           });
-        } else if (this.$route.query.key === 'signin') {
-            Swal.fire({
-              position: 'center',
-              icon: 'success',
-              title: '¡Bienvenido!',
-              showConfirmButton: false,
-              timer: 2000
-            });
         }
       }
       this.buscarUsuario();

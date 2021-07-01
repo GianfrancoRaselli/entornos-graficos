@@ -16,6 +16,7 @@ class Personas extends Migration
         Schema::create('personas', function (Blueprint $table) {
             $table->id();
             $table->string('dni')->unique()->collation('utf8mb4_bin');
+            $table->string('imagen_dni')->unique()->nullable();
             $table->string('nombre_usuario')->unique()->collation('utf8mb4_bin');
             $table->string('clave')->collation('utf8mb4_bin');
             $table->string('nombre_apellido');
@@ -23,6 +24,7 @@ class Personas extends Migration
             $table->string('telefono');
             $table->string('api_token')->unique()->nullable()->collation('utf8mb4_bin');
             $table->string('curriculum_vitae')->unique()->nullable();
+            $table->boolean('verificado');
         });
     }
 

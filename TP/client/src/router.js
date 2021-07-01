@@ -62,6 +62,15 @@ const router = new Router({
       }
     },
     {
+      path: '/verificarIdentidades',
+      name: 'Verificar Identidades',
+      component: () => import('@/views/VerificarIdentidades.vue'),
+      meta: {
+        auth: true,
+        isAdministrador: true
+      }
+    },
+    {
       path: '/perfil',
       name: 'Perfil',
       component: () => import('@/views/Perfil.vue'),

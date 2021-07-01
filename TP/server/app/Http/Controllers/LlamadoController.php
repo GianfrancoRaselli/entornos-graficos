@@ -223,10 +223,12 @@ class LlamadoController extends Controller
             return response()->json(['error' => $e->getMessage()], 406, []);
           }
 
-          try {
-            $this->enviarMails($llamado, $postulacionesAEnviarCorreo);
-          } catch (Exception $e) {
-            return response()->json(['error' => 'Error al enviar correos electrónicos'], 406, []);
+          if (count($postulacionesAEnviarCorreo) > 0) {
+            try {
+              $this->enviarMailCalificacionLlamado($llamado, $postulacionesAEnviarCorreo);
+            } catch (Exception $e) {
+              return response()->json(['error' => 'Error al enviar correos electrónicos'], 406, []);
+            }
           }
         } else {
           return response()->json(['error' => 'No se puede calificar el llamado en esta fecha'], 406, []);
@@ -239,7 +241,7 @@ class LlamadoController extends Controller
     }
   }
 
-  private function enviarMails($llamado, $postulacionesAEnviarCorreo) {
+  private function enviarMailCalificacionLlamado($llamado, $postulacionesAEnviarCorreo) {
     if (count($postulacionesAEnviarCorreo) > 0) {
       $mail = new PHPMailer(true);
 

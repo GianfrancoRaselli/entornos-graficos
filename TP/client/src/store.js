@@ -22,13 +22,13 @@ const store = new Vuex.Store({
   actions: {
 
     async signUp ({ dispatch }, personalInformation) {
-      const res = await axios.post('/personas/signUp', personalInformation);
-      await dispatch('attempt', res.data[0]);
+      await axios.post('/personas/signUp', personalInformation);
+      await dispatch('attempt', null);
     },
 
     async signIn ({ dispatch }, credentials) {
       const res = await axios.post('/personas/signIn', credentials);
-      await dispatch('attempt', res.data[0]);
+      await dispatch('attempt', res.data);
     },
 
     async logOut ({ dispatch }) {
@@ -40,9 +40,9 @@ const store = new Vuex.Store({
     async updateProfile ({ dispatch, getters }, personalInformation) {
       const res = await axios.post('/personas/editarPerfil',
       {
-        dni: personalInformation.dni,
         nombre_usuario: personalInformation.nombre_usuario,
-        nombre_apellido: personalInformation.nombre_apellido,
+        claveNueva: personalInformation.claveNueva,
+        clave: personalInformation.clave,
         email: personalInformation.email,
         telefono: personalInformation.telefono
       },
@@ -51,7 +51,7 @@ const store = new Vuex.Store({
           Authorization: 'Bearer ' + getters.user.api_token
         }
       });
-      await dispatch('attempt', res.data[0]);
+      await dispatch('attempt', res.data);
       router.push('/perfil');
     },
 
