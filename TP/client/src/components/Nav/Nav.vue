@@ -3,13 +3,12 @@
     <router-link to="/">
       <img src="../../assets/logo-utn.png" class="headerLogo" alt="Logo UTN" id="logo-utn">
     </router-link>
-    <NavItems navItemsclass="desktop-nav" />
-    <NavItems navItemsclass="mobile-nav" />
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
+      <NavItems navItemsclass="navbar-nav"/>
       <ul v-if="authenticated" class="navbar-nav" style="margin-left: auto;">
         <li class="nav-item">
           <utn-button btnClass="dropdown-toggle btn btn-outline-primary" id="navbarDropdown" icon="fas fa-user" data-toggle="dropdown"
@@ -44,6 +43,7 @@
         <SignUp />
       </ul>
     </div>
+    <NavItems navItemsclass="mobile-nav" :desktop="false"/>
   </nav>
 </template>
 
