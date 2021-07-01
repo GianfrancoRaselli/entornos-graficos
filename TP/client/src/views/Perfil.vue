@@ -49,7 +49,7 @@
                 <th scope="col">Cátedra</th>
                 <th scope="col">Definición</th>
                 <th scope="col">Fecha fin</th>
-                <th scope="col">Opciones</th>
+                <th scope="col">Acción</th>
               </tr>
             </thead>
             <tbody>
@@ -259,6 +259,22 @@
             title: '¡Bienvenido!',
             showConfirmButton: false,
             timer: 2000
+          });
+        } else if (this.$route.query.key === 'postulado') {
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: '¡Postulado!',
+            showConfirmButton: true,
+            timer: 3000
+          });
+        } else if (this.$route.query.key === 'noPostulado') {
+          Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: 'No pudimos registrar su postulación',
+            showConfirmButton: true,
+            timer: 4000
           });
         }
       }

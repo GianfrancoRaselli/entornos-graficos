@@ -1,11 +1,11 @@
 <template>
   <div>
     <Popup :dataTarget="dataTarget" title="Iniciar Sesión" :showButtons="false">
-      <div style="width: 100%; margin-bottom: 1%;" v-if="error">
+      <div style="width: 100%; margin-bottom: 1%;" v-if="errorMessage">
         <div class="alert alert-danger alert-dismissible fade show"
           style="width: fit-content; margin-top: 2%; margin-left: auto; margin-right: auto;" role="alert">
-          {{errorMessage}}
-          <button v-on:click="error = false" class="close btn btn-link" data-dismiss="alert"
+          {{ errorMessage }}
+          <button v-on:click="errorMessage = ''" class="close btn btn-link" data-dismiss="alert"
             style="color: black; text-decoration: none; font-size: 22px;" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -18,11 +18,13 @@
             <div class="form-group">
               <label><strong>Nombre Usuario</strong></label>
               <input type="text" v-model="user.nombre_usuario" placeholder="Nombre Usuario" class="form-control">
+              <medium class="form-text text-muted" v-if="errorNombreUsuario"><p class="error">{{ errorNombreUsuario }}</p></medium>
             </div>
             <br>
             <div class="form-group">
               <label><strong>Clave</strong></label>
               <input type="password" v-model="user.clave" placeholder="Clave" class="form-control">
+              <medium class="form-text text-muted" v-if="errorClave"><p class="error">{{ errorClave }}</p></medium>
             </div>
             <br>
             <div class="form-group">
@@ -48,18 +50,17 @@
 <script>
   import axios from 'axios'
   import { mapActions } from 'vuex'
-  import EventBus from '../event-bus'
   export default {
     props: {
       postularse: { type: Boolean, default: false },
       id_llamado: { type: Number },
-      redirect: { type: String },
       dataTarget: { type: String, default: 'loginPopup' }
     },
     data() {
       return {
-        error: false,
         errorMessage: '',
+        errorNombreUsuario: '',
+        errorClave: '',
         user: {
           nombre_usuario: 'testing',
           clave: 'test1232',
@@ -73,51 +74,68 @@
 
       async handleSubmit() {
         try {
-          this.error = false;
+          this.errorMessage = '';
+          let error = false;
 
-          await this.signIn(this.user);
+          if (
+            this.user.nombre_usuario
+            && this.user.nombre_usuario.length >= 6
+            && this.user.nombre_usuario.length <= 20
+          ) {
+            this.errorNombreUsuario = '';
+          } else {
+            this.errorNombreUsuario = 'Ingrese un nombre de usuario entre 6 y 20 caracteres';
+            error = true;
+          }
 
-          if (!this.$store.getters.isUsuario || !this.postularse) {
-            this.$router.push({ path: '/perfil', query: { key: 'signin' } });
+          if (
+            this.user.clave
+            && this.user.clave.length >= 8
+            && this.user.clave.length <= 32
+          ) {
+            this.errorClave = '';
+          } else {
+            this.errorClave = 'Ingrese una clave entre 8 y 32 caracteres';
+            error = true;
+          }
 
-            window.$("#loginPopup").modal('hide');
-            window.$('body').removeClass('modal-open');
-            window.$('.modal-backdrop').remove();
-          } else if (this.postularse && this.$store.getters.isUsuario) {
-            await axios.post('/postulaciones/agregarPostulacionDelUsuario',
-            {
-              id_llamado: this.id_llamado,
-            },
-            {
-              headers: {
-                Authorization: 'Bearer ' + this.$store.getters.user.api_token
-              }
-            });
+          if (!error) {
+            await this.signIn(this.user);
 
-            EventBus.$emit('actualizarVacantes');
-
-            if (this.$route.path !== this.redirect) this.$router.push(this.redirect);
-            
-            window.$("#loginPostulacionPopup").modal('hide');
-            window.$('body').removeClass('modal-open');
-            window.$('.modal-backdrop').remove();
+            if (!this.postularse) {
+              this.$router.push({ path: '/perfil', query: { key: 'signin' } });
+              this.cerrarModal('#loginPopup');
+            } else if (this.postularse) {
+              await axios.post('/postulaciones/agregarPostulacionDelUsuario',
+              {
+                id_llamado: this.id_llamado,
+              },
+              {
+                headers: {
+                  Authorization: 'Bearer ' + this.$store.getters.user.api_token
+                }
+              });
+              
+              this.$router.push({ path: '/perfil', query: { key: 'postulado' } });
+              this.cerrarModal('#loginPostulacionPopup');
+            }
+          } else {
+            this.errorMessage = 'Solucione los campos con error'
           }
         } catch (err) {
           if (!this.postularse) {
             this.errorMessage = err.response.data.error;
-            this.error = true;
-          } else if (this.postularse && this.$store.getters.isUsuario) {
-            if (err.response.data.error === 'El usuario ya se encuentra postulado al llamado') {
-              EventBus.$emit('actualizarVacantes');
-
-              if (this.$route.path !== this.redirect) this.$router.push(this.redirect);
-
-              window.$("#loginPostulacionPopup").modal('hide');
-              window.$('body').removeClass('modal-open');
-              window.$('.modal-backdrop').remove();
-            }
+          } else if (this.postularse) {
+            this.$router.push({ path: '/perfil', query: { key: 'noPostulado' } });
+            this.cerrarModal('#loginPostulacionPopup');
           }
         }
+      },
+
+      cerrarModal(id) {
+        window.$(id).modal('hide');
+        window.$('body').removeClass('modal-open');
+        window.$('.modal-backdrop').remove();
       },
 
       abrirSignUp() {
@@ -127,3 +145,9 @@
     }
   }
 </script>
+
+<style>
+  .error {
+    color: red;
+  }
+</style>

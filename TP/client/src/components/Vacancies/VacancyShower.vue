@@ -40,7 +40,7 @@
               <utn-button @click="postularme(vacante.id)">
                 Postularme
               </utn-button>
-              <LogIn dataTarget="loginPostulacionPopup" :postularse="true" :id_llamado="id_llamado" redirect="/perfil" />
+              <LogIn dataTarget="loginPostulacionPopup" :postularse="true" :id_llamado="id_llamado"/>
             </div>
             <div class="vacancy-options" v-else-if="isUsuario && !vacante.usuarioTrabajaEnLaCatedra">
               <utn-button @click="postularme(vacante.id)" v-if="!vacante.usuarioPostulado">
