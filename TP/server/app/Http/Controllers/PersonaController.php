@@ -266,7 +266,7 @@ class PersonaController extends Controller
             <div style="font-size: large;">
               <p>¡Buen día!</p>
               <p>No se ha podido verificar la identidad de <strong>' . $persona->nombre_apellido . '</strong> con DNI N° <strong>' . 
-              $persona->dni . '</strong> del usuario ' . $persona->nombre_usuario . '.</p>
+              $persona->dni . '</strong> del usuario: ' . $persona->nombre_usuario . '.</p>
               <p>Si considera que es un error contáctese directamente con la facultad.</p>
             </div>
             ';
