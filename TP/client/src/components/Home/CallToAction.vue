@@ -17,53 +17,54 @@
         <li>Al finalizar la orden de mérito se le notificará su situación vía Email</li>
       </ol>
     </p>
-    <button class="btn btn-primary" v-if="!authenticated" @click="abrirModal">
-      Registrarme
-    </button>
+    <div v-if="!authenticated">
+      <utn-button data-toggle="modal" data-target="#signUpPopupCallToAction" icon="fas fa-user-plus">
+        Registrarme
+      </utn-button>
+      <SignUp identificator="signUpPopupCallToAction" />
+    </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters } from "vuex";
 export default {
+  components: {
+    SignUp: () => import("../SignUp.vue")
+  },
   computed: {
     ...mapGetters({
-      authenticated: 'authenticated'
+      authenticated: "authenticated"
     })
-  },
-  methods: {
-    abrirModal() {
-      window.$("#signUpPopup").modal('show');
-    }
   }
-}
+};
 </script>
 
 <style>
-  .cta{
-    padding: 2rem 5rem;
-    background-image: url("../../assets/homebg.png");
-    background-color: #fff;
-    background-position: right bottom;
-    background-repeat: no-repeat;
-    background-size: 80%;
-  }
-  
-  .cta-title{
-    font-weight: 600;
-    font-size: 2rem;
-  }
+.cta {
+  padding: 2rem 5rem;
+  background-image: url("../../assets/homebg.png");
+  background-color: #fff;
+  background-position: right bottom;
+  background-repeat: no-repeat;
+  background-size: 80%;
+}
 
-  .cta-subtitle{
-    font-size: 1.25rem;
-  }
+.cta-title {
+  font-weight: 600;
+  font-size: 2rem;
+}
 
-  .cta p{
-    margin-top: 1rem;
-    display: flex;
-  }
+.cta-subtitle {
+  font-size: 1.25rem;
+}
 
-  .cta p i{
-    font-size: 6rem;
-  }
+.cta p {
+  margin-top: 1rem;
+  display: flex;
+}
+
+.cta p i {
+  font-size: 6rem;
+}
 </style>

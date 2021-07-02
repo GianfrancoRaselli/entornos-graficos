@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Popup dataTarget="signUpPopup" title="Registrarse" :showButtons="false">
+    <Popup :dataTarget="identificator" title="Registrarse" :showButtons="false">
       <div style="width: 100%; margin-bottom: 1%;" v-if="errorMessage">
         <div
           class="alert alert-danger alert-dismissible fade show"
@@ -175,7 +175,9 @@
 import { mapActions } from "vuex";
 import Swal from "sweetalert2";
 export default {
-  name: "SignUp",
+  props: {
+    identificator: { type: String, default: 'signUpPopup' }
+  },
   data() {
     return {
       errorMessage: "",

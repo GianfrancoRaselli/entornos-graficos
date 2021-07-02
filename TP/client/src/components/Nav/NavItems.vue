@@ -1,23 +1,23 @@
 <template>
   <ul :class="navItemsclass">
     <li class="nav-item">
-      <router-link class="btn btn-light" to="/" exact="true">
+      <router-link class="btn btn-light btn-block" to="/" exact="true">
         <i class="fas fa-home" :class="{ 'fa-2x': !desktop }"></i> <span v-if="desktop">Inicio</span>
       </router-link>
     </li>
     <li class="nav-item">
-      <router-link class="btn btn-light" to="/requisitos" exact="true">
+      <router-link class="btn btn-light btn-block" to="/requisitos" exact="true">
         <i class="fas fa-list-ul" :class="{ 'fa-2x': !desktop }"></i> <span v-if="desktop">Requisitos</span>
       </router-link>
     </li>
     <li class="nav-item">
-      <router-link class="btn btn-light" to="/contacto" exact="true">
+      <router-link class="btn btn-light btn-block" to="/contacto" exact="true">
         <i class="fas fa-map-marker-alt" :class="{ 'fa-2x': !desktop }"></i> <span v-if="desktop">Contacto</span>
       </router-link>
     </li>
     <li class="nav-item">
       <router-link
-        class="btn btn-light"
+        class="btn btn-light btn-block"
         to="/vacantes"
         exact="true"
         v-if="!authenticated || isUsuario"
@@ -27,7 +27,7 @@
     </li>
     <li class="nav-item">
       <router-link
-        class="btn btn-light"
+        class="btn btn-light btn-block"
         to="/ordenesMerito"
         exact="true"
         v-if="!authenticated || isUsuario"
@@ -37,7 +37,7 @@
     </li>
     <li class="nav-item">
       <router-link
-        class="btn btn-light"
+        class="btn btn-light btn-block"
         to="/administrarVacantes"
         exact="true"
         v-if="isAdministrador || isJefeCatedra"
@@ -47,7 +47,7 @@
     </li>
     <li class="nav-item">
       <router-link
-        class="btn btn-light"
+        class="btn btn-light btn-block"
         to="/agregarVacante"
         exact="true"
         v-if="isAdministrador"
@@ -57,7 +57,7 @@
     </li>
     <li class="nav-item">
       <router-link
-        class="btn btn-light"
+        class="btn btn-light btn-block"
         to="/verificarIdentidades"
         exact="true"
         v-if="isAdministrador"
