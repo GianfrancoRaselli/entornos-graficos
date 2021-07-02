@@ -180,6 +180,10 @@ export default {
   border: RGB(0, 122, 255) 2px solid;
   border-radius: 0 0 15px 15px;
   padding: 0.5rem 1rem;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
 }
 
 .descripcion {
