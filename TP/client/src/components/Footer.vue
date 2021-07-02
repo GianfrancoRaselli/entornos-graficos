@@ -7,7 +7,7 @@
       </div>
       <div class="col">
         <p><router-link class="link" to="/contacto">Contacto</router-link>: ZEBALLOS 1341 - S2000BQA - ROSARIO</p>
-        <p>Télefono directo: 0341 - 4481871</p>
+        <p>Télefono directo: (0341) 4481871</p>
       </div>
     </div>
   </footer>

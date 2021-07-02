@@ -11,7 +11,8 @@
       </div>
       <div class="static-container mt-3">
         Dirección: ZEBALLOS 1341 - S2000BQA - ROSARIO
-        Teléfono: 0341 - 4481871   Teléfonos directos e Internos
+        <br />
+        Teléfono: (0341) 4481871
       </div>
     </div>
   </div>
