@@ -65,7 +65,7 @@ class PostulacionController extends Controller
         return response()->json(['error' => 'No existe el llamado'], 406, []);
       }
     } else {
-      return response()->json(['error' => 'Ingrese todos los datos requeridos'], 406, []);
+      return response()->json(['error' => 'Ingrese el ID del llamado en el que se quiere postular'], 406, []);
     }
   }
 
@@ -92,7 +92,7 @@ class PostulacionController extends Controller
         return response()->json(['error' => 'No existe el llamado'], 406, []);
       }
     } else {
-      return response()->json(['error' => 'Ingrese el id del llamado a eliminar'], 406, []);
+      return response()->json(['error' => 'Ingrese el ID del llamado en el que se quiere dar de baja'], 406, []);
     }
   }
 }

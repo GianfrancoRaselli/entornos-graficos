@@ -179,7 +179,12 @@ class LlamadoController extends Controller
 
   public function calificarLlamado(Request $request)
   {
-    if ($request->llamado) {
+    if (
+        $request->llamado
+        && $request->llamado["id"]
+        && $request->llamado["postulaciones"]
+        && count($request->llamado["postulaciones"]) >= 1
+    ) {
       $llamado = Llamado::find($request->llamado["id"]);
       if (!$llamado->calificado) {
         if ($llamado->fecha_fin < strtotime(date('Y-m-d'))) {
@@ -204,7 +209,7 @@ class LlamadoController extends Controller
                 } else if ($postulacion["estadoEditado"] == "Rechazar") {
                   $postulacionAEditar->estado = "No elegido";
                 }
-                $postulacionAEditar->puntaje = $postulacion["puntajeEditado"];
+                $postulacionAEditar->puntaje = (int) $postulacion["puntajeEditado"];
                 $postulacionAEditar->comentarios = $postulacion["comentariosEditado"];
   
                 $postulacionAEditar->save();
@@ -237,7 +242,7 @@ class LlamadoController extends Controller
         return response()->json(['error' => 'El llamado ya fue calificado'], 406, []);
       }
     } else {
-      return response()->json(['error' => 'Envie un llamado'], 406, []);
+      return response()->json(['error' => 'Envie un llamado para calificar con al menos una postulación'], 406, []);
     }
   }
 
@@ -282,13 +287,28 @@ class LlamadoController extends Controller
 
   public function agregarLlamado(Request $request)
   {
-    if ($request->llamado) {
+    if (
+        $request->llamado
+        && $request->llamado["fecha_inicio"]
+        && $request->llamado["fecha_fin"]
+        && $request->llamado["requisitos"]
+        && $request->llamado["vacantes"]
+        && $request->llamado["id_catedra"]
+      ) {
       if (strtotime($request->llamado["fecha_inicio"]) >= strtotime(date('Y-m-d'))) {
         if (strtotime($request->llamado["fecha_inicio"]) <= strtotime($request->llamado["fecha_fin"])) {
           if ($request->llamado["requisitos"]) {
-            if ($request->llamado["vacantes"] && is_int((int) $request->llamado["vacantes"]) && $request->llamado["vacantes"] > 0) {
+            if (
+                is_numeric($request->llamado["vacantes"])
+                && (int) $request->llamado["vacantes"] >= 1
+                && (int) $request->llamado["vacantes"] <= 100
+            ) {
               try {
-                if (Catedra::find($request->llamado["id_catedra"])) {
+                if (
+                    is_numeric($request->llamado["id_catedra"])
+                    && (int) $request->llamado["id_catedra"] > 0
+                    && Catedra::find($request->llamado["id_catedra"])
+                ) {
                   $llamado = new Llamado();
                   
                   $llamado->fecha_inicio = $request->llamado["fecha_inicio"];
@@ -300,25 +320,25 @@ class LlamadoController extends Controller
 
                   $llamado->save();
                 } else {
-                  return response()->json(['error' => 'La cátedra no existe'], 406, []);
+                  return response()->json(['error' => 'El ID de cátedra ingresado no pertenece a una cátedra'], 406, []);
                 }
               } catch (Exception $e) {
                 return response()->json(['error' => $e->getMessage()], 406, []);
             }
             } else {
-              return response()->json(['error' => 'Las vacantes disponibles deben ser mayor a cero'], 406, []);
+              return response()->json(['error' => 'El número de personas que se pueden postular debe estar entre 1 y 100'], 406, []);
             }
           } else {
             return response()->json(['error' => 'Ingrese los requisitos'], 406, []);
           }
         } else {
-          return response()->json(['error' => 'La fecha de cierre no puede ser menor a la fecha de inicio'], 406, []);
+          return response()->json(['error' => 'La fecha de cierre debe ser mayor o igual a la fecha de inicio'], 406, []);
         }
       } else {
-        return response()->json(['error' => 'La fecha de inicio no puede ser menor a la fecha actual'], 406, []);
+        return response()->json(['error' => 'La fecha de inicio debe ser mayor o igual a la fecha actual'], 406, []);
       }
     } else {
-      return response()->json(['error' => 'Ingrese un llamado'], 406, []);
+      return response()->json(['error' => 'Ingrese un llamado con todos sus datos'], 406, []);
     }
   }
 

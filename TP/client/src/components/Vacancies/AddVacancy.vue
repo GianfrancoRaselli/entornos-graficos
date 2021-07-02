@@ -217,9 +217,7 @@ export default {
       let error = false;
 
       if (this.authenticated && this.isAdministrador) {
-        if (
-          this.llamado.fecha_inicio
-        ) {
+        if (this.llamado.fecha_inicio) {
           this.errorFechaInicio = "";
         } else {
           this.errorFechaInicio =
@@ -227,9 +225,7 @@ export default {
           error = true;
         }
 
-        if (
-          this.llamado.fecha_fin
-        ) {
+        if (this.llamado.fecha_fin) {
           this.errorFechaFin = "";
         } else {
           this.errorFechaFin =
@@ -237,10 +233,7 @@ export default {
           error = true;
         }
 
-        if (
-          this.llamado.requisitos &&
-          this.llamado.requisitos.length <= 300
-        ) {
+        if (this.llamado.requisitos && this.llamado.requisitos.length <= 300) {
           this.errorRequisitos = "";
         } else {
           this.errorRequisitos =
@@ -270,8 +263,7 @@ export default {
         ) {
           this.errorIdCatedra = "";
         } else {
-          this.errorIdCatedra =
-            "Seleccione una catedra";
+          this.errorIdCatedra = "Seleccione una catedra";
           error = true;
         }
 

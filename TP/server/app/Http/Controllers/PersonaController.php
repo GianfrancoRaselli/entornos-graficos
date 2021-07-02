@@ -24,13 +24,24 @@ class PersonaController extends Controller
     {
         if (
             $request->dni
+            && strlen($request->dni) <= 30
+            && is_numeric($request->dni)
             && $request->imagen_dni
             && $request->hasFile('imagen_dni')
             && $request->nombre_usuario
+            && strlen($request->nombre_usuario) >= 6
+            && strlen($request->nombre_usuario) <= 30
             && $request->clave
+            && strlen($request->clave) >= 8
+            && strlen($request->clave) <= 40
             && $request->nombre_apellido
+            && strlen($request->nombre_apellido) <= 60
             && $request->email
+            && strlen($request->email) <= 60
+            && preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/', $request->email)
             && $request->telefono
+            && strlen($request->telefono) <= 60
+            && is_numeric($request->telefono)
             && $request->curriculum_vitae
             && $request->hasFile('curriculum_vitae')
         ) {
@@ -80,13 +91,20 @@ class PersonaController extends Controller
                 return response()->json(['error' => 'El DNI ya se encuentra registrado'], 406, []);
             }
         } else {
-            return response()->json(['error' => 'Ingrese todos los datos de la persona'], 406, []);
+            return response()->json(['error' => 'Ingrese todos los datos de la persona en el formato correcto'], 406, []);
         }
     }
 
     function signIn(Request $request)
     {
-        if ($request->nombre_usuario && $request->clave) {
+        if (
+            $request->nombre_usuario
+            && strlen($request->nombre_usuario) >= 6
+            && strlen($request->nombre_usuario) <= 30
+            && $request->clave
+            && strlen($request->clave) >= 8
+            && strlen($request->clave) <= 40
+        ) {
             try {
                 $persona = Persona::where('nombre_usuario', $request->nombre_usuario)->first();
 
@@ -109,7 +127,7 @@ class PersonaController extends Controller
                 return response()->json(['error' => $e->getMessage()], 406, []);
             }
         } else {
-            return response()->json(['error' => 'Ingrese el nombre de usuario y la clave'], 406, []);
+            return response()->json(['error' => 'Ingrese el nombre de usuario y la clave en el formato correcto'], 406, []);
         }
     }
 
@@ -128,12 +146,22 @@ class PersonaController extends Controller
     {
         if (
             $request->nombre_usuario
+            && strlen($request->nombre_usuario) >= 6
+            && strlen($request->nombre_usuario) <= 30
             && $request->clave
+            && strlen($request->clave) >= 8
+            && strlen($request->clave) <= 40
             && $request->cambiar_clave !== null
             && $request->email
+            && strlen($request->email) <= 60
+            && preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/', $request->email)
             && $request->telefono
+            && strlen($request->telefono) <= 60
             && (!$request->cambiar_clave ||
-               ($request->cambiar_clave && $request->nueva_clave))
+                ($request->cambiar_clave
+                && $request->nueva_clave
+                && strlen($request->nueva_clave) >= 8
+                && strlen($request->nueva_clave) <= 40))
         ) {
             try {
                 $persona = Persona::find(auth()->user()->id);
@@ -162,7 +190,7 @@ class PersonaController extends Controller
                 return response()->json(['error' => $e->getMessage()], 406, []);
             }
         } else {
-            return response()->json(['error' => 'Ingrese todos los datos requeridos'], 406, []);
+            return response()->json(['error' => 'Ingrese todos los datos requeridos en el formato correcto'], 406, []);
         }
     }
 
