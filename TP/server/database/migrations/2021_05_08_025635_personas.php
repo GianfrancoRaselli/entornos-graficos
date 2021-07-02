@@ -17,9 +17,9 @@ class Personas extends Migration
             $table->id();
             $table->string('dni', 30)->unique()->collation('utf8mb4_bin');
             $table->string('imagen_dni', 50)->unique()->nullable();
-            $table->string('nombre_usuario', 20)->unique()->collation('utf8mb4_bin');
-            $table->string('clave', 120)->collation('utf8mb4_bin');
-            $table->string('nombre_apellido', 80);
+            $table->string('nombre_usuario', 30)->unique()->collation('utf8mb4_bin');
+            $table->string('clave', 180)->collation('utf8mb4_bin');
+            $table->string('nombre_apellido', 60);
             $table->string('email', 60);
             $table->string('telefono', 60);
             $table->string('api_token', 120)->unique()->nullable()->collation('utf8mb4_bin');

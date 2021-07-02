@@ -41,7 +41,7 @@
                   {{ postulacion.estado }}
                 </div>
                 <div v-else-if="edit_mode">
-                  <select class="form-control" :class="{ errorClass: postulacion.estadoError }" v-model="postulacion.estadoEditado">
+                  <select class="form-control" :class="{ errorClass: postulacion.estadoError }" v-model="postulacion.estadoEditado" required>
                     <option>Aceptar</option>
                     <option>Rechazar</option>
                   </select>
@@ -55,7 +55,7 @@
                   <div v-else>-</div>
                 </div>
                 <div v-else-if="edit_mode">
-                  <input type="number" class="form-control" :class="{ errorClass: postulacion.puntajeError }" min="0" max="100" v-model="postulacion.puntajeEditado">
+                  <input type="number" class="form-control" :class="{ errorClass: postulacion.puntajeError }" v-model="postulacion.puntajeEditado" min="0" max="100" required>
                 </div>
               </div>
             </td>
@@ -66,7 +66,7 @@
                   <div v-else>-</div>
                 </div>
                 <div v-else-if="edit_mode">
-                  <textarea class="form-control" cols="60" v-model="postulacion.comentariosEditado"></textarea>
+                  <textarea class="form-control" cols="60" v-model="postulacion.comentariosEditado" maxlength="300" required></textarea>
                 </div>
               </div>
             </td>

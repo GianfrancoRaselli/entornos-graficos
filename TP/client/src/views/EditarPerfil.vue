@@ -13,7 +13,7 @@
         </li>
       </ol>
     </nav>
-    <div style="width: 100%; margin-bottom: 1%;" v-if="error">
+    <div style="width: 100%; margin-bottom: 1%;" v-if="errorMessage">
       <div
         class="alert alert-danger alert-dismissible fade show"
         style="width: fit-content; margin-top: 2%; margin-left: auto; margin-right: auto;"
@@ -21,7 +21,7 @@
       >
         {{ errorMessage }}
         <button
-          v-on:click="error = false"
+          v-on:click="errorMessage = ''"
           class="close btn btn-link"
           data-dismiss="alert"
           style="color: black; text-decoration: none; font-size: 22px;"
@@ -50,7 +50,15 @@
                   v-model="user.nombre_usuario"
                   placeholder="Nombre Usuario"
                   class="form-control"
+                  :class="{ errorClass: errorNombreUsuario }"
+                  minlength="6"
+                  maxlength="30"
+                  required
+                  autofocus
                 />
+                <medium class="form-text text-muted" v-if="errorNombreUsuario"
+                  ><p class="error">{{ errorNombreUsuario }}</p></medium
+                >
               </div>
               <br />
               <div class="form-group">
@@ -70,7 +78,13 @@
                     v-model="user.nueva_clave"
                     placeholder="Nueva Clave"
                     class="form-control"
+                    :class="{ errorClass: errorNuevaClave }"
+                    minlength="8"
+                    maxlength="40"
                   />
+                  <medium class="form-text text-muted" v-if="errorNuevaClave"
+                    ><p class="error">{{ errorNuevaClave }}</p></medium
+                  >
                 </div>
                 <br />
               </div>
@@ -81,7 +95,13 @@
                   v-model="user.email"
                   placeholder="Email"
                   class="form-control"
+                  :class="{ errorClass: errorEmail }"
+                  maxlength="60"
+                  required
                 />
+                <medium class="form-text text-muted" v-if="errorEmail"
+                  ><p class="error">{{ errorEmail }}</p></medium
+                >
               </div>
               <br />
               <div class="form-group">
@@ -91,7 +111,13 @@
                   v-model="user.telefono"
                   placeholder="Teléfono"
                   class="form-control"
+                  :class="{ errorClass: errorTelefono }"
+                  maxlength="60"
+                  required
                 />
+                <medium class="form-text text-muted" v-if="errorTelefono"
+                  ><p class="error">{{ errorTelefono }}</p></medium
+                >
               </div>
               <br />
               <div class="form-group">
@@ -101,7 +127,14 @@
                   v-model="user.clave"
                   placeholder="Clave"
                   class="form-control"
+                  :class="{ errorClass: errorClave }"
+                  minlength="8"
+                  maxlength="40"
+                  required
                 />
+                <medium class="form-text text-muted" v-if="errorClave"
+                  ><p class="error">{{ errorClave }}</p></medium
+                >
               </div>
               <br />
               <div class="form-group">
@@ -121,11 +154,14 @@
 import axios from "axios";
 import { mapActions } from "vuex";
 export default {
-  name: "Editar perfil",
   data() {
     return {
-      error: false,
       errorMessage: "",
+      errorNombreUsuario: "",
+      errorClave: "",
+      errorNuevaClave: "",
+      errorEmail: "",
+      errorTelefono: "",
       user: {
         nombre_usuario: "",
         clave: "",
@@ -161,17 +197,89 @@ export default {
       }
     },
     async handleSubmit() {
-      this.error = false;
+      this.errorMessage = "";
+      let error = false;
 
       if (this.$store.getters.authenticated) {
-        try {
-          await this.updateProfile(this.user);
-        } catch (err) {
-          this.errorMessage = err.response.data.error;
-          this.error = true;
+        if (
+          this.user.nombre_usuario &&
+          this.user.nombre_usuario.length >= 6 &&
+          this.user.nombre_usuario.length <= 30
+        ) {
+          this.errorNombreUsuario = "";
+        } else {
+          this.errorNombreUsuario =
+            "Ingrese un nombre de usuario entre 6 y 30 caracteres";
+          error = true;
+        }
+
+        if (
+          this.user.clave &&
+          this.user.clave.length >= 8 &&
+          this.user.clave.length <= 40
+        ) {
+          this.errorClave = "";
+        } else {
+          this.errorClave = "Ingrese su clave";
+          error = true;
+        }
+
+        if (
+          this.user.email &&
+          this.user.email.length <= 60 &&
+          this.validarEmail(this.user.email)
+        ) {
+          this.errorEmail = "";
+        } else {
+          this.errorEmail = "Ingrese un correo electrónico válido";
+          error = true;
+        }
+
+        if (
+          this.user.telefono &&
+          this.user.telefono.length <= 60 &&
+          !isNaN(this.user.telefono)
+        ) {
+          this.errorTelefono = "";
+        } else {
+          this.errorTelefono = "Ingrese un número de teléfono válido sin espacios";
+          error = true;
+        }
+
+        if (
+          this.user.cambiar_clave &&
+          this.user.nueva_clave &&
+          this.user.nueva_clave.length >= 8 &&
+          this.user.nueva_clave.length <= 40
+        ) {
+          this.errorNuevaClave = "";
+        } else {
+          this.errorNuevaClave = "Ingrese una nueva clave entre 8 y 40 caracteres";
+          error = true;
+        }
+
+        if (!error) {
+          try {
+            await this.updateProfile(this.user);
+          } catch (err) {
+            this.errorMessage = err.response.data.error;
+          }
+        } else {
+          this.errorMessage = "Solucione los campos con error";
         }
       } else {
         this.$store.dispatch("logOut");
+      }
+    },
+
+    validarEmail(email) {
+      if (
+        /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i.test(email)
+      ) {
+        //eslint-disable-line
+        return true;
+      } else {
+        return false;
       }
     }
   },
@@ -214,5 +322,13 @@ input[type="checkbox"]:before {
 
 input:checked[type="checkbox"]:before {
   left: 25px;
+}
+
+.error {
+  color: red;
+}
+
+.errorClass {
+  background-color: rgb(228, 167, 167);
 }
 </style>

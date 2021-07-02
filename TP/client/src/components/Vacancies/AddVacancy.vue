@@ -12,7 +12,7 @@
         </li>
       </ol>
     </nav>
-    <div style="width: 100%; margin-bottom: 1%;" v-if="error">
+    <div style="width: 100%; margin-bottom: 1%;" v-if="errorMessage">
       <div
         class="alert alert-danger alert-dismissible fade show"
         style="width: fit-content; margin-top: 2%; margin-left: auto; margin-right: auto;"
@@ -20,7 +20,7 @@
       >
         {{ errorMessage }}
         <button
-          v-on:click="error = false"
+          v-on:click="errorMessage = ''"
           class="close btn btn-link"
           data-dismiss="alert"
           style="color: black; text-decoration: none; font-size: 22px;"
@@ -48,8 +48,13 @@
                   placeholder="Fecha Inicio"
                   :min="fecha_hoy"
                   class="form-control"
-                  :class="{ errorClass: fecha_inicio_error }"
+                  :class="{ errorClass: errorFechaInicio }"
+                  required
+                  autofocus
                 />
+                <medium class="form-text text-muted" v-if="errorFechaInicio"
+                  ><p class="error">{{ errorFechaInicio }}</p></medium
+                >
               </div>
               <br />
               <div v-if="llamado.fecha_inicio">
@@ -61,8 +66,12 @@
                     placeholder="Fecha Inicio"
                     :min="llamado.fecha_inicio"
                     class="form-control"
-                    :class="{ errorClass: fecha_fin_error }"
+                    :class="{ errorClass: errorFechaFin }"
+                    required
                   />
+                  <medium class="form-text text-muted" v-if="errorFechaFin"
+                    ><p class="error">{{ errorFechaFin }}</p></medium
+                  >
                 </div>
                 <br />
               </div>
@@ -73,8 +82,13 @@
                   v-model="llamado.requisitos"
                   placeholder="Requisitos"
                   class="form-control"
-                  :class="{ errorClass: requisitos_error }"
+                  :class="{ errorClass: errorRequisitos }"
+                  maxlength="300"
+                  required
                 />
+                <medium class="form-text text-muted" v-if="errorRequisitos"
+                  ><p class="error">{{ errorRequisitos }}</p></medium
+                >
               </div>
               <br />
               <div class="form-group">
@@ -84,16 +98,34 @@
                   v-model="llamado.vacantes"
                   placeholder="Vacentes"
                   min="1"
+                  max="100"
                   class="form-control"
-                  :class="{ errorClass: vacantes_error }"
+                  :class="{ errorClass: errorVacantes }"
+                  required
                 />
+                <medium class="form-text text-muted" v-if="errorVacantes"
+                  ><p class="error">{{ errorVacantes }}</p></medium
+                >
               </div>
               <br />
               <div class="form-group">
                 <label>Cátedra</label>
-                <select class="form-control" :class="{ errorClass: id_catedra_error }" v-model="llamado.id_catedra">
-                  <option v-for="(catedra, index) in catedras" :key="index" :value="catedra.id">{{ catedra.descripcion }}</option>
+                <select
+                  class="form-control"
+                  :class="{ errorClass: errorIdCatedra }"
+                  v-model="llamado.id_catedra"
+                  required
+                >
+                  <option
+                    v-for="(catedra, index) in catedras"
+                    :key="index"
+                    :value="catedra.id"
+                    >{{ catedra.descripcion }}</option
+                  >
                 </select>
+                <medium class="form-text text-muted" v-if="errorIdCatedra"
+                  ><p class="error">{{ errorIdCatedra }}</p></medium
+                >
               </div>
               <br />
               <div class="form-group">
@@ -115,13 +147,12 @@ import { mapGetters } from "vuex";
 export default {
   data() {
     return {
-      error: false,
       errorMessage: "",
-      fecha_inicio_error: false,
-      fecha_fin_error: false,
-      requisitos_error: false,
-      vacantes_error: false,
-      id_catedra_error: false,
+      errorFechaInicio: "",
+      errorFechaFin: "",
+      errorRequisitos: "",
+      errorVacantes: "",
+      errorIdCatedra: "",
       llamado: {
         fecha_inicio: "",
         fecha_fin: "",
@@ -159,7 +190,7 @@ export default {
       } else {
         dia = _dia;
       }
-      
+
       return anio + "-" + mes + "-" + dia;
     }
   },
@@ -167,10 +198,9 @@ export default {
     async buscarCatedras() {
       if (this.authenticated && this.isAdministrador) {
         try {
-          let res = await axios.get('/catedras/buscarCatedras',
-          {
+          let res = await axios.get("/catedras/buscarCatedras", {
             headers: {
-              Authorization: 'Bearer ' + this.$store.getters.user.api_token
+              Authorization: "Bearer " + this.$store.getters.user.api_token
             }
           });
 
@@ -183,63 +213,88 @@ export default {
       }
     },
     async handleSubmit() {
-      this.error = false;
+      this.errorMessage = "";
+      let error = false;
 
       if (this.authenticated && this.isAdministrador) {
-        if (!this.llamado.fecha_inicio) {
-          this.fecha_inicio_error = true;
-          this.error = true;
+        if (
+          this.llamado.fecha_inicio
+        ) {
+          this.errorFechaInicio = "";
         } else {
-          this.fecha_inicio_error = false;
+          this.errorFechaInicio =
+            "Ingrese la fecha de inicio del llamado posterior a la fecha de hoy";
+          error = true;
         }
 
-        if (!this.llamado.fecha_fin) {
-          this.fecha_fin_error = true;
-          this.error = true;
+        if (
+          this.llamado.fecha_fin
+        ) {
+          this.errorFechaFin = "";
         } else {
-          this.fecha_fin_error = false;
+          this.errorFechaFin =
+            "Ingrese la fecha de cierre del llamado posterior a la fecha de inicio";
+          error = true;
         }
 
-        if (!this.llamado.requisitos) {
-          this.requisitos_error = true;
-          this.error = true;
+        if (
+          this.llamado.requisitos &&
+          this.llamado.requisitos.length <= 300
+        ) {
+          this.errorRequisitos = "";
         } else {
-          this.requisitos_error = false;
+          this.errorRequisitos =
+            "Ingrese los requisitos con una longitud menor a 300 caracteres";
+          error = true;
         }
 
-        if (!this.llamado.vacantes || isNaN(this.llamado.vacantes) || this.llamado.vacantes % 1 != 0 || this.llamado.vacantes < 1) {
-          this.vacantes_error = true;
-          this.error = true;
+        if (
+          this.llamado.vacantes &&
+          !isNaN(this.llamado.vacantes) &&
+          this.llamado.vacantes > 0 &&
+          this.llamado.vacantes < 100 &&
+          this.llamado.vacantes % 1 === 0
+        ) {
+          this.errorVacantes = "";
         } else {
-          this.vacantes_error = false;
+          this.errorVacantes =
+            "Ingrese el número de personas que se pueden postular entre 1 y 100";
+          error = true;
         }
 
-        if (!this.llamado.id_catedra || isNaN(this.llamado.id_catedra) || this.llamado.id_catedra % 1 != 0 || this.llamado.id_catedra < 1) {
-          this.id_catedra_error = true;
-          this.error = true;
+        if (
+          this.llamado.id_catedra &&
+          !isNaN(this.llamado.id_catedra) &&
+          this.llamado.id_catedra > 0 &&
+          this.llamado.id_catedra % 1 === 0
+        ) {
+          this.errorIdCatedra = "";
         } else {
-          this.id_catedra_error = false;
+          this.errorIdCatedra =
+            "Seleccione una catedra";
+          error = true;
         }
 
-        if (!this.error) {
+        if (!error) {
           try {
-            await axios.post("/llamados/agregarLlamado",
-            {
-              llamado: this.llamado
-            },
-            {
-              headers: {
-                Authorization: "Bearer " + this.$store.getters.user.api_token
+            await axios.post(
+              "/llamados/agregarLlamado",
+              {
+                llamado: this.llamado
+              },
+              {
+                headers: {
+                  Authorization: "Bearer " + this.$store.getters.user.api_token
+                }
               }
-            });
+            );
 
-            this.$router.push('/administrarVacantes');
+            this.$router.push("/administrarVacantes");
           } catch (err) {
             this.errorMessage = err.response.data.error;
-            this.error = true;
           }
-        } else if (this.error) {
-          this.errorMessage = "Modifique los campos con error";
+        } else {
+          this.errorMessage = "Solucione los campos con error";
         }
       } else {
         this.$store.dispatch("logOut");
@@ -247,13 +302,17 @@ export default {
     }
   },
   created() {
-   this.buscarCatedras();
+    this.buscarCatedras();
   }
 };
 </script>
 
 <style>
-  .errorClass {
-    background-color: rgb(228, 167, 167);
-  }
+.error {
+  color: red;
+}
+
+.errorClass {
+  background-color: rgb(228, 167, 167);
+}
 </style>
