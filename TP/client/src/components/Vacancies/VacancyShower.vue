@@ -98,7 +98,7 @@
                 Darme de baja
               </button>
             </div>
-            <div v-else-if="isUsuario && vacante.usuarioTrabajaEnLaCatedra">
+            <div v-if="vacante.usuarioTrabajaEnLaCatedra">
               <p>Ya forma parte de la cátedra</p>
             </div>
           </div>
@@ -389,7 +389,7 @@ export default {
 
 .vacancy {
   width: 50%;
-  padding:1rem;
+  padding: 1rem;
   font-size: 1.08rem;
   display: flex;
   flex-direction: column;
@@ -398,11 +398,11 @@ export default {
 .vacancy-content {
   border: RGB(0, 122, 255) 2px solid;
   border-radius: 0 0 15px 15px;
-  padding: .5rem 1rem;
-  height:100%;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
+  padding: 0.5rem 1rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .descripcion {
