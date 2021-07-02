@@ -7,7 +7,7 @@
       Para postularte, primero debes estar registrado
     </div>
     <p>
-      <i class="far fa-clipboard mr-2 mt-2"></i>
+      <i class="far fa-clipboard mr-2 mt-2 hide-responsive"></i>
       <ol>
         <li v-if="!authenticated">Registrese o inicie sesión</li>
         <li>Selecciona en el menú la opción "Vacantes"</li>
@@ -66,5 +66,14 @@ export default {
 
 .cta p i {
   font-size: 6rem;
+}
+
+@media(max-width:560px){
+  .hide-responsive{
+    display:none;
+  }
+  .cta {
+    padding: 2rem 1rem;
+  }
 }
 </style>
