@@ -89,7 +89,7 @@
               id="btn-ver-cv"
               class="btn btn-secondary"
               :href="
-                'http://localhost/Entornos Graficos/entornos-graficos-2021/TP/server/public/CVs/' +
+                'https://utn-vacantes.herokuapp.com/public/CVs/' +
                   postulacion.curriculum_vitae
               "
               target="_blank"

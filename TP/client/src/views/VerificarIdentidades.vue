@@ -19,10 +19,10 @@
             <td><div class="columna-md">{{ persona.telefono }}</div></td>
             <td>
               <div class="columna-lg">
-                <a class="btn btn-primary m-1" :href="'http://localhost/Entornos Graficos/entornos-graficos-2021/TP/server/public/DNIs/' + persona.imagen_dni" target="_blank">
+                <a class="btn btn-primary m-1" :href="'https://utn-vacantes.herokuapp.com/public/DNIs/' + persona.imagen_dni" target="_blank">
                   <i class="fas fa-eye"></i> Ver DNI
                 </a>
-                <a class="btn btn-secondary m-1" :href="'http://localhost/Entornos Graficos/entornos-graficos-2021/TP/server/public/CVs/' + persona.curriculum_vitae" target="_blank">
+                <a class="btn btn-secondary m-1" :href="'https://utn-vacantes.herokuapp.com/public/CVs/' + persona.curriculum_vitae" target="_blank">
                   <i class="fas fa-eye"></i> Ver CV
                 </a>
                 <a class="btn btn-success m-1" @click="aceptar(persona.id)">

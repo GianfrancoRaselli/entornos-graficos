@@ -166,7 +166,7 @@
             this.user.email = res.data.email;
             this.user.telefono = res.data.telefono;
             if (res.data.curriculum_vitae) {
-              this.user.ruta_cv = 'http://localhost/Entornos Graficos/entornos-graficos-2021/TP/server/public/CVs/' + res.data.curriculum_vitae;
+              this.user.ruta_cv = 'https://utn-vacantes.herokuapp.com/public/CVs/' + res.data.curriculum_vitae;
             }
           } catch (err) {
               console.log(err.response.data.error);
@@ -194,7 +194,7 @@
                 }
               });
 
-              this.user.ruta_cv = 'http://localhost/Entornos Graficos/entornos-graficos-2021/TP/server/public/CVs/' + res.data;
+              this.user.ruta_cv = 'https://utn-vacantes.herokuapp.com/public/CVs/' + res.data;
 
               window.$('#cargarCV').modal('hide');
               window.$('body').removeClass('modal-open');
