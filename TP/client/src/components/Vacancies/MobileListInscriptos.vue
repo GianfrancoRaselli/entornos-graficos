@@ -1,22 +1,17 @@
 <template>
   <div class="inscriptos-mobile">
     <div class="inscripto-data" v-for="(postulacion, index) in llamado.postulaciones" :key="index">
-      <div class="personal-data">
-        <p>
-          <span>
-            <b>DNI:</b> {{ postulacion.dni }}
-            <br />
-            <b>Nombre y Apellido:</b> {{ postulacion.nombre_apellido }}
-            <br />
-            <b>Email:</b> {{ postulacion.email }}
-            <br />
-            <b>Teléfono:</b> {{ postulacion.telefono }}
-          </span>
-        </p>
-      </div>
-      <div v-if="!isEditing">
+      <b>DNI:</b> {{ postulacion.dni }}
+      <br />
+      <b>Nombre y Apellido:</b> {{ postulacion.nombre_apellido }}
+      <br />
+      <b>Email:</b> {{ postulacion.email }}
+      <br />
+      <b>Teléfono:</b> {{ postulacion.telefono }}
+      <br />
+      <template v-if="!isEditing">
         <b>Estado: </b>{{ postulacion.estado }}
-      </div>
+      </template>
       <div v-else-if="editMode" class="editing-container">
         <b>Acción: </b>
         <select
@@ -31,7 +26,7 @@
       </div>
       <div v-if="!isEditing">
         <b>Calificación: </b>
-        <div class="my-1" v-if="postulacion.puntaje">{{ postulacion.puntaje }}</div>
+        <div v-if="postulacion.puntaje">{{ postulacion.puntaje }}</div>
         <div v-else class="my-1">-</div>
       </div>
       <div v-else-if="editMode">
@@ -81,7 +76,6 @@
 export default {
   data() {
     return {
-
     }
   },
   props:{
@@ -93,5 +87,4 @@ export default {
 </script>
 
 <style>
-
 </style>
