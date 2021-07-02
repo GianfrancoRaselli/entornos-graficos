@@ -32,8 +32,11 @@
               <p v-if="vacante.vacantes_disponibles > 1">
                 <i class="fas fa-exclamation-circle"></i>&nbsp;¡Quedan solo {{ vacante.vacantes_disponibles }} vacantes!
               </p>
-              <p v-if="vacante.vacantes_disponibles === 1">
+              <p v-else-if="vacante.vacantes_disponibles === 1">
                 <i class="fas fa-exclamation-circle"></i>&nbsp;¡Última vacante disponible!
+              </p>
+              <p v-else-if="vacante.vacantes_disponibles === 0">
+                No quedan más vacantes disponibles
               </p>
             </div>
             <div v-if="!authenticated" class="vacancy-options">
@@ -42,7 +45,7 @@
               </utn-button>
               <LogIn dataTarget="loginPostulacionPopup" :postularse="true" :id_llamado="id_llamado"/>
             </div>
-            <div class="vacancy-options" v-else-if="isUsuario && !vacante.usuarioTrabajaEnLaCatedra">
+            <div class="vacancy-options" v-else-if="isUsuario && !vacante.usuarioTrabajaEnLaCatedra && vacante.vacantes_disponibles > 0">
               <utn-button @click="postularme(vacante.id)" v-if="!vacante.usuarioPostulado">
                 Postularme
               </utn-button>

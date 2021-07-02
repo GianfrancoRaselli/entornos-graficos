@@ -163,7 +163,7 @@ export default {
 
 <style>
   .columna-lg {
-    width: 500px;
+    width: 520px;
   }
 
   .columna-md {
