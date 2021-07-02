@@ -39,113 +39,8 @@
           <p>El llamado cierra el: {{ llamado.fecha_fin }}</p>
         </div>
       </div>
-      <table
-        class="table table-responsive table-striped table-hover table-bordered"
-      >
-        <thead>
-          <tr>
-            <th>DNI</th>
-            <th>Nombre y apellido</th>
-            <th v-if="edit_mode">Email</th>
-            <th v-if="edit_mode">Teléfono</th>
-            <th>Estado</th>
-            <th>Calificación</th>
-            <th>Comentarios</th>
-            <th v-if="edit_mode">Acción</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="(postulacion, index) in llamado.postulaciones"
-            :key="index"
-          >
-            <td>
-              <div class="columna-md">{{ postulacion.dni }}</div>
-            </td>
-            <td>
-              <div class="columna-md">{{ postulacion.nombre_apellido }}</div>
-            </td>
-            <td v-if="edit_mode">
-              <div class="columna-md">{{ postulacion.email }}</div>
-            </td>
-            <td v-if="edit_mode">
-              <div class="columna-md">{{ postulacion.telefono }}</div>
-            </td>
-            <td>
-              <div class="columna-md">
-                <div v-if="!editando">
-                  {{ postulacion.estado }}
-                </div>
-                <div v-else-if="edit_mode">
-                  <select
-                    class="form-control"
-                    :class="{ errorClass: postulacion.estadoError }"
-                    v-model="postulacion.estadoEditado"
-                    required
-                  >
-                    <option>Aceptar</option>
-                    <option>Rechazar</option>
-                  </select>
-                </div>
-              </div>
-            </td>
-            <td>
-              <div class="columna-sm">
-                <div v-if="!editando">
-                  <div v-if="postulacion.puntaje">
-                    {{ postulacion.puntaje }}
-                  </div>
-                  <div v-else>-</div>
-                </div>
-                <div v-else-if="edit_mode">
-                  <input
-                    type="number"
-                    class="form-control"
-                    :class="{ errorClass: postulacion.puntajeError }"
-                    v-model="postulacion.puntajeEditado"
-                    min="0"
-                    max="100"
-                    required
-                  />
-                </div>
-              </div>
-            </td>
-            <td>
-              <div class="columna-lg">
-                <div v-if="!editando">
-                  <div v-if="postulacion.comentarios">
-                    {{ postulacion.comentarios }}
-                  </div>
-                  <div v-else>-</div>
-                </div>
-                <div v-else-if="edit_mode">
-                  <textarea
-                    class="form-control"
-                    cols="60"
-                    v-model="postulacion.comentariosEditado"
-                    maxlength="300"
-                  ></textarea>
-                </div>
-              </div>
-            </td>
-            <td v-if="edit_mode">
-              <div class="columna-md">
-                <a
-                  id="btn-ver-cv"
-                  class="btn btn-secondary"
-                  :href="
-                    'http://localhost/Entornos Graficos/entornos-graficos-2021/TP/server/public/CVs/' +
-                      postulacion.curriculum_vitae
-                  "
-                  target="_blank"
-                >
-                  <i class="fas fa-eye"></i> Ver CV
-                </a>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <MobileList :isEditing="editando" :editMode="edit_mode" :llamado="llamado" />
+      <DesktopList :isEditing="editando" :editMode="edit_mode" :llamado="llamado" />
     </div>
     <div v-else>
       <p>No se ha inscripto ninguna persona</p>
@@ -160,6 +55,10 @@ import EventBus from "../../event-bus";
 export default {
   props: {
     edit_mode: { type: Boolean, default: true }
+  },
+  components: {
+    MobileList: () => import('./MobileListInscriptos.vue'),
+    DesktopList: () => import('./DesktopListInscriptos.vue'),
   },
   data() {
     return {
@@ -367,5 +266,22 @@ export default {
 
 table {
   word-wrap: break-word;
+}
+
+.inscriptos-mobile{
+  display: none;
+}
+
+@media(max-width:990px){
+  .inscriptos-mobile{
+    display:block;
+  }
+  .inscriptos-desktop{
+    display:none;
+  }
+  .inscripto-data{
+    border-bottom: 1px solid rgb(158, 158, 158);
+    padding:1rem;
+  }
 }
 </style>
