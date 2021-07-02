@@ -5762,10 +5762,10 @@
   "resolved" "https://registry.nlark.com/negotiator/download/negotiator-0.6.2.tgz"
   "version" "0.6.2"
 
-"neo-async@^2.5.0", "neo-async@^2.6.0", "neo-async@^2.6.1":
+"neo-async@^2.6.1":
   "integrity" "sha1-tKr7k+OustgXTKU88WOrfXMIMF8="
-  "resolved" "https://registry.nlark.com/neo-async/download/neo-async-2.6.2.tgz"
-  "version" "2.6.2"
+  "resolved" "https://registry.nlark.com/neo-async/download/neo-async-2.6.1.tgz"
+  "version" "2.6.1"
 
 "nice-try@^1.0.4":
   "integrity" "sha1-ozeKdpbOfSI+iPybdkvX7xCJ42Y="
@@ -7961,7 +7961,7 @@
   dependencies:
     "loader-runner" "^2.3.1"
     "loader-utils" "^1.1.0"
-    "neo-async" "^2.6.0"
+    "neo-async" "^2.6.1"
 
 "through@^2.3.6":
   "integrity" "sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU="
@@ -8450,7 +8450,7 @@
   "version" "1.7.5"
   dependencies:
     "graceful-fs" "^4.1.2"
-    "neo-async" "^2.5.0"
+    "neo-async" "^2.6.1"
   optionalDependencies:
     "chokidar" "^3.4.1"
     "watchpack-chokidar2" "^2.0.1"

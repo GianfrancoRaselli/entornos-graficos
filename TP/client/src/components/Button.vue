@@ -12,20 +12,20 @@
 <script>
 export default {
   props: {
-    to: { type: String, default: '#' },
-    btnClass: { type: String, default: 'btn btn-primary' },
+    to: { type: String, default: "#" },
+    btnClass: { type: String, default: "btn btn-primary" },
     icon: { type: String }
   }
-}
+};
 </script>
 
 <style>
-  .btn:focus {
-    outline: none !important;
-    box-shadow: none !important;
-  }
-  
-  .btn:hover {
-    transition: .15s;
-  }
+.btn:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.btn:hover {
+  transition: 0.15s;
+}
 </style>
