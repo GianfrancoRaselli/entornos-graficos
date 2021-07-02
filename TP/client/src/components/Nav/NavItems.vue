@@ -35,32 +35,29 @@
         <i class="fas fa-clipboard-list" :class="{ 'fa-2x': !desktop }"></i> <span v-if="desktop">Ordenes de mérito</span>
       </router-link>
     </li>
-    <li class="nav-item">
+    <li class="nav-item" v-if="isAdministrador || isJefeCatedra">
       <router-link
         class="btn btn-light btn-block"
         to="/administrarVacantes"
         exact="true"
-        v-if="isAdministrador || isJefeCatedra"
       >
         <i class="fas fa-toolbox" :class="{ 'fa-2x': !desktop }"></i> <span v-if="desktop">Administrar vacantes</span>
       </router-link>
     </li>
-    <li class="nav-item">
+    <li class="nav-item" v-if="isAdministrador">
       <router-link
         class="btn btn-light btn-block"
         to="/agregarVacante"
         exact="true"
-        v-if="isAdministrador"
       >
         <i class="fas fa-plus-circle" :class="{ 'fa-2x': !desktop }"></i> <span v-if="desktop">Agregar vacante</span>
       </router-link>
     </li>
-    <li class="nav-item">
+    <li class="nav-item" v-if="isAdministrador">
       <router-link
         class="btn btn-light btn-block"
         to="/verificarIdentidades"
         exact="true"
-        v-if="isAdministrador"
       >
         <i class="fas fa-user-check" :class="{ 'fa-2x': !desktop }"></i> <span v-if="desktop">Verificar identidades</span>
       </router-link>
@@ -94,16 +91,17 @@ export default {
 @media (max-width: 991px) {
   .mobile-nav {
     display: flex;
-    position: fixed;
+    height:65px;
+    position:fixed;
     bottom: 0;
+    align-items:center;
     list-style: none;
     box-shadow: 0 -4px 20px 0 rgba(0, 0, 0, 0.08);
-    justify-content: center;
+    justify-content: space-around;
     background-color: white;
     width: 100%;
-    margin: 0;
+    margin: -.1rem -1rem;
     padding: 0;
-    left: 0;
   }
 }
 </style>
