@@ -5,3 +5,4 @@ Homestead.yaml
 .phpunit.result.cache
 .env
 public/CVs/*
+public/DNIs/*
