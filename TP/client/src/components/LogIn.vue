@@ -81,7 +81,9 @@
 
 <script>
 import axios from "axios";
+import Swal from "sweetalert2";
 import { mapActions } from "vuex";
+import EventBus from "../event-bus";
 export default {
   props: {
     postularse: { type: Boolean, default: false },
@@ -161,7 +163,15 @@ export default {
         if (!this.postularse) {
           this.errorMessage = err.response.data.error;
         } else if (this.postularse) {
-          this.$router.push({ path: "/perfil", query: { key: "noPostulado" } });
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "Algo salió mal...",
+            text: err.response.data.error,
+            showConfirmButton: true,
+            timer: 4000
+          });
+          EventBus.$emit('actualizarVacantes');
           this.cerrarModal("#loginPostulacionPopup");
         }
       }
