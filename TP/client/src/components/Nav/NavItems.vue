@@ -1,17 +1,17 @@
 <template>
   <ul :class="navItemsclass">
     <li class="nav-item">
-      <router-link class="btn btn-light btn-block" to="/" exact="true">
+      <router-link class="btn btn-light btn-block" to="/" exact>
         <i class="fas fa-home" :class="{ 'fa-2x': !desktop }"></i> <span v-if="desktop">Inicio</span>
       </router-link>
     </li>
     <li class="nav-item">
-      <router-link class="btn btn-light btn-block" to="/requisitos" exact="true">
+      <router-link class="btn btn-light btn-block" to="/requisitos" exact>
         <i class="fas fa-list-ul" :class="{ 'fa-2x': !desktop }"></i> <span v-if="desktop">Requisitos</span>
       </router-link>
     </li>
     <li class="nav-item">
-      <router-link class="btn btn-light btn-block" to="/contacto" exact="true">
+      <router-link class="btn btn-light btn-block" to="/contacto" exact>
         <i class="fas fa-map-marker-alt" :class="{ 'fa-2x': !desktop }"></i> <span v-if="desktop">Contacto</span>
       </router-link>
     </li>
@@ -19,7 +19,7 @@
       <router-link
         class="btn btn-light btn-block"
         to="/vacantes"
-        exact="true"
+        exact
         v-if="!authenticated || isUsuario"
       >
         <i class="fas fa-hand-pointer" :class="{ 'fa-2x': !desktop }"></i> <span v-if="desktop">Vacantes</span>
@@ -29,7 +29,7 @@
       <router-link
         class="btn btn-light btn-block"
         to="/ordenesMerito"
-        exact="true"
+        exact
         v-if="!authenticated || isUsuario"
       >
         <i class="fas fa-clipboard-list" :class="{ 'fa-2x': !desktop }"></i> <span v-if="desktop">Ordenes de mérito</span>
@@ -39,7 +39,7 @@
       <router-link
         class="btn btn-light btn-block"
         to="/administrarVacantes"
-        exact="true"
+        exact
       >
         <i class="fas fa-toolbox" :class="{ 'fa-2x': !desktop }"></i> <span v-if="desktop">Administrar vacantes</span>
       </router-link>
@@ -48,7 +48,7 @@
       <router-link
         class="btn btn-light btn-block"
         to="/agregarVacante"
-        exact="true"
+        exact
       >
         <i class="fas fa-plus-circle" :class="{ 'fa-2x': !desktop }"></i> <span v-if="desktop">Agregar vacante</span>
       </router-link>
@@ -57,7 +57,7 @@
       <router-link
         class="btn btn-light btn-block"
         to="/verificarIdentidades"
-        exact="true"
+        exact
       >
         <i class="fas fa-user-check" :class="{ 'fa-2x': !desktop }"></i> <span v-if="desktop">Verificar identidades</span>
       </router-link>
