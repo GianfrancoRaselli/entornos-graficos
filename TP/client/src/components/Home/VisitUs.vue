@@ -45,6 +45,7 @@ export default {
     justify-content: center;
     align-items: center;
     padding: 3rem;
+    margin-bottom:-2rem;
   }
   .visit-description{
     margin-right: 1rem; 

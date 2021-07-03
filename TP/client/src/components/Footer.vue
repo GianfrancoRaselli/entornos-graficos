@@ -44,6 +44,7 @@ export default {
 
 .footer-container {
   display: flex;
+  margin-top:2rem;
   background-color: RGBA(0, 0, 0, 0.8);
   color: RGBA(255, 255, 255, 0.5);
   padding: 3rem 1rem;
