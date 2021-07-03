@@ -8,9 +8,14 @@ const router = new Router({
   mode: 'history',
   linkActiveClass: 'active',
   routes: [
+    // Redirect to 404 page, if no match found
     {
       path: '*',
-      redirect: '/',
+      redirect: { name: '404' },
+    },
+    {
+      path: '404', name: '404',
+      component: () => import('@/views/404.vue'),
     },
     {
       path: '/',
@@ -94,7 +99,11 @@ router.beforeEach(async (to, from, next) => {
   let notAuthOrUsuario = to.matched.some(record => record.meta.notAuthOrUsuario);
   let isAdministrador = to.matched.some(record => record.meta.isAdministrador);
   let isAdministradorOrJefeCatedra = to.matched.some(record => record.meta.isAdministradorOrJefeCatedra);
-
+  if (!to.matched.length) {
+    next('*');
+  } else {
+    next();
+  }
   if (auth && !store.getters.authenticated) {
     next('signin');
   } else if (notAuthOrUsuario && (store.getters.isAdministrador || store.getters.isJefeCatedra)) {
