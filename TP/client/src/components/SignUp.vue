@@ -190,13 +190,13 @@ export default {
       errorTelefono: "",
       errorFormatoCV: false,
       user: {
-        dni: "5526652626",
+        dni: "",
         imagen_dni: null,
-        nombre_usuario: "testing",
-        clave: "test1232",
-        nombre_apellido: "hsdfujkjd",
-        email: "gianrase@hotmail.com",
-        telefono: "123456789",
+        nombre_usuario: "",
+        clave: "",
+        nombre_apellido: "",
+        email: "",
+        telefono: "",
         curriculum_vitae: null
       }
     };

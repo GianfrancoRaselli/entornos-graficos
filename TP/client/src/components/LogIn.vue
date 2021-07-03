@@ -97,8 +97,8 @@ export default {
       errorNombreUsuario: "",
       errorClave: "",
       user: {
-        nombre_usuario: "testing",
-        clave: "test1232"
+        nombre_usuario: "",
+        clave: ""
       }
     };
   },
