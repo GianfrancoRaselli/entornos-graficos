@@ -13,8 +13,8 @@
         <p>Télefono: (0341) 4481871</p>
       </div>
     </div>
-    <div class="support-container">
-      Soporte: <a class="mx-2" href="mailto:galdeanocg2@gmail.com?Subject=Sugerencia%20-%UTN%20vacantes"> Galdeano Gonzalo</a> - <a class="mx-2" href="mailto:gianrase4@gmail.com?Subject=Sugerencia%20-%UTN%20vacantes"> Raselli Gianfranco </a> - <a class="ml-2" href="mailto:federico.roma98@gmail.com?Subject=Sugerencia%20-%UTN%20vacantes"> Romaniuk Federico</a>
+    <div class="support-container px-5">
+      Soporte: <a class="mx-2" href="mailto:galdeanocg2@gmail.com?Subject=Sugerencia%20-%20UTN%20vacantes"> Galdeano Gonzalo</a> - <a class="mx-2" href="mailto:gianrase4@gmail.com?Subject=Sugerencia%20-%20UTN%20vacantes"> Raselli Gianfranco </a> - <a class="ml-2" href="mailto:federico.roma98@gmail.com?Subject=Sugerencia%20-%20UTN%20vacantes"> Romaniuk Federico</a>
     </div>
   </footer>
 </template>
@@ -63,5 +63,12 @@ export default {
 
 .support-container a{
   color: #ccc;
+}
+
+@media (max-width: 991px) {
+  .support-container {
+    height: 142px;
+    padding-bottom: 72px;
+  }
 }
 </style>
