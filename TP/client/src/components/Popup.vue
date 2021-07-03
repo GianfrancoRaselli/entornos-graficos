@@ -5,8 +5,9 @@
       :id="dataTarget"
       :aria-labelledby="title"
       aria-hidden="true"
+      :aria-label="title"
     >
-      <div class="modal-dialog modal-dialog-centered" :class="propClass">
+      <div class="modal-dialog modal-dialog-centered" :class="propClass" :aria-label="title">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">

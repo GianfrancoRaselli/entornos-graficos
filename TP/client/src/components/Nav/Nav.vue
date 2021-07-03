@@ -6,6 +6,7 @@
         class="headerLogo"
         alt="Logo UTN"
         id="logo-utn"
+        width="175px"
       />
     </router-link>
     <button

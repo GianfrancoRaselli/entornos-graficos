@@ -24,6 +24,7 @@
           <img
             src="../assets/img-signin.png"
             alt="Logo Inicio Sesion"
+            width="200px"
             class="card-img-top mx-auto m-4 rounded-circle w-25"
           />
           <form @submit.prevent="handleSubmit">

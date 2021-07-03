@@ -9,7 +9,7 @@
       role="alert"
     >
       <i class="fas fa-exclamation-triangle mt-5" style="font-size: 5rem"></i>
-      <p class="mt-5 mb-5">¡No hay vacantes!</p>
+      <p class="mt-5 mb-5">¡No se encuentran vacantes!</p>
     </div>
     <div v-if="vacantes.length">
       <div class="vacancies">
