@@ -99,7 +99,7 @@
         <br />
         <div class="form-group">
           <button class="btn btn-success btn-block">
-            Guardar
+            <i class="fas fa-save"></i> Guardar
           </button>
         </div>
       </form>
