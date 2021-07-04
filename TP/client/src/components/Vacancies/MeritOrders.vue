@@ -221,7 +221,6 @@ export default {
 }
 
 .vacancy {
-  width: 50%;
   padding: 1rem;
   font-size: 1.08rem;
   display: flex;

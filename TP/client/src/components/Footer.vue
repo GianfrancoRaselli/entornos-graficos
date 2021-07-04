@@ -65,10 +65,11 @@ export default {
   color: #ccc;
 }
 
-@media (max-width: 991px) {
+@media (max-width: 1261px) {
   .support-container {
     height: 142px;
-    padding-bottom: 72px;
+    flex-wrap:wrap;
+    padding-bottom: 55px;
   }
 }
 </style>

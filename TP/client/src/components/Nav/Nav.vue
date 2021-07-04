@@ -21,7 +21,16 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-      <NavItems />
+      <div class="dropdown-divider"></div>
+      <ul class="navbar-nav">
+        <li class="nav-item" v-for="(nav, index) in allUserNavs" :key="index">
+          <utn-button btnClass="btn btn-light btn-block" :to="nav.router" exact>
+            <i :class="nav.icon"></i>
+            <span> {{ nav.name }}</span>
+          </utn-button>
+        </li>
+      </ul>
+      <NavItemsDesktop />
       <ul v-if="authenticated" class="navbar-nav" style="margin-left: auto;">
         <li class="nav-item">
           <utn-button
@@ -39,19 +48,18 @@
             class="dropdown-menu dropdown-menu-lg-right"
             aria-labelledby="navbarDropdown"
           >
-            <router-link class="dropdown-item btn btn-link" to="/perfil">
+            <utn-button btnClass="dropdown-item btn btn-link" to="/perfil">
               <i class="fas fa-id-card"></i>
               Perfil
-            </router-link>
-            <div class="dropdown-divider"></div>
-            <button
-              class="dropdown-item btn btn-link"
+            </utn-button>
+            <utn-button
+              btnClass="dropdown-item btn btn-link"
               @click="cerrarSesion"
               id="btn-cerrar-sesion"
             >
               <i class="fas fa-sign-out-alt"></i>
               Cerrar Sesión
-            </button>
+            </utn-button>
           </div>
         </li>
       </ul>
@@ -72,7 +80,7 @@
         <SignUp />
       </ul>
     </div>
-    <NavItems navItemsclass="mobile-nav" :desktop="false" />
+    <NavItemsMobile/>
   </nav>
 </template>
 
@@ -81,7 +89,8 @@ import { mapGetters } from "vuex";
 export default {
   name: "Nav",
   components: {
-    NavItems: () => import("./NavItems.vue"),
+    NavItemsDesktop: () => import("./NavItemsDesktop.vue"),
+    NavItemsMobile: () => import("./NavItemsMobile.vue"),
     LogIn: () => import("../LogIn.vue"),
     SignUp: () => import("../SignUp.vue")
   },
@@ -96,6 +105,33 @@ export default {
   },
   data() {
     return {
+      allUserNavs:[
+        {
+          name:'Inicio',
+          icon:'fas fa-home',
+          router:'/'
+        },
+        {
+          name:'Requisitos',
+          icon:'fas fa-list-ul',
+          router:'/requisitos'
+        },
+        {
+          name:'Contacto',
+          icon:'fas fa-map-marker-alt',
+          router:'/contacto'
+        },
+        {
+          name:'Vacantes',
+          icon:'fas fa-hand-pointer',
+          router:'/vacantes'
+        },
+        {
+          name:'Ordenes de mérito',
+          icon:'fas fa-clipboard-list',
+          router:'/ordenesMerito'
+        },
+      ],
       userNavItems: [
         {
           name: "Crear cuenta",
