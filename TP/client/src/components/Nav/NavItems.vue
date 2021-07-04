@@ -3,19 +3,19 @@
     <li class="nav-item">
       <router-link class="btn btn-light btn-block" to="/" exact>
         <i class="fas fa-home" :class="{ 'fa-2x': !desktop }"></i>
-        <span v-if="desktop">Inicio</span>
+        <span v-if="desktop"> Inicio</span>
       </router-link>
     </li>
     <li class="nav-item">
       <router-link class="btn btn-light btn-block" to="/requisitos" exact>
         <i class="fas fa-list-ul" :class="{ 'fa-2x': !desktop }"></i>
-        <span v-if="desktop">Requisitos</span>
+        <span v-if="desktop"> Requisitos</span>
       </router-link>
     </li>
     <li class="nav-item">
       <router-link class="btn btn-light btn-block" to="/contacto" exact>
         <i class="fas fa-map-marker-alt" :class="{ 'fa-2x': !desktop }"></i>
-        <span v-if="desktop">Contacto</span>
+        <span v-if="desktop"> Contacto</span>
       </router-link>
     </li>
     <li class="nav-item">
@@ -26,7 +26,7 @@
         v-if="!authenticated || isUsuario"
       >
         <i class="fas fa-hand-pointer" :class="{ 'fa-2x': !desktop }"></i>
-        <span v-if="desktop">Vacantes</span>
+        <span v-if="desktop"> Vacantes</span>
       </router-link>
     </li>
     <li class="nav-item">
@@ -37,7 +37,7 @@
         v-if="!authenticated || isUsuario"
       >
         <i class="fas fa-clipboard-list" :class="{ 'fa-2x': !desktop }"></i>
-        <span v-if="desktop">Ordenes de mérito</span>
+        <span v-if="desktop"> Ordenes de mérito</span>
       </router-link>
     </li>
     <li class="nav-item" v-if="isAdministrador || isJefeCatedra">
@@ -47,13 +47,13 @@
         exact
       >
         <i class="fas fa-toolbox" :class="{ 'fa-2x': !desktop }"></i>
-        <span v-if="desktop">Administrar vacantes</span>
+        <span v-if="desktop"> Administrar vacantes</span>
       </router-link>
     </li>
     <li class="nav-item" v-if="isAdministrador">
       <router-link class="btn btn-light btn-block" to="/agregarVacante" exact>
         <i class="fas fa-plus-circle" :class="{ 'fa-2x': !desktop }"></i>
-        <span v-if="desktop">Agregar vacante</span>
+        <span v-if="desktop"> Agregar vacante</span>
       </router-link>
     </li>
     <li class="nav-item" v-if="isAdministrador">
@@ -63,7 +63,7 @@
         exact
       >
         <i class="fas fa-user-check" :class="{ 'fa-2x': !desktop }"></i>
-        <span v-if="desktop">Verificar identidades</span>
+        <span v-if="desktop"> Verificar identidades</span>
       </router-link>
     </li>
     <li class="nav-item" v-if="authenticated && !desktop">
