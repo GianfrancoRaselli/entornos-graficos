@@ -1,69 +1,83 @@
 <template>
-  <div class="vacancies-list">
-    <p v-if="!vacantes.length">No tiene vacantes a su cargo</p>
-    <div class="vacancies" v-if="vacantes.length">
-      <div class="vacancy" v-for="(vacante, index) in vacantes" :key="index">
-        <div class="descripcion">
-          <p>
-            {{ vacante.descripcion }}
-          </p>
+  <div>
+    <div>
+      <router-link to="/agregarVacante" style="text-decoration: none;">
+        <button
+          class="btn btn-success btn-block w-25 m-auto"
+          icon="fas fa-plus-circle"
+        >
+          <i class="fas fa-plus-circle"></i>&nbsp;Agregar vacante
+        </button>
+      </router-link>
+    </div>
+    <div class="vacancies-list">
+      <p v-if="!vacantes.length">No tiene vacantes a su cargo</p>
+      <div class="vacancies" v-if="vacantes.length">
+        <div class="vacancy" v-for="(vacante, index) in vacantes" :key="index">
+          <div class="descripcion">
+            <p>
+              {{ vacante.descripcion }}
+            </p>
+          </div>
+          <div class="vacancy-content">
+            <div class="definicion">
+              <p>
+                {{ vacante.definicion }}
+              </p>
+            </div>
+            <div class="requisitos">
+              <p>
+                <i class="fas fa-check-circle"></i
+                >&nbsp;<strong>Requisitos:</strong>&nbsp;{{
+                  vacante.requisitos
+                }}
+              </p>
+            </div>
+            <div class="fecha-inicio">
+              <p>
+                <i class="fas fa-calendar-check"></i>&nbsp;<strong
+                  >Fecha de inicio:</strong
+                >&nbsp;{{ vacante.fecha_inicio }}
+              </p>
+            </div>
+            <div class="fecha-fin">
+              <p>
+                <i class="fas fa-calendar-times"></i>&nbsp;<strong
+                  >Fecha de cierre:</strong
+                >&nbsp;{{ vacante.fecha_fin }}
+              </p>
+            </div>
+            <div class="vacancy-options">
+              <utn-button
+                @click="
+                  buscarInscriptos(
+                    vacante.id,
+                    vacante.descripcion,
+                    vacante.fecha_inicio
+                  )
+                "
+              >
+                <i class="fas fa-list"></i> Ver inscriptos
+              </utn-button>
+              <utn-button
+                @click="modalEliminarVacante(vacante)"
+                v-if="isAdministrador"
+                btnClass="btn btn-danger"
+              >
+                <i class="fas fa-trash-alt"></i> Eliminar vacante
+              </utn-button>
+            </div>
+          </div>
         </div>
-        <div class="vacancy-content">
-          <div class="definicion">
-            <p>
-              {{ vacante.definicion }}
-            </p>
-          </div>
-          <div class="requisitos">
-            <p>
-              <i class="fas fa-check-circle"></i
-              >&nbsp;<strong>Requisitos:</strong>&nbsp;{{ vacante.requisitos }}
-            </p>
-          </div>
-          <div class="fecha-inicio">
-            <p>
-              <i class="fas fa-calendar-check"></i>&nbsp;<strong
-                >Fecha de inicio:</strong
-              >&nbsp;{{ vacante.fecha_inicio }}
-            </p>
-          </div>
-          <div class="fecha-fin">
-            <p>
-              <i class="fas fa-calendar-times"></i>&nbsp;<strong
-                >Fecha de cierre:</strong
-              >&nbsp;{{ vacante.fecha_fin }}
-            </p>
-          </div>
-          <div class="vacancy-options">
-            <utn-button
-              @click="
-                buscarInscriptos(
-                  vacante.id,
-                  vacante.descripcion,
-                  vacante.fecha_inicio
-                )
-              "
-            >
-              <i class="fas fa-list"></i> Ver inscriptos
-            </utn-button>
-            <utn-button
-              @click="modalEliminarVacante(vacante)"
-              v-if="isAdministrador"
-              btnClass="btn btn-danger"
-            >
-              <i class="fas fa-trash-alt"></i> Eliminar vacante
-            </utn-button>
-          </div>
-        </div>
+        <Popup
+          dataTarget="listInscriptos"
+          :title="title"
+          :showButtons="false"
+          propClass="modal-xl"
+        >
+          <ListInscriptos />
+        </Popup>
       </div>
-      <Popup
-        dataTarget="listInscriptos"
-        :title="title"
-        :showButtons="false"
-        propClass="modal-xl"
-      >
-        <ListInscriptos />
-      </Popup>
     </div>
   </div>
 </template>
@@ -180,10 +194,10 @@ export default {
   border: RGB(0, 122, 255) 2px solid;
   border-radius: 0 0 15px 15px;
   padding: 0.5rem 1rem;
-  height:100%;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .descripcion {
