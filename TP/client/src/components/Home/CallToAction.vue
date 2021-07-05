@@ -19,7 +19,7 @@
     </p>
     <div v-if="!authenticated">
       <utn-button data-toggle="modal" data-target="#signUpPopupCallToAction" icon="fas fa-user-plus">
-        Registrarme
+        Crear cuenta
       </utn-button>
       <SignUp identificator="signUpPopupCallToAction" />
     </div>
