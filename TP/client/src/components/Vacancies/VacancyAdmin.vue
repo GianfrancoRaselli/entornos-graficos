@@ -10,73 +10,88 @@
         </button>
       </router-link>
     </div>
-    <div class="vacancies-list">
-      <p v-if="!vacantes.length">No tiene vacantes a su cargo</p>
-      <div class="vacancies" v-if="vacantes.length">
-        <div class="vacancy" v-for="(vacante, index) in vacantes" :key="index">
-          <div class="descripcion">
-            <p>
-              {{ vacante.descripcion }}
-            </p>
-          </div>
-          <div class="vacancy-content">
-            <div class="definicion">
-              <p>
-                {{ vacante.definicion }}
-              </p>
+    <div>
+      <div v-if="cargando">
+        <img
+          src="../../assets/loading.gif"
+          alt="Imagen de carga de página"
+          class="loading mt-5"
+        />
+      </div>
+      <div v-else>
+        <div class="vacancies-list">
+          <p v-if="!vacantes.length">No tiene vacantes a su cargo</p>
+          <div class="vacancies" v-if="vacantes.length">
+            <div
+              class="vacancy"
+              v-for="(vacante, index) in vacantes"
+              :key="index"
+            >
+              <div class="descripcion">
+                <p>
+                  {{ vacante.descripcion }}
+                </p>
+              </div>
+              <div class="vacancy-content">
+                <div class="definicion">
+                  <p>
+                    {{ vacante.definicion }}
+                  </p>
+                </div>
+                <div class="requisitos">
+                  <p>
+                    <i class="fas fa-check-circle"></i
+                    >&nbsp;<strong>Requisitos:</strong>&nbsp;{{
+                      vacante.requisitos
+                    }}
+                  </p>
+                </div>
+                <div class="fecha-inicio">
+                  <p>
+                    <i class="fas fa-calendar-check"></i>&nbsp;<strong
+                      >Fecha de inicio:</strong
+                    >&nbsp;{{ vacante.fecha_inicio }}
+                  </p>
+                </div>
+                <div class="fecha-fin">
+                  <p>
+                    <i class="fas fa-calendar-times"></i>&nbsp;<strong
+                      >Fecha de cierre:</strong
+                    >&nbsp;{{ vacante.fecha_fin }}
+                  </p>
+                </div>
+                <div class="vacancy-options">
+                  <utn-button
+                    @click="
+                      buscarInscriptos(
+                        vacante.id,
+                        vacante.descripcion,
+                        vacante.fecha_inicio
+                      )
+                    "
+                  >
+                    <i class="fas fa-list"></i> Ver inscriptos
+                  </utn-button>
+                  <utn-button
+                    @click="modalEliminarVacante(vacante)"
+                    v-if="isAdministrador"
+                    btnClass="btn btn-danger"
+                  >
+                    <i class="fas fa-trash-alt"></i> Eliminar vacante
+                  </utn-button>
+                </div>
+              </div>
             </div>
-            <div class="requisitos">
-              <p>
-                <i class="fas fa-check-circle"></i
-                >&nbsp;<strong>Requisitos:</strong>&nbsp;{{
-                  vacante.requisitos
-                }}
-              </p>
-            </div>
-            <div class="fecha-inicio">
-              <p>
-                <i class="fas fa-calendar-check"></i>&nbsp;<strong
-                  >Fecha de inicio:</strong
-                >&nbsp;{{ vacante.fecha_inicio }}
-              </p>
-            </div>
-            <div class="fecha-fin">
-              <p>
-                <i class="fas fa-calendar-times"></i>&nbsp;<strong
-                  >Fecha de cierre:</strong
-                >&nbsp;{{ vacante.fecha_fin }}
-              </p>
-            </div>
-            <div class="vacancy-options">
-              <utn-button
-                @click="
-                  buscarInscriptos(
-                    vacante.id,
-                    vacante.descripcion,
-                    vacante.fecha_inicio
-                  )
-                "
-              >
-                <i class="fas fa-list"></i> Ver inscriptos
-              </utn-button>
-              <utn-button
-                @click="modalEliminarVacante(vacante)"
-                v-if="isAdministrador"
-                btnClass="btn btn-danger"
-              >
-                <i class="fas fa-trash-alt"></i> Eliminar vacante
-              </utn-button>
-            </div>
+            <Popup
+              dataTarget="listInscriptos"
+              :title="title"
+              :showButtons="false"
+              propClass="modal-xl"
+            >
+              <ListInscriptos />
+            </Popup>
           </div>
         </div>
-        <Popup
-          dataTarget="listInscriptos"
-          :title="title"
-          :showButtons="false"
-          propClass="modal-xl"
-        >
-          <ListInscriptos />
-        </Popup>
       </div>
     </div>
   </div>
@@ -93,6 +108,7 @@ export default {
   },
   data() {
     return {
+      cargando: true,
       vacantes: [],
       title: ""
     };
@@ -106,6 +122,8 @@ export default {
   },
   methods: {
     async buscarVacantes() {
+      this.cargando = true;
+
       try {
         let res = await axios.get("/llamados/buscarLlamadosAAdministrar", {
           headers: {
@@ -117,6 +135,8 @@ export default {
       } catch (err) {
         console.log(err.response.data.error);
       }
+
+      this.cargando = false;
     },
 
     buscarInscriptos(id_llamado, desc, fecha_inicio) {
@@ -216,6 +236,11 @@ export default {
 
 .pocas-vacantes {
   color: rgb(221, 44, 0);
+}
+
+.loading {
+  display: block;
+  margin: auto;
 }
 
 @media (max-width: 991px) {

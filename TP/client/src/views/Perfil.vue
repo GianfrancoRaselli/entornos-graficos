@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="cargando">
+    <div v-if="!cargado">
       <img
         src="../assets/loading.gif"
         alt="Imagen de carga de página"
@@ -127,7 +127,8 @@ import { CVsPath } from "../paths";
 export default {
   data() {
     return {
-      cargando: true,
+      usuarioCargado: false,
+      postulacionesCargadas: false,
       vacantes: [],
       user: {
         dni: "",
@@ -145,11 +146,17 @@ export default {
   computed: {
     ...mapGetters({
       isUsuario: "isUsuario"
-    })
+    }),
+
+    cargado() {
+      return this.usuarioCargado && this.postulacionesCargadas;
+    }
   },
   methods: {
     async buscarPostulacionesDelUsuario() {
       if (this.$store.getters.authenticated && this.$store.getters.isUsuario) {
+        this.postulacionesCargadas = false;
+
         try {
           let res = await axios.get(
             "/postulaciones/buscarPostulacionesDelUsuario",
@@ -165,6 +172,8 @@ export default {
         } catch (err) {
           console.log(err.response.data.error);
         }
+
+        this.postulacionesCargadas = true;
       }
     },
 
@@ -204,6 +213,8 @@ export default {
 
     async buscarUsuario() {
       if (this.$store.getters.authenticated) {
+        this.usuarioCargado = false;
+
         try {
           let res = await axios.get("/personas/perfil", {
             headers: {
@@ -221,6 +232,8 @@ export default {
         } catch (err) {
           console.log(err.response.data.error);
         }
+
+        this.usuarioCargado = true;
       } else {
         this.$store.dispatch("logOut");
       }
@@ -317,10 +330,8 @@ export default {
         });
       }
     }
-    this.cargando = true;
     this.buscarUsuario();
-    await this.buscarPostulacionesDelUsuario();
-    this.cargando = false;
+    this.buscarPostulacionesDelUsuario();
   }
 };
 </script>

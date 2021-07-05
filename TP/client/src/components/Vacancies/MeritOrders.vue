@@ -1,110 +1,125 @@
 <template>
-  <div class="vacancies-list">
-    <p v-if="!vacantes.length">No hay vacantes calificadas</p>
-    <div class="vacancies" v-if="vacantes.length">
-      <div class="search-options w-100 mb-2">
-        <div class="form-group select-catedras m-auto">
-          <select
-            class="form-control"
-            @change="cambioCatedra"
-            v-model="id_catedra"
+  <div>
+    <div v-if="cargando">
+      <img
+        src="../../assets/loading.gif"
+        alt="Imagen de carga de página"
+        class="loading mt-5"
+      />
+    </div>
+    <div v-else>
+      <div class="vacancies-list">
+        <p v-if="!vacantes.length">No hay vacantes calificadas</p>
+        <div class="vacancies" v-if="vacantes.length">
+          <div class="search-options w-100 mb-2">
+            <div class="form-group select-catedras m-auto">
+              <select
+                class="form-control"
+                @change="cambioCatedra"
+                v-model="id_catedra"
+              >
+                <option selected="true" :value="0">Todas las cátedras</option>
+                <option
+                  v-for="(catedra, index) in catedras"
+                  :key="index"
+                  :value="catedra.id_catedra"
+                  >{{ catedra.descripcion }}</option
+                >
+              </select>
+            </div>
+          </div>
+          <div
+            class="vacancy"
+            v-for="(vacante, index) in limitVacantes"
+            :key="index"
           >
-            <option selected="true" :value="0">Todas las cátedras</option>
-            <option
-              v-for="(catedra, index) in catedras"
-              :key="index"
-              :value="catedra.id_catedra"
-              >{{ catedra.descripcion }}</option
-            >
-          </select>
+            <div class="descripcion">
+              <p>
+                {{ vacante.descripcion }}
+              </p>
+            </div>
+            <div class="vacancy-content">
+              <div class="definicion">
+                <p>
+                  {{ vacante.definicion }}
+                </p>
+              </div>
+              <div class="requisitos">
+                <p>
+                  <i class="fas fa-check-circle"></i
+                  >&nbsp;<strong>Requisitos:</strong>&nbsp;{{
+                    vacante.requisitos
+                  }}
+                </p>
+              </div>
+              <div class="fecha-inicio">
+                <p>
+                  <i class="fas fa-calendar-check"></i>&nbsp;<strong
+                    >Fecha de inicio:</strong
+                  >&nbsp;{{ vacante.fecha_inicio }}
+                </p>
+              </div>
+              <div class="fecha-fin">
+                <p>
+                  <i class="fas fa-calendar-times"></i>&nbsp;<strong
+                    >Fecha de cierre:</strong
+                  >&nbsp;{{ vacante.fecha_fin }}
+                </p>
+              </div>
+              <div class="vacancy-options">
+                <utn-button
+                  @click="
+                    buscarInscriptos(
+                      vacante.id,
+                      vacante.descripcion,
+                      vacante.fecha_inicio
+                    )
+                  "
+                >
+                  <i class="fas fa-list"></i> Ver orden de mérito
+                </utn-button>
+              </div>
+            </div>
+          </div>
+          <Popup
+            dataTarget="listInscriptos"
+            :title="title"
+            :showButtons="false"
+            propClass="modal-xl"
+          >
+            <ListInscriptos :edit_mode="false" />
+          </Popup>
+          <div class="w-100 mt-2">
+            <nav aria-label="Page navigation example">
+              <ul class="pagination justify-content-center">
+                <li class="page-item" :class="{ disabled: pag === 1 }">
+                  <a
+                    class="page-link"
+                    href="#"
+                    tabindex="-1"
+                    @click.prevent="disminuirPag"
+                    >Anterior</a
+                  >
+                </li>
+                <li class="page-item" v-for="n in numeros" :key="n">
+                  <a class="page-link" href="#" @click.prevent="pag = n">{{
+                    n
+                  }}</a>
+                </li>
+                <li
+                  class="page-item"
+                  :class="{
+                    disabled: pag === Math.ceil(vacantesAMostrar.length / limit)
+                  }"
+                >
+                  <a class="page-link" href="#" @click.prevent="aumentarPag"
+                    >Siguiente</a
+                  >
+                </li>
+              </ul>
+            </nav>
+          </div>
         </div>
-      </div>
-      <div
-        class="vacancy"
-        v-for="(vacante, index) in limitVacantes"
-        :key="index"
-      >
-        <div class="descripcion">
-          <p>
-            {{ vacante.descripcion }}
-          </p>
-        </div>
-        <div class="vacancy-content">
-          <div class="definicion">
-            <p>
-              {{ vacante.definicion }}
-            </p>
-          </div>
-          <div class="requisitos">
-            <p>
-              <i class="fas fa-check-circle"></i
-              >&nbsp;<strong>Requisitos:</strong>&nbsp;{{ vacante.requisitos }}
-            </p>
-          </div>
-          <div class="fecha-inicio">
-            <p>
-              <i class="fas fa-calendar-check"></i>&nbsp;<strong
-                >Fecha de inicio:</strong
-              >&nbsp;{{ vacante.fecha_inicio }}
-            </p>
-          </div>
-          <div class="fecha-fin">
-            <p>
-              <i class="fas fa-calendar-times"></i>&nbsp;<strong
-                >Fecha de cierre:</strong
-              >&nbsp;{{ vacante.fecha_fin }}
-            </p>
-          </div>
-          <div class="vacancy-options">
-            <utn-button
-              @click="
-                buscarInscriptos(
-                  vacante.id,
-                  vacante.descripcion,
-                  vacante.fecha_inicio
-                )
-              "
-            >
-              <i class="fas fa-list"></i> Ver orden de mérito
-            </utn-button>
-          </div>
-        </div>
-      </div>
-      <Popup
-        dataTarget="listInscriptos"
-        :title="title"
-        :showButtons="false"
-        propClass="modal-xl"
-      >
-        <ListInscriptos :edit_mode="false" />
-      </Popup>
-      <div class="w-100 mt-2">
-        <nav aria-label="Page navigation example">
-          <ul class="pagination justify-content-center">
-            <li class="page-item" :class="{ disabled: pag === 1 }">
-              <a
-                class="page-link"
-                href="#"
-                tabindex="-1"
-                @click.prevent="disminuirPag"
-                >Anterior</a
-              >
-            </li>
-            <li class="page-item" v-for="n in numeros" :key="n">
-              <a class="page-link" href="#" @click.prevent="pag = n">{{ n }}</a>
-            </li>
-            <li
-              class="page-item"
-              :class="{
-                disabled: pag === Math.ceil(vacantesAMostrar.length / limit)
-              }"
-            >
-              <a class="page-link" href="#" @click.prevent="aumentarPag"
-                >Siguiente</a
-              >
-            </li>
-          </ul>
-        </nav>
       </div>
     </div>
   </div>
@@ -119,6 +134,7 @@ export default {
   },
   data() {
     return {
+      cargando: true,
       vacantes: [],
       vacantesAMostrar: [],
       title: "",
@@ -160,10 +176,12 @@ export default {
     disminuirPag() {
       if (this.pag > 1) this.pag--;
     },
+
     aumentarPag() {
       if (this.pag < Math.ceil(this.vacantesAMostrar.length / this.limit))
         this.pag++;
     },
+
     cambioCatedra() {
       this.pag = 1;
       if (this.id_catedra === 0) {
@@ -177,7 +195,10 @@ export default {
         this.vacantesAMostrar = vacantesAMostrar;
       }
     },
+
     async buscarVacantesCalificadas() {
+      this.cargando = true;
+
       try {
         let res = await axios.get("/llamados/buscarLlamadosCalificados");
         this.vacantes = res.data;
@@ -185,7 +206,10 @@ export default {
       } catch (err) {
         console.log(err.response.data.error);
       }
+
+      this.cargando = false;
     },
+
     buscarInscriptos(id_llamado, desc, fecha_inicio) {
       this.title = "Inscriptos al llamado de " + desc + " del " + fecha_inicio;
       EventBus.$emit("buscarInscriptos", id_llamado);
@@ -236,6 +260,10 @@ export default {
 }
 .select-catedras {
   width: 50%;
+}
+.loading {
+  display: block;
+  margin: auto;
 }
 @media (max-width: 991px) {
   .select-catedras {
