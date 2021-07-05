@@ -9,10 +9,14 @@
       <br />
       <b>Nombre y Apellido:</b> {{ postulacion.nombre_apellido }}
       <br />
-      <b>Email:</b> {{ postulacion.email }}
-      <br />
-      <b>Teléfono:</b> {{ postulacion.telefono }}
-      <br />
+      <template v-if="editMode">
+        <b>Email:</b> {{ postulacion.email }}
+        <br />
+      </template>
+      <template v-if="editMode">
+        <b>Teléfono:</b> {{ postulacion.telefono }}
+        <br />
+      </template>
       <template v-if="!isEditing">
         <b>Estado: </b>{{ postulacion.estado }}
       </template>
