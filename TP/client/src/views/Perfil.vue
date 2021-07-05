@@ -1,109 +1,121 @@
 <template>
   <div>
-    <div
-      class="d-flex justify-content-center animate__animated animate__pulse animate__fast"
-    >
-      <div class="col-lg-12 w-100 profile-container">
-        <div class="col-lg-3 data-box">
-          <div class="profile-img">
-            {{ user.nombre_apellido[0] }}
+    <div v-if="cargando">
+      <img
+        src="../assets/loading.gif"
+        alt="Imagen de carga de página"
+        class="loading mt-5"
+      />
+    </div>
+    <div v-else>
+      <div
+        class="d-flex justify-content-center animate__animated animate__pulse animate__fast"
+      >
+        <div class="col-lg-12 w-100 profile-container">
+          <div class="col-lg-3 data-box">
+            <div class="profile-img">
+              {{ user.nombre_apellido[0] }}
+            </div>
+            <div class="personal-info mt-3">
+              <p>DNI: {{ user.dni }}</p>
+              <p>Nombre y apellido: {{ user.nombre_apellido }}</p>
+              <p>Email: {{ user.email }}</p>
+              <p>Teléfono: {{ user.telefono }}</p>
+            </div>
+            <utn-button
+              icon="fas fa-edit"
+              to="perfil/editar"
+              btnClass="btn btn-light"
+              id="btn-editar-usuario"
+            >
+              Editar
+            </utn-button>
           </div>
-          <div class="personal-info mt-3">
-            <p>DNI: {{ user.dni }}</p>
-            <p>Nombre y apellido: {{ user.nombre_apellido }}</p>
-            <p>Email: {{ user.email }}</p>
-            <p>Teléfono: {{ user.telefono }}</p>
-          </div>
-          <utn-button
-            icon="fas fa-edit"
-            to="perfil/editar"
-            btnClass="btn btn-light"
-            id="btn-editar-usuario"
-          >
-            Editar
-          </utn-button>
-        </div>
-        <div class="d-flex">
-          <button
-            class="btn btn-outline-primary mr-1"
-            data-toggle="modal"
-            data-target="#cargarCV"
-          >
-            <i class="fas fa-file-upload"></i> Cargar nuevo CV
-          </button>
+          <div class="d-flex">
+            <button
+              class="btn btn-outline-primary mr-1"
+              data-toggle="modal"
+              data-target="#cargarCV"
+            >
+              <i class="fas fa-file-upload"></i> Cargar nuevo CV
+            </button>
 
-          <a
-            id="btn-ver-cv"
-            class="btn btn-primary ml-1"
-            v-if="user.ruta_cv"
-            :href="user.ruta_cv"
-            target="_blank"
+            <a
+              id="btn-ver-cv"
+              class="btn btn-primary ml-1"
+              v-if="user.ruta_cv"
+              :href="user.ruta_cv"
+              target="_blank"
+            >
+              <i class="fas fa-eye"></i> Ver CV
+            </a>
+          </div>
+          <div
+            class="applications"
+            v-if="isUsuario && tablePostulaciones.length"
           >
-            <i class="fas fa-eye"></i> Ver CV
-          </a>
-        </div>
-        <div class="applications" v-if="isUsuario && tablePostulaciones.length">
-          <h4>Mis postulaciones</h4>
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">Nro</th>
-                <th scope="col">Cátedra</th>
-                <th scope="col">Definición</th>
-                <th scope="col">Fecha fin</th>
-                <th scope="col">Acción</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                v-for="(postulacion, index) in tablePostulaciones"
-                :key="index"
-              >
-                <th scope="row">{{ ++index }}</th>
-                <td>{{ postulacion.descripcion }}</td>
-                <td>{{ postulacion.definicion }}</td>
-                <td>{{ postulacion.fecha_fin }}</td>
-                <td>
-                  <utn-button
-                    @click="darmeDeBaja(postulacion.id)"
-                    btnClass="btn btn-danger"
-                  >
-                    Darme de baja
-                  </utn-button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+            <h4>Mis postulaciones</h4>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Nro</th>
+                  <th scope="col">Cátedra</th>
+                  <th scope="col">Definición</th>
+                  <th scope="col">Fecha fin</th>
+                  <th scope="col">Acción</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  v-for="(postulacion, index) in tablePostulaciones"
+                  :key="index"
+                >
+                  <th scope="row">{{ ++index }}</th>
+                  <td>{{ postulacion.descripcion }}</td>
+                  <td>{{ postulacion.definicion }}</td>
+                  <td>{{ postulacion.fecha_fin }}</td>
+                  <td>
+                    <utn-button
+                      @click="darmeDeBaja(postulacion.id)"
+                      btnClass="btn btn-danger"
+                    >
+                      Darme de baja
+                    </utn-button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
+      <Popup dataTarget="cargarCV" title="Cargar CV" :showButtons="false">
+        <form @submit.prevent="handleSubmitCV" enctype="multipart/form-data">
+          <div class="form-group">
+            <label for="labelInputCV">Curriculum Vitae</label>
+            <input
+              type="file"
+              @change="obtenerArchivo"
+              placeholder="CV"
+              class="form-control"
+              accept="pdf"
+              required
+            />
+            <small class="form-text text-muted" v-if="!errorFormato"
+              ><p>Ingrese su CV en formado PDF</p></small
+            >
+            <medium class="form-text text-muted" v-if="errorFormato"
+              ><p class="error">Ingrese su CV en formado PDF</p></medium
+            >
+          </div>
+          <br />
+          <div class="form-group">
+            <button class="btn btn-success btn-block">
+              <i class="fas fa-save"></i> Guardar
+            </button>
+          </div>
+        </form>
+      </Popup>
     </div>
-    <Popup dataTarget="cargarCV" title="Cargar CV" :showButtons="false">
-      <form @submit.prevent="handleSubmitCV" enctype="multipart/form-data">
-        <div class="form-group">
-          <label for="labelInputCV">Curriculum Vitae</label>
-          <input
-            type="file"
-            @change="obtenerArchivo"
-            placeholder="CV"
-            class="form-control"
-            accept="pdf"
-            required
-          />
-          <small class="form-text text-muted" v-if="!errorFormato"
-            ><p>Ingrese su CV en formado PDF</p></small
-          >
-          <medium class="form-text text-muted" v-if="errorFormato"
-            ><p class="error">Ingrese su CV en formado PDF</p></medium
-          >
-        </div>
-        <br />
-        <div class="form-group">
-          <button class="btn btn-success btn-block">
-            <i class="fas fa-save"></i> Guardar
-          </button>
-        </div>
-      </form>
-    </Popup>
   </div>
 </template>
 
@@ -111,9 +123,11 @@
 import axios from "axios";
 import { mapGetters } from "vuex";
 import Swal from "sweetalert2";
+import { CVsPath } from "../paths";
 export default {
   data() {
     return {
+      cargando: true,
       vacantes: [],
       user: {
         dni: "",
@@ -202,9 +216,7 @@ export default {
           this.user.email = res.data.email;
           this.user.telefono = res.data.telefono;
           if (res.data.curriculum_vitae) {
-            this.user.ruta_cv =
-              "https://utn-vacantes.herokuapp.com/public/CVs/" +
-              res.data.curriculum_vitae;
+            this.user.ruta_cv = CVsPath + res.data.curriculum_vitae;
           }
         } catch (err) {
           console.log(err.response.data.error);
@@ -227,8 +239,7 @@ export default {
               }
             });
 
-            this.user.ruta_cv =
-              "https://utn-vacantes.herokuapp.com/public/CVs/" + res.data;
+            this.user.ruta_cv = CVsPath + res.data;
 
             window.$("#cargarCV").modal("hide");
             window.$("body").removeClass("modal-open");
@@ -286,7 +297,7 @@ export default {
       }
     }
   },
-  created() {
+  async created() {
     if (this.$route.query.key) {
       if (this.$route.query.key === "signin") {
         Swal.fire({
@@ -306,8 +317,10 @@ export default {
         });
       }
     }
+    this.cargando = true;
     this.buscarUsuario();
-    this.buscarPostulacionesDelUsuario();
+    await this.buscarPostulacionesDelUsuario();
+    this.cargando = false;
   }
 };
 </script>
@@ -359,5 +372,10 @@ export default {
 
 .error {
   color: red;
+}
+
+.loading {
+  display: block;
+  margin: auto;
 }
 </style>

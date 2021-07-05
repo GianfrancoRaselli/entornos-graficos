@@ -108,7 +108,7 @@ router.beforeEach(async (to, from, next) => {
     next('signin');
   } else if (notAuthOrUsuario && (store.getters.isAdministrador || store.getters.isJefeCatedra)) {
     next('');
-  } else if(isAdministrador && !(store.getters.isAdministrador)) {
+  } else if (isAdministrador && !(store.getters.isAdministrador)) {
     next(from);
   } else if (isAdministradorOrJefeCatedra && !(store.getters.isAdministrador || store.getters.isJefeCatedra)) {
     next(from);

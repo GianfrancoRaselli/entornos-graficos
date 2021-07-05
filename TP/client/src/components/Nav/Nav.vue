@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light px-3 w-100">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light px-3 w-100" id="navbar">
     <router-link to="/">
       <img
         src="../../assets/logo-utn.png"
@@ -21,21 +21,11 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-      <div class="dropdown-divider"></div>
-      <ul class="navbar-nav">
-        <li class="nav-item" v-for="(nav, index) in allUserNavs" :key="index">
-          <utn-button btnClass="btn btn-light btn-block" :to="nav.router" exact>
-            <i :class="nav.icon"></i>
-            <span> {{ nav.name }}</span>
-          </utn-button>
-        </li>
-      </ul>
-      <NavItemsDesktop />
+      <NavItems />
       <ul v-if="authenticated" class="navbar-nav" style="margin-left: auto;">
-        <li class="nav-item">
+        <li class="nav-item dropdown">
           <utn-button
             btnClass="dropdown-toggle btn btn-outline-primary btn-block"
-            id="navbarDropdown"
             icon="fas fa-user"
             data-toggle="dropdown"
             aria-haspopup="true"
@@ -48,18 +38,19 @@
             class="dropdown-menu dropdown-menu-lg-right"
             aria-labelledby="navbarDropdown"
           >
-            <utn-button btnClass="dropdown-item btn btn-link" to="/perfil">
+            <router-link class="dropdown-item btn btn-link" to="/perfil">
               <i class="fas fa-id-card"></i>
               Perfil
-            </utn-button>
-            <utn-button
-              btnClass="dropdown-item btn btn-link"
+            </router-link>
+            <div class="dropdown-divider"></div>
+            <button
+              class="dropdown-item btn btn-link"
               @click="cerrarSesion"
               id="btn-cerrar-sesion"
             >
               <i class="fas fa-sign-out-alt"></i>
               Cerrar Sesión
-            </utn-button>
+            </button>
           </div>
         </li>
       </ul>
@@ -80,7 +71,7 @@
         <SignUp />
       </ul>
     </div>
-    <NavItemsMobile/>
+    <NavItemsMobile />
   </nav>
 </template>
 
@@ -89,7 +80,7 @@ import { mapGetters } from "vuex";
 export default {
   name: "Nav",
   components: {
-    NavItemsDesktop: () => import("./NavItemsDesktop.vue"),
+    NavItems: () => import("./NavItems.vue"),
     NavItemsMobile: () => import("./NavItemsMobile.vue"),
     LogIn: () => import("../LogIn.vue"),
     SignUp: () => import("../SignUp.vue")
@@ -105,33 +96,6 @@ export default {
   },
   data() {
     return {
-      allUserNavs:[
-        {
-          name:'Inicio',
-          icon:'fas fa-home',
-          router:'/'
-        },
-        {
-          name:'Requisitos',
-          icon:'fas fa-list-ul',
-          router:'/requisitos'
-        },
-        {
-          name:'Contacto',
-          icon:'fas fa-map-marker-alt',
-          router:'/contacto'
-        },
-        {
-          name:'Vacantes',
-          icon:'fas fa-hand-pointer',
-          router:'/vacantes'
-        },
-        {
-          name:'Ordenes de mérito',
-          icon:'fas fa-clipboard-list',
-          router:'/ordenesMerito'
-        },
-      ],
       userNavItems: [
         {
           name: "Crear cuenta",
@@ -161,16 +125,13 @@ export default {
   width: 100px;
   margin: 0 25px;
 }
-
 .navbar {
   box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.08);
 }
-
 .btn {
   width: 100%;
   text-align: left;
 }
-
 #btn-cerrar-sesion {
   color: red;
 }

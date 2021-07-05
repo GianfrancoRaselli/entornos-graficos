@@ -1,5 +1,7 @@
 <template>
-  <table class="inscriptos-desktop table table-responsive table-striped table-hover table-bordered">
+  <table
+    class="inscriptos-desktop table table-responsive table-striped table-hover table-bordered"
+  >
     <thead>
       <tr>
         <th>DNI</th>
@@ -88,10 +90,7 @@
             <a
               id="btn-ver-cv"
               class="btn btn-secondary"
-              :href="
-                'https://utn-vacantes.herokuapp.com/public/CVs/' +
-                  postulacion.curriculum_vitae
-              "
+              :href="CVsPath + postulacion.curriculum_vitae"
               target="_blank"
             >
               <i class="fas fa-eye"></i> Ver CV
@@ -104,20 +103,20 @@
 </template>
 
 <script>
+import { CVsPath } from "../../paths";
 export default {
   data() {
     return {
-
-    }
+      CVsPath
+    };
   },
-  props:{
+  props: {
     editMode: { type: Boolean },
     llamado: { type: Object },
-    isEditing: { type: Boolean, default: false },
+    isEditing: { type: Boolean, default: false }
   }
-}
+};
 </script>
 
 <style>
-
 </style>

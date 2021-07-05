@@ -134,14 +134,11 @@ export default {
         this.pag * this.limit
       );
     },
-
     numeros() {
       return Math.ceil(this.vacantesAMostrar.length / this.limit);
     },
-
     catedras() {
       let catedras = [];
-
       for (let vacante of this.vacantes) {
         let catedraAgregada = false;
         for (let catedra of catedras) {
@@ -150,14 +147,12 @@ export default {
             break;
           }
         }
-
         if (!catedraAgregada)
           catedras.push({
             id_catedra: vacante.id_catedra,
             descripcion: vacante.descripcion
           });
       }
-
       return catedras;
     }
   },
@@ -165,15 +160,12 @@ export default {
     disminuirPag() {
       if (this.pag > 1) this.pag--;
     },
-
     aumentarPag() {
       if (this.pag < Math.ceil(this.vacantesAMostrar.length / this.limit))
         this.pag++;
     },
-
     cambioCatedra() {
       this.pag = 1;
-
       if (this.id_catedra === 0) {
         this.vacantesAMostrar = this.vacantes;
       } else {
@@ -185,7 +177,6 @@ export default {
         this.vacantesAMostrar = vacantesAMostrar;
       }
     },
-
     async buscarVacantesCalificadas() {
       try {
         let res = await axios.get("/llamados/buscarLlamadosCalificados");
@@ -195,7 +186,6 @@ export default {
         console.log(err.response.data.error);
       }
     },
-
     buscarInscriptos(id_llamado, desc, fecha_inicio) {
       this.title = "Inscriptos al llamado de " + desc + " del " + fecha_inicio;
       EventBus.$emit("buscarInscriptos", id_llamado);
@@ -213,26 +203,22 @@ export default {
   width: 90%;
   margin: 25px auto;
 }
-
 .vacancies {
   display: flex;
   width: 100%;
   flex-wrap: wrap;
 }
-
 .vacancy {
   padding: 1rem;
   font-size: 1.08rem;
   display: flex;
   flex-direction: column;
 }
-
 .vacancy-content {
   border: RGB(0, 122, 255) 2px solid;
   border-radius: 0 0 15px 15px;
   padding: 0.5rem 1rem;
 }
-
 .descripcion {
   font-size: 1.64rem;
   font-weight: 600;
@@ -241,20 +227,16 @@ export default {
   background-color: RGB(0, 122, 255);
   color: white;
 }
-
 .vacancy-options {
   display: flex;
   justify-content: center;
 }
-
 .pocas-vacantes {
   color: rgb(221, 44, 0);
 }
-
 .select-catedras {
   width: 50%;
 }
-
 @media (max-width: 991px) {
   .select-catedras {
     width: 100%;
