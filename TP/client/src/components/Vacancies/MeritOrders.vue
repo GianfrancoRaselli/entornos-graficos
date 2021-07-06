@@ -227,22 +227,26 @@ export default {
   width: 90%;
   margin: 25px auto;
 }
+
 .vacancies {
   display: flex;
   width: 100%;
   flex-wrap: wrap;
 }
+
 .vacancy {
   padding: 1rem;
   font-size: 1.08rem;
   display: flex;
   flex-direction: column;
 }
+
 .vacancy-content {
   border: RGB(0, 122, 255) 2px solid;
   border-radius: 0 0 15px 15px;
   padding: 0.5rem 1rem;
 }
+
 .descripcion {
   font-size: 1.64rem;
   font-weight: 600;
@@ -251,20 +255,25 @@ export default {
   background-color: RGB(0, 122, 255);
   color: white;
 }
+
 .vacancy-options {
   display: flex;
   justify-content: center;
 }
+
 .pocas-vacantes {
   color: rgb(221, 44, 0);
 }
+
 .select-catedras {
   width: 50%;
 }
+
 .loading {
   display: block;
   margin: auto;
 }
+
 @media (max-width: 991px) {
   .select-catedras {
     width: 100%;

@@ -1,103 +1,122 @@
 <template>
   <div>
-    <nav aria-label="breadcrumb" class="m-auto" style="width: fit-content">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item">
-          <router-link to="/administrarCatedras"
-            ><i class="fas fa-book-open"></i> Administrar Cátedras</router-link
-          >
-        </li>
-        <li class="breadcrumb-item active" aria-current="page">
-          Agregar Cátedra
-        </li>
-      </ol>
-    </nav>
-    <div style="width: 100%; margin-bottom: 1%;" v-if="errorMessage">
-      <div
-        class="alert alert-danger alert-dismissible fade show"
-        style="width: fit-content; margin-top: 2%; margin-left: auto; margin-right: auto;"
-        role="alert"
-      >
-        {{ errorMessage }}
-        <button
-          v-on:click="errorMessage = ''"
-          class="close btn btn-link"
-          data-dismiss="alert"
-          style="color: black; text-decoration: none; font-size: 22px;"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
+    <div v-if="cargando">
+      <img
+        src="../../assets/loading.gif"
+        alt="Imagen de carga de página"
+        class="loading mt-5"
+      />
     </div>
-    <div class="row m-2">
-      <div class="col-md-5 mx-auto">
+    <div v-else>
+      <nav aria-label="breadcrumb" class="m-auto" style="width: fit-content">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <router-link to="/administrarCatedras"
+              ><i class="fas fa-book-open"></i> Administrar
+              Cátedras</router-link
+            >
+          </li>
+          <li
+            class="breadcrumb-item active"
+            aria-current="page"
+            v-if="!editMode"
+          >
+            Agregar Cátedra
+          </li>
+          <li class="breadcrumb-item active" aria-current="page" v-else>
+            Editar Cátedra: {{ catedraEditando }}
+          </li>
+        </ol>
+      </nav>
+      <div style="width: 100%; margin-bottom: 1%;" v-if="errorMessage">
         <div
-          class="card text-center animate__animated animate__flipInY animate__fast"
+          class="alert alert-danger alert-dismissible fade show"
+          style="width: fit-content; margin-top: 2%; margin-left: auto; margin-right: auto;"
+          role="alert"
         >
-          <div class="card-header">
-            <p style="font-size: 1.75rem;"><strong>Agregar Cátedra</strong></p>
-          </div>
-          <div class="card-body">
-            <form @submit.prevent="handleSubmit">
-              <div class="form-group">
-                <label><strong>Nombre</strong></label>
-                <input
-                  type="text"
-                  v-model="catedra.descripcion"
-                  placeholder="Nombre"
-                  class="form-control"
-                  :class="{ errorClass: errorDescripcion }"
-                  maxlength="40"
-                  required
-                />
-                <medium class="form-text text-muted" v-if="errorDescripcion"
-                  ><p class="error">{{ errorDescripcion }}</p></medium
-                >
-              </div>
-              <br />
-              <div class="form-group">
-                <label><strong>Descripción</strong></label>
-                <textarea
-                  type="text"
-                  v-model="catedra.definicion"
-                  placeholder="Descipción"
-                  class="form-control"
-                  :class="{ errorClass: errorDefinicion }"
-                  maxlength="300"
-                  required
-                />
-                <medium class="form-text text-muted" v-if="errorDefinicion"
-                  ><p class="error">{{ errorDefinicion }}</p></medium
-                >
-              </div>
-              <br />
-              <div class="form-group">
-                <label><strong>Jefe de Cátedra</strong></label>
-                <select
-                  class="form-control"
-                  :class="{ errorClass: errorIdJefeCatedra }"
-                  v-model="catedra.id_jefe_catedra"
-                  required
-                >
-                  <option
-                    v-for="(persona, index) in personas"
-                    :key="index"
-                    :value="persona.id"
-                    >{{ persona.dni }} - {{ persona.nombre_apellido }}</option
+          {{ errorMessage }}
+          <button
+            v-on:click="errorMessage = ''"
+            class="close btn btn-link"
+            data-dismiss="alert"
+            style="color: black; text-decoration: none; font-size: 22px;"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+      <div class="row m-2">
+        <div class="col-md-5 mx-auto">
+          <div
+            class="card text-center animate__animated animate__flipInY animate__fast"
+          >
+            <div class="card-header">
+              <p style="font-size: 1.75rem;">
+                <strong>Agregar Cátedra</strong>
+              </p>
+            </div>
+            <div class="card-body">
+              <form @submit.prevent="handleSubmit">
+                <div class="form-group">
+                  <label><strong>Nombre</strong></label>
+                  <input
+                    type="text"
+                    v-model="catedra.descripcion"
+                    placeholder="Nombre"
+                    class="form-control"
+                    :class="{ errorClass: errorDescripcion }"
+                    maxlength="40"
+                    required
+                  />
+                  <medium class="form-text text-muted" v-if="errorDescripcion"
+                    ><p class="error">{{ errorDescripcion }}</p></medium
                   >
-                </select>
-                <medium class="form-text text-muted" v-if="errorIdJefeCatedra"
-                  ><p class="error">{{ errorIdJefeCatedra }}</p></medium
-                >
-              </div>
-              <br />
-              <div class="form-group">
-                <button class="btn btn-success btn-block">
-                  Guardar
-                </button>
-              </div>
-            </form>
+                </div>
+                <br />
+                <div class="form-group">
+                  <label><strong>Descripción</strong></label>
+                  <textarea
+                    type="text"
+                    v-model="catedra.definicion"
+                    placeholder="Descipción"
+                    class="form-control"
+                    :class="{ errorClass: errorDefinicion }"
+                    maxlength="300"
+                    required
+                  />
+                  <medium class="form-text text-muted" v-if="errorDefinicion"
+                    ><p class="error">{{ errorDefinicion }}</p></medium
+                  >
+                </div>
+                <br />
+                <div class="form-group">
+                  <label><strong>Jefe de Cátedra</strong></label>
+                  <select
+                    class="form-control"
+                    :class="{ errorClass: errorIdJefeCatedra }"
+                    v-model="catedra.id_jefe_catedra"
+                    required
+                  >
+                    <option
+                      v-for="(persona, index) in personas"
+                      :key="index"
+                      :value="persona.id"
+                      >{{ persona.dni }} - {{ persona.nombre_apellido }}</option
+                    >
+                  </select>
+                  <medium class="form-text text-muted" v-if="errorIdJefeCatedra"
+                    ><p class="error">{{ errorIdJefeCatedra }}</p></medium
+                  >
+                </div>
+                <br />
+                <div class="form-group">
+                  <button class="btn btn-success btn-block">
+                    Guardar
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </div>
@@ -111,14 +130,18 @@ import { mapGetters } from "vuex";
 export default {
   data() {
     return {
+      editMode: false,
+      catedraEditando: "",
+      cargando: true,
       errorMessage: "",
       errorDescripcion: "",
       errorDefinicion: "",
       errorIdJefeCatedra: "",
       catedra: {
+        id: 0,
         descripcion: "",
         definicion: "",
-        id_jefe_catedra: ""
+        id_jefe_catedra: 0
       },
       personas: []
     };
@@ -130,6 +153,29 @@ export default {
     })
   },
   methods: {
+    async buscarCatedra(id_catedra) {
+      if (this.authenticated && this.isAdministrador) {
+        this.cargando = true;
+
+        try {
+          let res = await axios.get("/catedras/buscarCatedra/" + id_catedra, {
+            headers: {
+              Authorization: "Bearer " + this.$store.getters.user.api_token
+            }
+          });
+
+          this.catedraEditando = res.data.descripcion;
+          this.catedra = res.data;
+        } catch (err) {
+          console.log(err.response.data.error);
+        }
+
+        this.cargando = false;
+      } else {
+        this.$store.dispatch("logOut");
+      }
+    },
+
     async buscarPersonas() {
       if (this.authenticated && this.isAdministrador) {
         try {
@@ -147,6 +193,7 @@ export default {
         this.$store.dispatch("logOut");
       }
     },
+
     async handleSubmit() {
       this.errorMessage = "";
       let error = false;
@@ -182,17 +229,33 @@ export default {
 
         if (!error) {
           try {
-            await axios.post(
-              "/catedras/agregarCatedra",
-              {
-                catedra: this.catedra
-              },
-              {
-                headers: {
-                  Authorization: "Bearer " + this.$store.getters.user.api_token
+            if (!this.editMode) {
+              await axios.post(
+                "/catedras/agregarCatedra",
+                {
+                  catedra: this.catedra
+                },
+                {
+                  headers: {
+                    Authorization:
+                      "Bearer " + this.$store.getters.user.api_token
+                  }
                 }
-              }
-            );
+              );
+            } else if (this.editMode) {
+              await axios.post(
+                "/catedras/editarCatedra",
+                {
+                  catedra: this.catedra
+                },
+                {
+                  headers: {
+                    Authorization:
+                      "Bearer " + this.$store.getters.user.api_token
+                  }
+                }
+              );
+            }
 
             this.$router.push("/administrarCatedras");
           } catch (err) {
@@ -208,6 +271,13 @@ export default {
   },
   created() {
     this.buscarPersonas();
+    if (this.$route.params.id_catedra) {
+      this.editMode = true;
+      this.buscarCatedra(this.$route.params.id_catedra);
+    } else {
+      this.editMode = false;
+      this.cargando = false;
+    }
   }
 };
 </script>
@@ -219,5 +289,10 @@ export default {
 
 .errorClass {
   background-color: rgb(228, 167, 167);
+}
+
+.loading {
+  display: block;
+  margin: auto;
 }
 </style>

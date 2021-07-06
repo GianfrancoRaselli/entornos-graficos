@@ -14,7 +14,7 @@ const router = new Router({
       redirect: { name: '404' },
     },
     {
-      path: '404', name: '404',
+      path: '/404', name: '404',
       component: () => import('@/views/404.vue'),
     },
     {
@@ -83,6 +83,15 @@ const router = new Router({
     {
       path: '/agregarCatedra',
       name: 'Agregar Catedra',
+      component: () => import('@/views/AddCathedra.vue'),
+      meta: {
+        auth: true,
+        isAdministrador: true
+      }
+    },
+    {
+      path: '/agregarCatedra/:id_catedra',
+      name: 'Editar Catedra',
       component: () => import('@/views/AddCathedra.vue'),
       meta: {
         auth: true,

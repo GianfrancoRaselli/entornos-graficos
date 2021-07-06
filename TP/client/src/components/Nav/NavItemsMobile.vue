@@ -5,22 +5,20 @@
         <i class="fas fa-home fa-2x"></i>
       </router-link>
     </li>
-    <li class="nav-item">
+    <li class="nav-item" v-if="!authenticated || isUsuario">
       <router-link
         class="btn btn-light btn-block"
         to="/vacantes"
         exact
-        v-if="!authenticated || isUsuario"
       >
         <i class="fas fa-search fa-2x"></i>
       </router-link>
     </li>
-    <li class="nav-item">
+    <li class="nav-item" v-if="!authenticated || isUsuario">
       <router-link
         class="btn btn-light btn-block"
         to="/ordenesMerito"
         exact
-        v-if="!authenticated || isUsuario"
       >
         <i class="fas fa-clipboard-list fa-2x"></i>
       </router-link>

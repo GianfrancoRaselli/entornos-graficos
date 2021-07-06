@@ -47,13 +47,15 @@ $router->group(['middleware' => ['auth']], function () use ($router) {
 
         $router->delete('/llamados/eliminarLlamado/{id_llamado}', 'LlamadoController@eliminarLlamado');
 
+        $router->get('/catedras/buscarCatedra/{id_catedra}', 'CatedraController@buscarCatedra');
+
         $router->get('/catedras/buscarCatedras', 'CatedraController@buscarCatedras');
 
         $router->post('/catedras/agregarCatedra', 'CatedraController@agregarCatedra');
 
         $router->delete('/catedras/eliminarCatedra/{id_catedra}', 'CatedraController@eliminarCatedra');
 
-        $router->post('/catedras/actualizarJefeCatedra', 'CatedraController@actualizarJefeCatedra');
+        $router->post('/catedras/editarCatedra', 'CatedraController@editarCatedra');
     });
 
     $router->group(['middleware' => ['authUsuario']], function () use ($router) {

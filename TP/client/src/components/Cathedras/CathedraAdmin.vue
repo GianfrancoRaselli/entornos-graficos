@@ -42,6 +42,12 @@
                 </div>
                 <div class="cathedra-options">
                   <utn-button
+                    :to="'/agregarCatedra/' + catedra.id"
+                    btnClass="btn btn-secondary"
+                  >
+                    <i class="fas fa-edit"></i> Editar cátedra
+                  </utn-button>
+                  <utn-button
                     @click="modalEliminarCatedra(catedra)"
                     btnClass="btn btn-danger"
                   >
