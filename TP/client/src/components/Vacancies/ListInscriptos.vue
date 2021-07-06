@@ -1,49 +1,66 @@
 <template>
   <div>
-    <div
-      class="inscriptos"
-      v-if="
-        llamado && llamado.postulaciones && llamado.postulaciones.length > 0
-      "
-    >
-      <div class="mb-2 buttons-nav" v-if="edit_mode">
-        <div v-if="llamado.finalizado">
-          <div v-if="!llamado.calificado">
-            <button
-              class="btn btn-primary mr-1"
-              @click="calificar"
-              v-if="!editando"
-            >
-              <i class="fas fa-edit"></i> Calificar
-            </button>
-            <button
-              class="btn btn-success ml-1"
-              v-if="editando"
-              @click="guardar"
-            >
-              <i class="fas fa-save"></i> Guardar cambios
-            </button>
-            <button
-              class="btn btn-danger ml-1"
-              v-if="editando"
-              @click="cancelar"
-            >
-              <i class="fas fa-times-circle"></i> Cancelar cambios
-            </button>
-          </div>
-          <div v-else>
-            <p>El llamado ya se encuentra calificado</p>
-          </div>
-        </div>
-        <div v-else>
-          <p>El llamado cierra el: {{ llamado.fecha_fin }}</p>
-        </div>
-      </div>
-      <MobileList :isEditing="editando" :editMode="edit_mode" :llamado="llamado" />
-      <DesktopList :isEditing="editando" :editMode="edit_mode" :llamado="llamado" />
+    <div v-if="cargando">
+      <img
+        src="../../assets/loading.gif"
+        alt="Imagen de carga de página"
+        class="loading mt-3"
+      />
     </div>
     <div v-else>
-      <p>No se ha inscripto ninguna persona</p>
+      <div
+        class="inscriptos"
+        v-if="
+          llamado && llamado.postulaciones && llamado.postulaciones.length > 0
+        "
+      >
+        <div class="mb-2 buttons-nav" v-if="edit_mode">
+          <div v-if="llamado.finalizado">
+            <div v-if="!llamado.calificado">
+              <button
+                class="btn btn-primary mr-1"
+                @click="calificar"
+                v-if="!editando"
+              >
+                <i class="fas fa-edit"></i> Calificar
+              </button>
+              <button
+                class="btn btn-success ml-1"
+                v-if="editando"
+                @click="guardar"
+              >
+                <i class="fas fa-save"></i> Guardar cambios
+              </button>
+              <button
+                class="btn btn-danger ml-1"
+                v-if="editando"
+                @click="cancelar"
+              >
+                <i class="fas fa-times-circle"></i> Cancelar cambios
+              </button>
+            </div>
+            <div v-else>
+              <p>El llamado ya se encuentra calificado</p>
+            </div>
+          </div>
+          <div v-else>
+            <p>El llamado cierra el: {{ llamado.fecha_fin }}</p>
+          </div>
+        </div>
+        <MobileList
+          :isEditing="editando"
+          :editMode="edit_mode"
+          :llamado="llamado"
+        />
+        <DesktopList
+          :isEditing="editando"
+          :editMode="edit_mode"
+          :llamado="llamado"
+        />
+      </div>
+      <div v-else>
+        <p>No se ha inscripto ninguna persona</p>
+      </div>
     </div>
   </div>
 </template>
@@ -57,11 +74,12 @@ export default {
     edit_mode: { type: Boolean, default: true }
   },
   components: {
-    MobileList: () => import('./MobileListInscriptos.vue'),
-    DesktopList: () => import('./DesktopListInscriptos.vue'),
+    MobileList: () => import("./MobileListInscriptos.vue"),
+    DesktopList: () => import("./DesktopListInscriptos.vue")
   },
   data() {
     return {
+      cargando: true,
       llamado: {
         id: "",
         fecha_inicio: "",
@@ -78,6 +96,8 @@ export default {
   },
   methods: {
     async buscarInscriptos(id_llamado) {
+      this.cargando = true;
+
       try {
         let res = null;
 
@@ -129,7 +149,10 @@ export default {
       } catch (err) {
         console.log(err.response.data.error);
       }
+
+      this.cargando = false;
     },
+
     calificar() {
       if (
         this.edit_mode &&
@@ -141,9 +164,11 @@ export default {
         this.editando = true;
       }
     },
+
     cancelar() {
       this.editando = false;
     },
+
     async guardar() {
       if (
         (this.$store.getters.isAdministrador ||
@@ -268,20 +293,25 @@ table {
   word-wrap: break-word;
 }
 
-.inscriptos-mobile{
+.inscriptos-mobile {
   display: none;
 }
 
-@media(max-width:990px){
-  .inscriptos-mobile{
-    display:block;
+.loading {
+  display: block;
+  margin: auto;
+}
+
+@media (max-width: 990px) {
+  .inscriptos-mobile {
+    display: block;
   }
-  .inscriptos-desktop{
-    display:none;
+  .inscriptos-desktop {
+    display: none;
   }
-  .inscripto-data{
+  .inscripto-data {
     border-bottom: 1px solid rgb(158, 158, 158);
-    padding:1rem;
+    padding: 1rem;
   }
 }
 </style>

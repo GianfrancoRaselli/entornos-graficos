@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-2">
+  <div class="mb-3">
     <h2 class="title-ultimas-vacantes mt-4" v-if="ultimasVacantes">
       ¡Últimos cupos!
     </h2>
