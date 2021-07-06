@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 02-07-2021 a las 18:33:38
+-- Tiempo de generación: 06-07-2021 a las 08:44:32
 -- Versión del servidor: 10.4.14-MariaDB
 -- Versión de PHP: 7.4.9
 
@@ -29,49 +29,10 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `catedras` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `descripcion` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `definicion` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `descripcion` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `definicion` varchar(300) COLLATE utf8mb4_unicode_ci NOT NULL,
   `id_jefe_catedra` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Disparadores `catedras`
---
-DELIMITER $$
-CREATE TRIGGER `delete_jefe_catedra` BEFORE DELETE ON `catedras` FOR EACH ROW BEGIN
-                DELETE FROM personas_catedras WHERE id_persona=OLD.id_jefe_catedra AND id_catedra=OLD.id;
-            END
-$$
-DELIMITER ;
-DELIMITER $$
-CREATE TRIGGER `insert_jefe_catedra` AFTER INSERT ON `catedras` FOR EACH ROW BEGIN
-                INSERT INTO personas_catedras (id_persona, id_catedra) VALUES (NEW.id_jefe_catedra, NEW.id);
-            END
-$$
-DELIMITER ;
-DELIMITER $$
-CREATE TRIGGER `is_jefe_catedra` BEFORE INSERT ON `catedras` FOR EACH ROW BEGIN
-                IF (select COUNT(*) 
-                    from personas_roles pr INNER JOIN roles r on pr.id_rol = r.id 
-                    WHERE pr.id_persona = new.id_jefe_catedra and r.descripcion = 'Jefe Catedra') = 0
-                THEN
-                    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'La persona no es jefe de cátedra';
-                END IF;
-            END
-$$
-DELIMITER ;
-DELIMITER $$
-CREATE TRIGGER `update_jefe_catedra` AFTER UPDATE ON `catedras` FOR EACH ROW BEGIN
-                IF OLD.id_jefe_catedra <> NEW.id_jefe_catedra
-                THEN
-                    BEGIN
-                        DELETE FROM personas_catedras WHERE id_persona=OLD.id_jefe_catedra AND id_catedra=OLD.id;
-                        INSERT INTO personas_catedras (id_persona, id_catedra) VALUES (NEW.id_jefe_catedra, NEW.id);
-                    END;
-                END IF;
-            END
-$$
-DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -119,14 +80,14 @@ CREATE TABLE `migrations` (
 --
 
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
-(81, '2021_05_08_025635_personas', 1),
-(82, '2021_05_08_030519_roles', 1),
-(83, '2021_05_08_031624_personas_roles', 1),
-(84, '2021_05_14_170736_catedras', 1),
-(85, '2021_05_14_170853_personas_catedras', 1),
-(86, '2021_05_14_170944_llamados', 1),
-(87, '2021_05_14_171013_postulaciones', 1),
-(88, '2021_06_18_181820_create_triggers', 1);
+(105, '2021_05_08_025635_personas', 1),
+(106, '2021_05_08_030519_roles', 1),
+(107, '2021_05_08_031624_personas_roles', 1),
+(108, '2021_05_14_170736_catedras', 1),
+(109, '2021_05_14_170853_personas_catedras', 1),
+(110, '2021_05_14_170944_llamados', 1),
+(111, '2021_05_14_171013_postulaciones', 1),
+(112, '2021_06_18_181820_create_triggers', 1);
 
 -- --------------------------------------------------------
 
@@ -298,7 +259,7 @@ ALTER TABLE `llamados`
 -- AUTO_INCREMENT de la tabla `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
 
 --
 -- AUTO_INCREMENT de la tabla `personas`
