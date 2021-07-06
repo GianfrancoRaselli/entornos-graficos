@@ -154,9 +154,9 @@ export default {
   },
   methods: {
     async buscarPostulacionesDelUsuario() {
-      if (this.$store.getters.authenticated && this.$store.getters.isUsuario) {
-        this.postulacionesCargadas = false;
+      this.postulacionesCargadas = false;
 
+      if (this.$store.getters.isUsuario) {
         try {
           let res = await axios.get(
             "/postulaciones/buscarPostulacionesDelUsuario",
@@ -172,9 +172,9 @@ export default {
         } catch (err) {
           console.log(err.response.data.error);
         }
-
-        this.postulacionesCargadas = true;
       }
+
+      this.postulacionesCargadas = true;
     },
 
     async buscarVacantes() {

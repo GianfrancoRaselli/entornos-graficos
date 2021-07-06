@@ -37,6 +37,15 @@
     <li class="nav-item" v-if="isAdministrador">
       <router-link
         class="btn btn-light btn-block"
+        to="/administrarCatedras"
+        exact
+      >
+        <i class="fas fa-book-open fa-2x"></i>
+      </router-link>
+    </li>
+    <li class="nav-item" v-if="isAdministrador">
+      <router-link
+        class="btn btn-light btn-block"
         to="/verificarIdentidades"
         exact
       >

@@ -53,6 +53,27 @@
         </div>
       </div>
     </li>
+    <li class="nav-item dropdown" v-if="isAdministrador">
+      <a
+        class="dropdown-toggle btn btn-light btn-block"
+        href="#"
+        role="button"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="false"
+      >
+        <i class="fas fa-book"></i> Cátedras
+      </a>
+      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <router-link class="dropdown-item" to="/administrarCatedras" exact>
+          <i class="fas fa-book-open"></i> Administrar cátedras
+        </router-link>
+        <div class="dropdown-divider"></div>
+        <router-link class="dropdown-item" to="/agregarCatedra" exact>
+          <i class="fas fa-plus-circle mr-1"></i> Agregar cátedra
+        </router-link>
+      </div>
+    </li>
     <li class="nav-item" v-if="isAdministrador">
       <router-link
         class="btn btn-light btn-block"

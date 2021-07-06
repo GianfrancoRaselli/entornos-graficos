@@ -41,11 +41,19 @@ $router->group(['middleware' => ['auth']], function () use ($router) {
 
         $router->post('/personas/rechazarPersona', 'PersonaController@rechazarPersona');
 
+        $router->get('/personas/buscarPersonas', 'PersonaController@buscarPersonas');
+
         $router->post('/llamados/agregarLlamado', 'LlamadoController@agregarLlamado');
 
         $router->delete('/llamados/eliminarLlamado/{id_llamado}', 'LlamadoController@eliminarLlamado');
 
         $router->get('/catedras/buscarCatedras', 'CatedraController@buscarCatedras');
+
+        $router->post('/catedras/agregarCatedra', 'CatedraController@agregarCatedra');
+
+        $router->delete('/catedras/eliminarCatedra/{id_catedra}', 'CatedraController@eliminarCatedra');
+
+        $router->post('/catedras/actualizarJefeCatedra', 'CatedraController@actualizarJefeCatedra');
     });
 
     $router->group(['middleware' => ['authUsuario']], function () use ($router) {

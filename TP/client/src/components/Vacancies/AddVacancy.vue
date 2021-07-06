@@ -41,7 +41,7 @@
           <div class="card-body">
             <form @submit.prevent="handleSubmit">
               <div class="form-group">
-                <label>Fecha Inicio</label>
+                <label><strong>Fecha Inicio</strong></label>
                 <input
                   type="date"
                   v-model="llamado.fecha_inicio"
@@ -59,7 +59,7 @@
               <br />
               <div v-if="llamado.fecha_inicio">
                 <div class="form-group">
-                  <label>Fecha Fin</label>
+                  <label><strong>Fecha Fin</strong></label>
                   <input
                     type="date"
                     v-model="llamado.fecha_fin"
@@ -76,7 +76,7 @@
                 <br />
               </div>
               <div class="form-group">
-                <label>Requisitos</label>
+                <label><strong>Requisitos</strong></label>
                 <textarea
                   type="text"
                   v-model="llamado.requisitos"
@@ -92,7 +92,7 @@
               </div>
               <br />
               <div class="form-group">
-                <label>Vacantes</label>
+                <label><strong>Vacantes</strong></label>
                 <input
                   type="number"
                   v-model="llamado.vacantes"
@@ -109,7 +109,7 @@
               </div>
               <br />
               <div class="form-group">
-                <label>Cátedra</label>
+                <label><strong>Cátedra</strong></label>
                 <select
                   class="form-control"
                   :class="{ errorClass: errorIdCatedra }"

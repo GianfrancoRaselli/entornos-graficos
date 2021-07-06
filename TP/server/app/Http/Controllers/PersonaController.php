@@ -45,9 +45,9 @@ class PersonaController extends Controller
             && $request->curriculum_vitae
             && $request->hasFile('curriculum_vitae')
         ) {
-            if (!Persona::where('dni', $request->dni)->first()) {
-                if (!Persona::where('nombre_usuario', $request->nombre_usuario)->first()) {
-                    try {
+            try {
+                if (!Persona::where('dni', $request->dni)->first()) {
+                    if (!Persona::where('nombre_usuario', $request->nombre_usuario)->first()) {
                         DB::beginTransaction();
 
                         $persona = new Persona();
@@ -79,16 +79,16 @@ class PersonaController extends Controller
                         $persona->roles()->attach(Rol::where('descripcion', 'Usuario')->first()->id);
 
                         DB::commit();
-                    } catch (Exception $e) {
-                        DB::rollback();
-
-                        return response()->json(['error' => $e->getMessage()], 406, []);
+                    } else {
+                        return response()->json(['error' => 'El nombre de usuario ya se encuentra registrado'], 406, []);
                     }
                 } else {
-                    return response()->json(['error' => 'El nombre de usuario ya se encuentra registrado'], 406, []);
+                    return response()->json(['error' => 'El DNI ya se encuentra registrado'], 406, []);
                 }
-            } else {
-                return response()->json(['error' => 'El DNI ya se encuentra registrado'], 406, []);
+            } catch (Exception $e) {
+                DB::rollback();
+
+                return response()->json(['error' => $e->getMessage()], 406, []);
             }
         } else {
             return response()->json(['error' => 'Ingrese todos los datos de la persona en el formato correcto'], 406, []);
@@ -159,9 +159,9 @@ class PersonaController extends Controller
             && strlen($request->telefono) <= 60
             && (!$request->cambiar_clave ||
                 ($request->cambiar_clave
-                && $request->nueva_clave
-                && strlen($request->nueva_clave) >= 8
-                && strlen($request->nueva_clave) <= 40))
+                    && $request->nueva_clave
+                    && strlen($request->nueva_clave) >= 8
+                    && strlen($request->nueva_clave) <= 40))
         ) {
             try {
                 $persona = Persona::find(auth()->user()->id);
@@ -310,6 +310,17 @@ class PersonaController extends Controller
             }
 
             $mail->send();
+        }
+    }
+
+    public function buscarPersonas()
+    {
+        try {
+            $personas = Persona::all();
+
+            return response()->json($personas);
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 406, []);
         }
     }
 }

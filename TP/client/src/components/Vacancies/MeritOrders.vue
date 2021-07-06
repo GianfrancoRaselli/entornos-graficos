@@ -9,7 +9,7 @@
     </div>
     <div v-else>
       <div class="vacancies-list">
-        <p v-if="!vacantes.length">No hay vacantes calificadas</p>
+        <p v-if="!vacantes.length"><i class="fas fa-angle-right"></i> No hay vacantes calificadas</p>
         <div class="vacancies" v-if="vacantes.length">
           <div class="search-options w-100 mb-2">
             <div class="form-group select-catedras m-auto">

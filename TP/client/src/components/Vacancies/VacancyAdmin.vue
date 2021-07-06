@@ -20,7 +20,7 @@
       </div>
       <div v-else>
         <div class="vacancies-list">
-          <p v-if="!vacantes.length">No tiene vacantes a su cargo</p>
+          <p v-if="!vacantes.length"><i class="fas fa-angle-right"></i> No tiene vacantes a su cargo</p>
           <div class="vacancies" v-if="vacantes.length">
             <div
               class="vacancy"

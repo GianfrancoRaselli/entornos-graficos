@@ -59,7 +59,7 @@
         />
       </div>
       <div v-else>
-        <p>No se ha inscripto ninguna persona</p>
+        <p><i class="fas fa-angle-right"></i> No se ha inscripto ninguna persona</p>
       </div>
     </div>
   </div>

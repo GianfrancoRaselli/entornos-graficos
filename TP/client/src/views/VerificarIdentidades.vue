@@ -64,7 +64,7 @@
         </table>
       </div>
       <div v-else>
-        <p>Ya fueron verificadas todas las personas</p>
+        <p><i class="fas fa-angle-right"></i> Ya fueron verificadas todas las personas</p>
       </div>
     </div>
   </div>

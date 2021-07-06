@@ -72,6 +72,24 @@ const router = new Router({
       }
     },
     {
+      path: '/administrarCatedras',
+      name: 'Administrar Catedras',
+      component: () => import('@/views/AdminCathedras.vue'),
+      meta: {
+        auth: true,
+        isAdministrador: true
+      }
+    },
+    {
+      path: '/agregarCatedra',
+      name: 'Agregar Catedra',
+      component: () => import('@/views/AddCathedra.vue'),
+      meta: {
+        auth: true,
+        isAdministrador: true
+      }
+    },
+    {
       path: '/verificarIdentidades',
       name: 'Verificar Identidades',
       component: () => import('@/views/VerificarIdentidades.vue'),
