@@ -90,7 +90,7 @@
         to="/verificarIdentidades"
         exact
       >
-        <i class="fas fa-user-check"></i> Verificar identidades
+        <i class="fas fa-user-check"></i> Identidades
       </router-link>
     </li>
     <li class="nav-item">
@@ -116,4 +116,9 @@ export default {
 </script>
 
 <style>
+@media (min-width: 992px) and (max-width: 1180px) {
+  .fas {
+    display: none;
+  }
+}
 </style>

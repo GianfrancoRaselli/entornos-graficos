@@ -1,10 +1,5 @@
 <template>
   <ul class="mobile-nav">
-    <li class="nav-item">
-      <router-link class="btn btn-light btn-block" to="/" exact>
-        <i class="fas fa-home fa-2x"></i>
-      </router-link>
-    </li>
     <li class="nav-item" v-if="!authenticated || isUsuario">
       <router-link
         class="btn btn-light btn-block"
@@ -50,11 +45,6 @@
         <i class="fas fa-user-check fa-2x"></i>
       </router-link>
     </li>
-    <li class="nav-item" v-if="authenticated">
-      <router-link class="btn btn-light btn-block" to="/perfil">
-        <i class="fas fa-id-card fa-2x"></i>
-      </router-link>
-    </li>
   </ul>
 </template>
 
@@ -76,7 +66,8 @@ export default {
 .mobile-nav {
   display: none;
 }
-@media (max-width: 991px) {
+
+@media (max-width: 992px) {
   .mobile-nav {
     display: flex;
     height: 65px;
