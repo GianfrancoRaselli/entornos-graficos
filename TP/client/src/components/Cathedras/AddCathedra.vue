@@ -4,7 +4,7 @@
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
           <router-link to="/administrarCatedras"
-            ><i class="fas fa-toolbox"></i> Administrar Cátedras</router-link
+            ><i class="fas fa-book-open"></i> Administrar Cátedras</router-link
           >
         </li>
         <li class="breadcrumb-item active" aria-current="page">

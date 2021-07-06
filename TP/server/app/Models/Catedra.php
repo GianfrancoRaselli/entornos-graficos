@@ -28,6 +28,6 @@ class Catedra extends Model
 
     public function llamados()
     {
-        return $this->hasMany('App\Models\Llamado', 'id_llamado');
+        return $this->hasMany('App\Models\Llamado', 'id_catedra');
     }
 }

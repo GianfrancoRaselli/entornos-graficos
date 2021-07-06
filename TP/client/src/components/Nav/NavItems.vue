@@ -22,35 +22,46 @@
         <i class="fas fa-hand-pointer mr-1"></i> Vacantes
       </a>
       <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-        <div v-if="!authenticated || isUsuario">
-          <router-link class="dropdown-item" to="/requisitos" exact>
-            <i class="fas fa-list-ul mr-1"></i> Requisitos
-          </router-link>
-        </div>
-        <div v-if="!authenticated || isUsuario">
-          <div class="dropdown-divider"></div>
-          <router-link class="dropdown-item" to="/vacantes" exact>
-            <i class="fas fa-search mr-1"></i> Buscar vacantes
-          </router-link>
-        </div>
-        <div v-if="!authenticated || isUsuario">
-          <div class="dropdown-divider"></div>
-          <router-link class="dropdown-item" to="/ordenesMerito" exact>
-            <i class="fas fa-clipboard-list mr-1"></i> Ordenes de mérito
-          </router-link>
-        </div>
-        <div v-if="isAdministrador || isJefeCatedra">
-          <div class="dropdown-divider"></div>
-          <router-link class="dropdown-item" to="/administrarVacantes" exact>
-            <i class="fas fa-toolbox mr-1"></i> Administrar vacantes
-          </router-link>
-        </div>
-        <div v-if="isAdministrador">
-          <div class="dropdown-divider"></div>
-          <router-link class="dropdown-item" to="/agregarVacante" exact>
-            <i class="fas fa-plus-circle mr-1"></i> Agregar vacante
-          </router-link>
-        </div>
+        <router-link
+          class="dropdown-item"
+          v-if="!authenticated || isUsuario"
+          to="/requisitos"
+          exact
+        >
+          <i class="fas fa-list-ul mr-1"></i> Requisitos
+        </router-link>
+        <router-link
+          class="dropdown-item"
+          v-if="!authenticated || isUsuario"
+          to="/vacantes"
+          exact
+        >
+          <i class="fas fa-search mr-1"></i> Buscar vacantes
+        </router-link>
+        <router-link
+          class="dropdown-item"
+          v-if="!authenticated || isUsuario"
+          to="/ordenesMerito"
+          exact
+        >
+          <i class="fas fa-clipboard-list mr-1"></i> Ordenes de mérito
+        </router-link>
+        <router-link
+          class="dropdown-item"
+          v-if="isAdministrador || isJefeCatedra"
+          to="/administrarVacantes"
+          exact
+        >
+          <i class="fas fa-toolbox mr-1"></i> Administrar vacantes
+        </router-link>
+        <router-link
+          class="dropdown-item"
+          v-if="isAdministrador"
+          to="/agregarVacante"
+          exact
+        >
+          <i class="fas fa-plus-circle mr-1"></i> Agregar vacante
+        </router-link>
       </div>
     </li>
     <li class="nav-item dropdown" v-if="isAdministrador">
@@ -68,7 +79,6 @@
         <router-link class="dropdown-item" to="/administrarCatedras" exact>
           <i class="fas fa-book-open"></i> Administrar cátedras
         </router-link>
-        <div class="dropdown-divider"></div>
         <router-link class="dropdown-item" to="/agregarCatedra" exact>
           <i class="fas fa-plus-circle mr-1"></i> Agregar cátedra
         </router-link>

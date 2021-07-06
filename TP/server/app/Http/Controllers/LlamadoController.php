@@ -347,8 +347,18 @@ class LlamadoController extends Controller
     if ($id_llamado) {
       $llamado = Llamado::find($id_llamado);
       if ($llamado) {
-        $llamado->postulaciones()->delete();
-        $llamado->delete();
+        try {
+          DB::beginTransaction();
+
+          $llamado->postulaciones()->delete();
+          $llamado->delete();
+
+          DB::commit();
+        } catch (Exception $e) {
+          DB::rollback();
+          
+          return response()->json(['error' => $e->getMessage()], 406, []);
+        }
       } else {
         return response()->json(['error' => 'No existe el llamado'], 406, []);
       }

@@ -76,4 +76,35 @@ class CatedraController extends Controller
       return response()->json(['error' => 'Ingrese una cátedra con todos sus datos'], 406, []);
     }
   }
+
+  public function eliminarCatedra($id_catedra)
+  {
+    if ($id_catedra) {
+      $catedra = Catedra::find($id_catedra);
+      if ($catedra) {
+        try {
+          DB::beginTransaction();
+          
+          $catedra->llamados()->delete();
+          $catedra->trabajos()->delete();
+          $catedra->delete();
+
+          if (!Catedra::where('id_jefe_catedra', $catedra->id_jefe_catedra)->first()) {
+            $persona = Persona::find($catedra->id_jefe_catedra);
+            $persona->roles()->detach(Rol::where('descripcion', 'Jefe Catedra')->first()->id);
+          }
+
+          DB::commit();
+        } catch (Exception $e) {
+          DB::rollback();
+          
+          return response()->json(['error' => $e->getMessage()], 406, []);
+        }
+      } else {
+        return response()->json(['error' => 'No existe la cátedra'], 406, []);
+      }
+    } else {
+      return response()->json(['error' => 'Ingrese el id de la cátedra a eliminar'], 406, []);
+    }
+  }
 }
