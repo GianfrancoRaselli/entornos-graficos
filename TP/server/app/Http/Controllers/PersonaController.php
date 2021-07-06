@@ -109,19 +109,19 @@ class PersonaController extends Controller
                 $persona = Persona::where('nombre_usuario', $request->nombre_usuario)->first();
 
                 if ($persona) {
-                    if ($persona->verificada) {
-                        if (Hash::check($request->clave, $persona->clave)) {
+                    if (Hash::check($request->clave, $persona->clave)) {
+                        if ($persona->verificada) {
                             $persona->roles;
 
                             return response()->json($persona, 200);
                         } else {
-                            return response()->json(['error' => 'Clave incorrecta'], 406, []);
+                            return response()->json(['error' => 'Persona pendiente de verificación'], 406, []);
                         }
                     } else {
-                        return response()->json(['error' => 'Persona pendiente de verificación'], 406, []);
+                        return response()->json(['error' => 'Nombre de usuario y/o clave incorrectos'], 406, []);
                     }
                 } else {
-                    return response()->json(['error' => 'Persona no encontrada'], 406, []);
+                    return response()->json(['error' => 'Nombre de usuario y/o clave incorrectos'], 406, []);
                 }
             } catch (Exception $e) {
                 return response()->json(['error' => $e->getMessage()], 406, []);
