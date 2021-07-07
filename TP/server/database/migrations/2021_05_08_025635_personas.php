@@ -15,7 +15,7 @@ class Personas extends Migration
     {
         Schema::create('personas', function (Blueprint $table) {
             $table->id();
-            $table->string('dni', 30)->unique()->collation('utf8mb4_bin');
+            $table->string('dni', 15)->unique()->collation('utf8mb4_bin');
             $table->string('imagen_dni', 50)->unique()->nullable();
             $table->string('nombre_usuario', 30)->unique()->collation('utf8mb4_bin');
             $table->string('clave', 180)->collation('utf8mb4_bin');

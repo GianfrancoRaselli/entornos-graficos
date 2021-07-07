@@ -30,7 +30,7 @@
                 placeholder="Número DNI"
                 class="form-control"
                 :class="{ errorClass: errorDNI }"
-                maxlength="30"
+                maxlength="15"
                 required
                 autofocus
               />
@@ -213,7 +213,7 @@ export default {
 
         if (
           this.user.dni &&
-          this.user.dni.length <= 30 &&
+          this.user.dni.length <= 15 &&
           !isNaN(this.user.dni)
         ) {
           this.errorDNI = "";
