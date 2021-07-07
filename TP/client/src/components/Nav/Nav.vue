@@ -69,6 +69,7 @@
         </div>
         <LogIn />
         <SignUp />
+        <SearchUser />
       </ul>
     </div>
     <NavItemsMobile />
@@ -83,7 +84,8 @@ export default {
     NavItems: () => import("./NavItems.vue"),
     NavItemsMobile: () => import("./NavItemsMobile.vue"),
     LogIn: () => import("../LogIn.vue"),
-    SignUp: () => import("../SignUp.vue")
+    SignUp: () => import("../SignUp.vue"),
+    SearchUser: () => import("../SearchUser.vue")
   },
   computed: {
     ...mapGetters({

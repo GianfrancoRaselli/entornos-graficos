@@ -17,6 +17,12 @@ $router->post('/personas/signUp', 'PersonaController@signUp');
 
 $router->post('/personas/signIn', 'PersonaController@signIn');
 
+$router->post('/personas/buscarPersonaPorUsuario', 'PersonaController@buscarPersonaPorUsuario');
+
+$router->get('/personas/buscarPersonaPorCodigo/{codigo_cambiar_clave}', 'PersonaController@buscarPersonaPorCodigo');
+
+$router->post('/personas/cambiarClave', 'PersonaController@cambiarClave');
+
 $router->get('/llamados/buscarLlamadoCalificado/{id_llamado}', 'LlamadoController@buscarLlamadoCalificado');
 
 $router->get('/llamados/buscarLlamados', 'LlamadoController@buscarLlamados');

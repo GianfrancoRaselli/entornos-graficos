@@ -69,6 +69,9 @@
               </button>
             </div>
             <div class="form-group" v-if="!postularse">
+              <utn-button btnClass="btn btn-link" @click="abrirSearchUser">
+                ¿Has olvidado la clave?
+              </utn-button>
               <utn-button btnClass="btn btn-link" @click="abrirSignUp">
                 ¿No tienes cuenta? ¡Regístrate!
               </utn-button>
@@ -172,7 +175,7 @@ export default {
             showConfirmButton: true,
             timer: 4000
           });
-          EventBus.$emit('actualizarVacantes');
+          EventBus.$emit("actualizarVacantes");
           this.cerrarModal("#loginPostulacionPopup");
         }
       }
@@ -187,9 +190,14 @@ export default {
     abrirSignUp() {
       window.$("#loginPopup").modal("hide");
       window.$("#signUpPopup").modal("show");
+    },
+
+    abrirSearchUser() {
+      window.$("#loginPopup").modal("hide");
+      window.$("#searchUserPopup").modal("show");
     }
   }
-};
+}
 </script>
 
 <style>

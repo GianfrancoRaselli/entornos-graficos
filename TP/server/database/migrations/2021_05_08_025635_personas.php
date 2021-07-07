@@ -25,6 +25,8 @@ class Personas extends Migration
             $table->string('api_token', 120)->unique()->nullable()->collation('utf8mb4_bin');
             $table->string('curriculum_vitae', 50)->unique()->nullable();
             $table->boolean('verificada');
+            $table->string('codigo_cambiar_clave')->unique()->nullable()->collation('utf8mb4_bin');
+            $table->dateTime('fecha_hora_max_cambiar_clave')->nullable();
         });
     }
 

@@ -56,6 +56,11 @@ const store = new Vuex.Store({
       router.push('/perfil');
     },
 
+    async changePass ({ dispatch }, credentials) {
+      const res = await axios.post('/personas/cambiarClave', credentials);
+      await dispatch('attempt', res.data);
+    },
+
     async attempt ({ commit }, data) {
       commit('SET_USER', data);
     }

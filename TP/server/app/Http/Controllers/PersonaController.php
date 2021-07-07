@@ -323,4 +323,133 @@ class PersonaController extends Controller
             return response()->json(['error' => $e->getMessage()], 406, []);
         }
     }
+
+    public function buscarPersonaPorUsuario(Request $request)
+    {
+        if (
+            $request->nombre_usuario
+            && strlen($request->nombre_usuario) >= 6
+            && strlen($request->nombre_usuario) <= 30
+        ) {
+            try {
+                $persona = Persona::where('nombre_usuario', $request->nombre_usuario)->first();
+
+                if ($persona) {
+                    $fecha_hora_max_cambiar_clave = strtotime('+24 hours');
+                    $persona->fecha_hora_max_cambiar_clave = date('Y-m-d H:i:s', $fecha_hora_max_cambiar_clave);
+                    $persona->codigo_cambiar_clave = Str::random(10) . $persona->id . $fecha_hora_max_cambiar_clave . Str::random(10);
+
+                    $persona->save();
+
+                    $this->enviarMailRecuperarClave($persona);
+
+                    return response()->json($persona->email);
+                } else {
+                    return response()->json(['error' => 'Persona inexistente'], 406, []);
+                }
+            } catch (Exception $e) {
+                return response()->json(['error' => $e->getMessage()], 406, []);
+            }
+        } else {
+            return response()->json(['error' => 'Ingrese un nombre de usuario en el formato correcto'], 406, []);
+        }
+    }
+
+    private function enviarMailRecuperarClave($persona)
+    {
+        if ($persona) {
+            $mail = new PHPMailer(true);
+
+            $mail->SMTPDebug = 0;
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = 'utn.facultad.regional.rosario@gmail.com';
+            $mail->Password = env('MAIL_PASSWORD');
+            $mail->SMTPSecure = 'tls';
+            $mail->Port = 587;
+            $mail->SMTPOptions = array(
+                'ssl' => array(
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true
+                )
+            );
+            $mail->setFrom('utn.facultad.regional.rosario@gmail.com', 'UTN - FRRO');
+            $mail->AddAddress($persona->email);
+            $mail->isHTML(true);
+            $mail->CharSet = 'UTF-8';
+            $mail->Subject = 'Recuperar Clave';
+            $mail->Body = "
+            <div style='font-size: large;'>
+              <p>¡Buen día!</p>
+              <p>Para cambiar la clave de <strong>" . $persona->nombre_apellido . "</strong> con DNI N° <strong>" .
+                $persona->dni . "</strong> debe ingresar al siguiente enlace: </p>
+              <p><a href='http://localhost:8080/cambiarClave/" . $persona->codigo_cambiar_clave . "' target='_blank'>Recuperar clave</a></p>
+            </div>
+            ";
+
+            $mail->send();
+        }
+    }
+
+    public function buscarPersonaPorCodigo($codigo_cambiar_clave)
+    {
+        if (
+            $codigo_cambiar_clave
+        ) {
+            try {
+                $persona = Persona::where('codigo_cambiar_clave', $codigo_cambiar_clave)->first();
+
+                if ($persona) {
+                    if (strtotime(date('Y-m-d H:i:s')) <= strtotime($persona->fecha_hora_max_cambiar_clave)) {
+                        return response()->json($persona->nombre_usuario);
+                    } else {
+                        return response()->json(['error' => 'El enlance ha caducado'], 406, []);
+                    }
+                } else {
+                    return response()->json(['error' => 'El enlace no pertenece a una persona'], 406, []);
+                }
+            } catch (Exception $e) {
+                return response()->json(['error' => $e->getMessage()], 406, []);
+            }
+        } else {
+            return response()->json(['error' => 'Ingrese el código para cambiar la clave'], 406, []);
+        }
+    }
+
+    function cambiarClave(Request $request)
+    {
+        if (
+            $request->codigo_cambiar_clave
+            && $request->nueva_clave
+            && strlen($request->nueva_clave) >= 8
+            && strlen($request->nueva_clave) <= 40
+        ) {
+            try {
+                $persona = Persona::where('codigo_cambiar_clave', $request->codigo_cambiar_clave)->first();
+
+                if ($persona) {
+                    if (strtotime(date('Y-m-d H:i:s')) <= strtotime($persona->fecha_hora_max_cambiar_clave)) {
+                        $persona->clave = Hash::make($request->nueva_clave);
+                        $persona->codigo_cambiar_clave = null;
+                        $persona->fecha_hora_max_cambiar_clave = null;
+                        $persona->save();
+
+                        $persona->roles;
+                        
+                        return response()->json($persona);
+                    } else {
+                        return response()->json(['error' => 'El enlance ha caducado'], 406, []);
+                    }
+                } else {
+                    return response()->json(['error' => 'El enlace no pertenece a una persona'], 406, []);
+                }
+            } catch (Exception $e) {
+                return response()->json(['error' => $e->getMessage()], 406, []);
+            }
+        } else {
+            return response()->json(['error' => 'Ingrese el código y la clave en el formato correcto'], 406, []);
+        }
+    }
 }
