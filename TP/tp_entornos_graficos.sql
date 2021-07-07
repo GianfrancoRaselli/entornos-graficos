@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 06-07-2021 a las 08:44:32
+-- Tiempo de generación: 07-07-2021 a las 06:36:22
 -- Versión del servidor: 10.4.14-MariaDB
 -- Versión de PHP: 7.4.9
 
@@ -66,32 +66,6 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `migrations`
---
-
-CREATE TABLE `migrations` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `batch` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Volcado de datos para la tabla `migrations`
---
-
-INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
-(105, '2021_05_08_025635_personas', 1),
-(106, '2021_05_08_030519_roles', 1),
-(107, '2021_05_08_031624_personas_roles', 1),
-(108, '2021_05_14_170736_catedras', 1),
-(109, '2021_05_14_170853_personas_catedras', 1),
-(110, '2021_05_14_170944_llamados', 1),
-(111, '2021_05_14_171013_postulaciones', 1),
-(112, '2021_06_18_181820_create_triggers', 1);
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `personas`
 --
 
@@ -106,8 +80,17 @@ CREATE TABLE `personas` (
   `telefono` varchar(60) COLLATE utf8mb4_unicode_ci NOT NULL,
   `api_token` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `curriculum_vitae` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `verificada` tinyint(1) NOT NULL
+  `verificada` tinyint(1) NOT NULL,
+  `codigo_cambiar_clave` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `fecha_hora_max_cambiar_clave` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `personas`
+--
+
+INSERT INTO `personas` (`id`, `dni`, `imagen_dni`, `nombre_usuario`, `clave`, `nombre_apellido`, `email`, `telefono`, `api_token`, `curriculum_vitae`, `verificada`, `codigo_cambiar_clave`, `fecha_hora_max_cambiar_clave`) VALUES
+(1, '42531073', 'DNI_wcirb1JUgPk.pdf', 'GianRase', '$2y$10$D.8bYOPzDRYAG2AlpcpgwuswMFuzaAyeIksYHPeP7IsMoNZSdmMIy', 'Gianfranco Raselli', 'gianrase4@gmail.com', '3482334910', 'd5PQOt2HLHC68qR0rHLhHSNNHwG0Uy1S0pd6u2iGPGOKEDZeaahlJNqVki4B2', 'CV_edmaE1XUwl5.pdf', 1, 'xgRr0sdCbg11625718100jGZnD8fduY', '2021-07-08 01:21:40');
 
 -- --------------------------------------------------------
 
@@ -132,6 +115,15 @@ CREATE TABLE `personas_roles` (
   `id_persona` bigint(20) UNSIGNED NOT NULL,
   `id_rol` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `personas_roles`
+--
+
+INSERT INTO `personas_roles` (`id`, `id_persona`, `id_rol`) VALUES
+(2, 1, 1),
+(3, 1, 2),
+(1, 1, 3);
 
 -- --------------------------------------------------------
 
@@ -173,6 +165,15 @@ CREATE TABLE `roles` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
+-- Volcado de datos para la tabla `roles`
+--
+
+INSERT INTO `roles` (`id`, `descripcion`) VALUES
+(1, 'Administrador'),
+(2, 'Jefe Catedra'),
+(3, 'Usuario');
+
+--
 -- Índices para tablas volcadas
 --
 
@@ -192,12 +193,6 @@ ALTER TABLE `llamados`
   ADD UNIQUE KEY `llamados_id_catedra_fecha_inicio_unique` (`id_catedra`,`fecha_inicio`);
 
 --
--- Indices de la tabla `migrations`
---
-ALTER TABLE `migrations`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indices de la tabla `personas`
 --
 ALTER TABLE `personas`
@@ -206,7 +201,8 @@ ALTER TABLE `personas`
   ADD UNIQUE KEY `personas_nombre_usuario_unique` (`nombre_usuario`),
   ADD UNIQUE KEY `personas_imagen_dni_unique` (`imagen_dni`),
   ADD UNIQUE KEY `personas_api_token_unique` (`api_token`),
-  ADD UNIQUE KEY `personas_curriculum_vitae_unique` (`curriculum_vitae`);
+  ADD UNIQUE KEY `personas_curriculum_vitae_unique` (`curriculum_vitae`),
+  ADD UNIQUE KEY `personas_codigo_cambiar_clave_unique` (`codigo_cambiar_clave`);
 
 --
 -- Indices de la tabla `personas_catedras`
@@ -256,16 +252,10 @@ ALTER TABLE `llamados`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `migrations`
---
-ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
-
---
 -- AUTO_INCREMENT de la tabla `personas`
 --
 ALTER TABLE `personas`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `personas_catedras`
@@ -277,7 +267,7 @@ ALTER TABLE `personas_catedras`
 -- AUTO_INCREMENT de la tabla `personas_roles`
 --
 ALTER TABLE `personas_roles`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `postulaciones`
@@ -289,7 +279,7 @@ ALTER TABLE `postulaciones`
 -- AUTO_INCREMENT de la tabla `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Restricciones para tablas volcadas
