@@ -176,7 +176,7 @@ import { mapActions } from "vuex";
 import Swal from "sweetalert2";
 export default {
   props: {
-    identificator: { type: String, default: 'signUpPopup' }
+    identificator: { type: String, default: "signUpPopup" }
   },
   data() {
     return {
@@ -315,9 +315,8 @@ export default {
 
     validarEmail(email) {
       if (
-        /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i.test(email)
+        /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i.test(email) //eslint-disable-line
       ) {
-        //eslint-disable-line
         return true;
       } else {
         return false;

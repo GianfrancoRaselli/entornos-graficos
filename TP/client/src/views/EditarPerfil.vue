@@ -121,23 +121,6 @@
               </div>
               <br />
               <div class="form-group">
-                <label>Clave</label>
-                <input
-                  type="password"
-                  v-model="user.clave"
-                  placeholder="Clave"
-                  class="form-control"
-                  :class="{ errorClass: errorClave }"
-                  minlength="8"
-                  maxlength="40"
-                  required
-                />
-                <medium class="form-text text-muted" v-if="errorClave"
-                  ><p class="error">{{ errorClave }}</p></medium
-                >
-              </div>
-              <br />
-              <div class="form-group">
                 <button class="btn btn-success btn-block">
                   Guardar
                 </button>
@@ -147,6 +130,54 @@
         </div>
       </div>
     </div>
+    <Popup
+      dataTarget="ingresarClavePopup"
+      title="Ingresar clave"
+      :showButtons="false"
+    >
+      <div style="width: 100%; margin-bottom: 1%;" v-if="errorMessageClave">
+        <div
+          class="alert alert-danger alert-dismissible fade show"
+          style="width: fit-content; margin-top: 2%; margin-left: auto; margin-right: auto;"
+          role="alert"
+        >
+          {{ errorMessageClave }}
+          <button
+            v-on:click="errorMessageClave = ''"
+            class="close btn btn-link"
+            data-dismiss="alert"
+            style="color: black; text-decoration: none; font-size: 22px;"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+      <form @submit.prevent="handleSubmitClave">
+        <div class="form-group">
+          <label>Ingrese su clave para confirmar los cambios</label>
+          <input
+            type="password"
+            v-model="user.clave"
+            placeholder="Clave"
+            class="form-control"
+            :class="{ errorClass: errorClave }"
+            minlength="8"
+            maxlength="40"
+            required
+          />
+          <medium class="form-text text-muted" v-if="errorClave"
+            ><p class="error">{{ errorClave }}</p></medium
+          >
+        </div>
+        <br />
+        <div class="form-group">
+          <button class="btn btn-success btn-block">
+            Confirmar
+          </button>
+        </div>
+      </form>
+    </Popup>
   </div>
 </template>
 
@@ -157,6 +188,7 @@ export default {
   data() {
     return {
       errorMessage: "",
+      errorMessageClave: "",
       errorNombreUsuario: "",
       errorClave: "",
       errorNuevaClave: "",
@@ -196,7 +228,8 @@ export default {
         this.$store.dispatch("logOut");
       }
     },
-    async handleSubmit() {
+
+    handleSubmit() {
       this.errorMessage = "";
       let error = false;
 
@@ -210,17 +243,6 @@ export default {
         } else {
           this.errorNombreUsuario =
             "Ingrese un nombre de usuario entre 6 y 30 caracteres";
-          error = true;
-        }
-
-        if (
-          this.user.clave &&
-          this.user.clave.length >= 8 &&
-          this.user.clave.length <= 40
-        ) {
-          this.errorClave = "";
-        } else {
-          this.errorClave = "Ingrese su clave";
           error = true;
         }
 
@@ -262,11 +284,7 @@ export default {
         }
 
         if (!error) {
-          try {
-            await this.updateProfile(this.user);
-          } catch (err) {
-            this.errorMessage = err.response.data.error;
-          }
+          window.$("#ingresarClavePopup").modal("show");
         } else {
           this.errorMessage = "Solucione los campos con error";
         }
@@ -275,11 +293,40 @@ export default {
       }
     },
 
+    async handleSubmitClave() {
+      this.errorMessageClave = "";
+      let errorClave = false;
+
+      if (this.$store.getters.authenticated) {
+        if (
+          this.user.clave &&
+          this.user.clave.length >= 8 &&
+          this.user.clave.length <= 40
+        ) {
+          this.errorClave = "";
+        } else {
+          this.errorClave = "Ingrese su clave";
+          errorClave = true;
+        }
+
+        if (!errorClave) {
+          try {
+            await this.updateProfile(this.user);
+          } catch (err) {
+            this.errorMessageClave = err.response.data.error;
+          }
+        } else {
+          this.errorMessageClave = "Solucione los campos con error";
+        }
+      } else {
+        this.$store.dispatch("logOut");
+      }
+    },
+
     validarEmail(email) {
       if (
-        /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i.test(email)
+        /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i.test(email) //eslint-disable-line
       ) {
-        //eslint-disable-line
         return true;
       } else {
         return false;
