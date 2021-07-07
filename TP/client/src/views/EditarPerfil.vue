@@ -242,19 +242,22 @@ export default {
         ) {
           this.errorTelefono = "";
         } else {
-          this.errorTelefono = "Ingrese un número de teléfono válido sin espacios";
+          this.errorTelefono =
+            "Ingrese un número de teléfono válido sin espacios";
           error = true;
         }
 
         if (
-          this.user.cambiar_clave &&
-          this.user.nueva_clave &&
-          this.user.nueva_clave.length >= 8 &&
-          this.user.nueva_clave.length <= 40
+          !this.user.cambiar_clave ||
+          (this.user.cambiar_clave &&
+            this.user.nueva_clave &&
+            this.user.nueva_clave.length >= 8 &&
+            this.user.nueva_clave.length <= 40)
         ) {
           this.errorNuevaClave = "";
         } else {
-          this.errorNuevaClave = "Ingrese una nueva clave entre 8 y 40 caracteres";
+          this.errorNuevaClave =
+            "Ingrese una nueva clave entre 8 y 40 caracteres";
           error = true;
         }
 
