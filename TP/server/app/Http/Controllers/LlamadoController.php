@@ -13,6 +13,8 @@ use Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 
+require __DIR__.'/../../../config/paths.php';
+
 require __DIR__.'/../../../config/PHPMailer/Exception.php';
 require __DIR__.'/../../../config/PHPMailer/PHPMailer.php';
 require __DIR__.'/../../../config/PHPMailer/SMTP.php';
@@ -273,7 +275,7 @@ class LlamadoController extends Controller
                     <div style="font-size: large;">
                       <p>¡Buen día!</p>
                       <p>Ya puede ver los resultados del llamado a cubir vacantes de la cátedra de ' . 
-                      $llamado->catedra->descripcion . ' del ' . $llamado->fecha_inicio . ' en: <a href="http://localhost:8080/ordenesMerito" target="_blank">calificaciones</a></p>
+                      $llamado->catedra->descripcion . ' del ' . $llamado->fecha_inicio . ' en: <a href="' . frontPath . 'ordenesMerito" target="_blank">calificaciones</a></p>
                     </div>
                     ';
 

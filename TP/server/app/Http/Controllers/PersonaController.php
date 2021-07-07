@@ -7,11 +7,12 @@ use App\Models\Persona;
 use App\Models\Rol;
 use Exception;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
+
+require __DIR__.'/../../../config/paths.php';
 
 require __DIR__ . '/../../../config/PHPMailer/Exception.php';
 require __DIR__ . '/../../../config/PHPMailer/PHPMailer.php';
@@ -295,7 +296,7 @@ class PersonaController extends Controller
               <p>La identidad de <strong>' . $persona->nombre_apellido . '</strong> con DNI N° <strong>' .
                     $persona->dni . '</strong> fue verificada exitosamente.</p>
               <p>Ya puede ingresar al sistema con el usuario: ' . $persona->nombre_usuario . '</p>
-              <p><a href="http://localhost:8080/" target="_blank">UTN - Facultad Regional Rosario</a></p>
+              <p><a href="' . frontPath . '" target="_blank">UTN - Facultad Regional Rosario</a></p>
             </div>
             ';
             } else {
@@ -385,7 +386,7 @@ class PersonaController extends Controller
               <p>¡Buen día!</p>
               <p>Para cambiar la clave de <strong>" . $persona->nombre_apellido . "</strong> con DNI N° <strong>" .
                 $persona->dni . "</strong> debe ingresar al siguiente enlace: </p>
-              <p><a href='http://localhost:8080/cambiarClave/" . $persona->codigo_cambiar_clave . "' target='_blank'>Recuperar clave</a></p>
+              <p><a href='" . frontPath . "cambiarClave/" . $persona->codigo_cambiar_clave . "' target='_blank'>Recuperar clave</a></p>
             </div>
             ";
 
