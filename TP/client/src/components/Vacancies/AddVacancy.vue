@@ -1,139 +1,150 @@
 <template>
   <div>
-    <nav aria-label="breadcrumb" class="m-auto" style="width: fit-content">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item">
-          <router-link to="/administrarVacantes"
-            ><i class="fas fa-toolbox"></i> Administrar Vacantes</router-link
-          >
-        </li>
-        <li class="breadcrumb-item active" aria-current="page">
-          Agregar Vacante
-        </li>
-      </ol>
-    </nav>
-    <div style="width: 100%; margin-bottom: 1%;" v-if="errorMessage">
-      <div
-        class="alert alert-danger alert-dismissible fade show"
-        style="width: fit-content; margin-top: 2%; margin-left: auto; margin-right: auto;"
-        role="alert"
-      >
-        {{ errorMessage }}
-        <button
-          v-on:click="errorMessage = ''"
-          class="close btn btn-link"
-          data-dismiss="alert"
-          style="color: black; text-decoration: none; font-size: 22px;"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
+    <div v-if="!cargado">
+      <img
+        src="../../assets/loading.gif"
+        alt="Imagen de carga de página"
+        class="loading mt-5"
+      />
     </div>
-    <div class="row m-2">
-      <div class="col-md-5 mx-auto">
+    <div v-else>
+      <nav aria-label="breadcrumb" class="m-auto" style="width: fit-content">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <router-link to="/administrarVacantes"
+              ><i class="fas fa-toolbox"></i> Administrar Vacantes</router-link
+            >
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+            Agregar Vacante
+          </li>
+        </ol>
+      </nav>
+      <div style="width: 100%; margin-bottom: 1%;" v-if="errorMessage">
         <div
-          class="card text-center animate__animated animate__flipInY animate__fast"
+          class="alert alert-danger alert-dismissible fade show"
+          style="width: fit-content; margin-top: 2%; margin-left: auto; margin-right: auto;"
+          role="alert"
         >
-          <div class="card-header">
-            <p style="font-size: 1.75rem;"><strong>Agregar Vacante</strong></p>
-          </div>
-          <div class="card-body">
-            <form @submit.prevent="handleSubmit">
-              <div class="form-group">
-                <label><strong>Fecha Inicio</strong></label>
-                <input
-                  type="date"
-                  v-model="llamado.fecha_inicio"
-                  placeholder="Fecha Inicio"
-                  :min="fecha_hoy"
-                  class="form-control"
-                  :class="{ errorClass: errorFechaInicio }"
-                  required
-                  autofocus
-                />
-                <medium class="form-text text-muted" v-if="errorFechaInicio"
-                  ><p class="error">{{ errorFechaInicio }}</p></medium
-                >
-              </div>
-              <br />
-              <div v-if="llamado.fecha_inicio">
+          {{ errorMessage }}
+          <button
+            v-on:click="errorMessage = ''"
+            class="close btn btn-link"
+            data-dismiss="alert"
+            style="color: black; text-decoration: none; font-size: 22px;"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+      <div class="row m-2">
+        <div class="col-md-5 mx-auto">
+          <div
+            class="card text-center animate__animated animate__flipInY animate__fast"
+          >
+            <div class="card-header">
+              <p style="font-size: 1.75rem;">
+                <strong>Agregar Vacante</strong>
+              </p>
+            </div>
+            <div class="card-body">
+              <form @submit.prevent="handleSubmit">
                 <div class="form-group">
-                  <label><strong>Fecha Fin</strong></label>
+                  <label><strong>Fecha Inicio</strong></label>
                   <input
                     type="date"
-                    v-model="llamado.fecha_fin"
+                    v-model="llamado.fecha_inicio"
                     placeholder="Fecha Inicio"
-                    :min="llamado.fecha_inicio"
+                    :min="fecha_hoy"
                     class="form-control"
-                    :class="{ errorClass: errorFechaFin }"
+                    :class="{ errorClass: errorFechaInicio }"
                     required
+                    autofocus
                   />
-                  <medium class="form-text text-muted" v-if="errorFechaFin"
-                    ><p class="error">{{ errorFechaFin }}</p></medium
+                  <medium class="form-text text-muted" v-if="errorFechaInicio"
+                    ><p class="error">{{ errorFechaInicio }}</p></medium
                   >
                 </div>
                 <br />
-              </div>
-              <div class="form-group">
-                <label><strong>Requisitos</strong></label>
-                <textarea
-                  type="text"
-                  v-model="llamado.requisitos"
-                  placeholder="Requisitos"
-                  class="form-control"
-                  :class="{ errorClass: errorRequisitos }"
-                  maxlength="300"
-                  required
-                />
-                <medium class="form-text text-muted" v-if="errorRequisitos"
-                  ><p class="error">{{ errorRequisitos }}</p></medium
-                >
-              </div>
-              <br />
-              <div class="form-group">
-                <label><strong>Vacantes</strong></label>
-                <input
-                  type="number"
-                  v-model="llamado.vacantes"
-                  placeholder="Vacentes"
-                  min="1"
-                  max="100"
-                  class="form-control"
-                  :class="{ errorClass: errorVacantes }"
-                  required
-                />
-                <medium class="form-text text-muted" v-if="errorVacantes"
-                  ><p class="error">{{ errorVacantes }}</p></medium
-                >
-              </div>
-              <br />
-              <div class="form-group">
-                <label><strong>Cátedra</strong></label>
-                <select
-                  class="form-control"
-                  :class="{ errorClass: errorIdCatedra }"
-                  v-model="llamado.id_catedra"
-                  required
-                >
-                  <option
-                    v-for="(catedra, index) in catedras"
-                    :key="index"
-                    :value="catedra.id"
-                    >{{ catedra.descripcion }}</option
+                <div v-if="llamado.fecha_inicio">
+                  <div class="form-group">
+                    <label><strong>Fecha Fin</strong></label>
+                    <input
+                      type="date"
+                      v-model="llamado.fecha_fin"
+                      placeholder="Fecha Inicio"
+                      :min="llamado.fecha_inicio"
+                      class="form-control"
+                      :class="{ errorClass: errorFechaFin }"
+                      required
+                    />
+                    <medium class="form-text text-muted" v-if="errorFechaFin"
+                      ><p class="error">{{ errorFechaFin }}</p></medium
+                    >
+                  </div>
+                  <br />
+                </div>
+                <div class="form-group">
+                  <label><strong>Requisitos</strong></label>
+                  <textarea
+                    type="text"
+                    v-model="llamado.requisitos"
+                    placeholder="Requisitos"
+                    class="form-control"
+                    :class="{ errorClass: errorRequisitos }"
+                    maxlength="300"
+                    required
+                  />
+                  <medium class="form-text text-muted" v-if="errorRequisitos"
+                    ><p class="error">{{ errorRequisitos }}</p></medium
                   >
-                </select>
-                <medium class="form-text text-muted" v-if="errorIdCatedra"
-                  ><p class="error">{{ errorIdCatedra }}</p></medium
-                >
-              </div>
-              <br />
-              <div class="form-group">
-                <button class="btn btn-success btn-block">
-                  Guardar
-                </button>
-              </div>
-            </form>
+                </div>
+                <br />
+                <div class="form-group">
+                  <label><strong>Vacantes</strong></label>
+                  <input
+                    type="number"
+                    v-model="llamado.vacantes"
+                    placeholder="Vacentes"
+                    min="1"
+                    max="100"
+                    class="form-control"
+                    :class="{ errorClass: errorVacantes }"
+                    required
+                  />
+                  <medium class="form-text text-muted" v-if="errorVacantes"
+                    ><p class="error">{{ errorVacantes }}</p></medium
+                  >
+                </div>
+                <br />
+                <div class="form-group">
+                  <label><strong>Cátedra</strong></label>
+                  <select
+                    class="form-control"
+                    :class="{ errorClass: errorIdCatedra }"
+                    v-model="llamado.id_catedra"
+                    required
+                  >
+                    <option
+                      v-for="(catedra, index) in catedras"
+                      :key="index"
+                      :value="catedra.id"
+                      >{{ catedra.descripcion }}</option
+                    >
+                  </select>
+                  <medium class="form-text text-muted" v-if="errorIdCatedra"
+                    ><p class="error">{{ errorIdCatedra }}</p></medium
+                  >
+                </div>
+                <br />
+                <div class="form-group">
+                  <button class="btn btn-success btn-block">
+                    Guardar
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </div>
@@ -147,6 +158,9 @@ import { mapGetters } from "vuex";
 export default {
   data() {
     return {
+      fecha_hoy: "",
+      fechaHoyCargada: false,
+      catedrasCargadas: false,
       errorMessage: "",
       errorFechaInicio: "",
       errorFechaFin: "",
@@ -169,7 +183,11 @@ export default {
       isAdministrador: "isAdministrador"
     }),
 
-    fecha_hoy() {
+    cargado() {
+      return this.fechaHoyCargada && this.catedrasCargadas;
+    }
+
+    /*fecha_hoy() {
       let fecha = new Date();
 
       let anio = fecha.getFullYear();
@@ -192,9 +210,29 @@ export default {
       }
 
       return anio + "-" + mes + "-" + dia;
-    }
+    }*/
   },
   methods: {
+    async buscarFechaDeHoy() {
+      if (this.authenticated && this.isAdministrador) {
+        try {
+          let res = await axios.get("/fechaDeHoy", {
+            headers: {
+              Authorization: "Bearer " + this.$store.getters.user.api_token
+            }
+          });
+
+          this.fecha_hoy = res.data;
+
+          this.fechaHoyCargada = true;
+        } catch (err) {
+          console.log(err.response.data.error);
+        }
+      } else {
+        this.$store.dispatch("logOut");
+      }
+    },
+
     async buscarCatedras() {
       if (this.authenticated && this.isAdministrador) {
         try {
@@ -205,6 +243,8 @@ export default {
           });
 
           this.catedras = res.data;
+
+          this.catedrasCargadas = true;
         } catch (err) {
           console.log(err.response.data.error);
         }
@@ -212,6 +252,7 @@ export default {
         this.$store.dispatch("logOut");
       }
     },
+
     async handleSubmit() {
       this.errorMessage = "";
       let error = false;
@@ -294,6 +335,7 @@ export default {
     }
   },
   created() {
+    this.buscarFechaDeHoy();
     this.buscarCatedras();
   }
 };
@@ -306,5 +348,10 @@ export default {
 
 .errorClass {
   background-color: rgb(228, 167, 167);
+}
+
+.loading {
+  display: block;
+  margin: auto;
 }
 </style>

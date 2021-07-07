@@ -41,6 +41,8 @@ $router->group(['middleware' => ['auth']], function () use ($router) {
     $router->get('/llamados/buscarLlamadosAAdministrar', 'LlamadoController@buscarLlamadosAAdministrar');
 
     $router->group(['middleware' => ['authAdmin']], function () use ($router) {
+        $router->get('/fechaDeHoy', 'DateController@fechaDeHoy');
+
         $router->get('/personas/buscarPersonasNoVerificadas', 'PersonaController@buscarPersonasNoVerificadas');
 
         $router->post('/personas/aceptarPersona', 'PersonaController@aceptarPersona');
