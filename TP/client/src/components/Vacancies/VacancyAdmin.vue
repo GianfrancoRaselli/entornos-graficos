@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>
+    <div v-if="isAdministrador">
       <router-link to="/agregarVacante" style="text-decoration: none;">
         <button
           class="btn btn-success btn-block w-25 m-auto"
