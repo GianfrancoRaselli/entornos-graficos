@@ -186,31 +186,6 @@ export default {
     cargado() {
       return this.fechaHoyCargada && this.catedrasCargadas;
     }
-
-    /*fecha_hoy() {
-      let fecha = new Date();
-
-      let anio = fecha.getFullYear();
-
-      let _mes = fecha.getMonth();
-      _mes = _mes + 1;
-      let mes = "";
-      if (_mes < 10) {
-        mes = "0" + _mes;
-      } else {
-        mes = _mes;
-      }
-
-      let _dia = fecha.getDate();
-      let dia = "";
-      if (_dia < 10) {
-        dia = "0" + _dia;
-      } else {
-        dia = _dia;
-      }
-
-      return anio + "-" + mes + "-" + dia;
-    }*/
   },
   methods: {
     async buscarFechaDeHoy() {
