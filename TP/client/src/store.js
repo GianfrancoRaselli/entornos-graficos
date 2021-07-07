@@ -53,7 +53,6 @@ const store = new Vuex.Store({
         }
       });
       await dispatch('attempt', res.data);
-      router.push('/perfil');
     },
 
     async changePass ({ dispatch }, credentials) {

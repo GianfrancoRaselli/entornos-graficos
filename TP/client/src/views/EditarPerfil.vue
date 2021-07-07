@@ -312,6 +312,8 @@ export default {
         if (!errorClave) {
           try {
             await this.updateProfile(this.user);
+            this.$router.push("/perfil");
+            window.$("#ingresarClavePopup").modal("hide");
           } catch (err) {
             this.errorMessageClave = err.response.data.error;
           }
