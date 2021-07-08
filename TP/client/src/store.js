@@ -33,6 +33,7 @@ const store = new Vuex.Store({
 
     async logOut ({ dispatch }) {
       await dispatch('attempt', null);
+      window.$("#navbarNav").toggle("collapse");
       EventBus.$emit('actualizarVacantes');
       router.push('/');
     },

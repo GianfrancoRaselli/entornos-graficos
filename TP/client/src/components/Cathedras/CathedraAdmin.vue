@@ -3,7 +3,7 @@
     <div>
       <router-link to="/agregarCatedra" style="text-decoration: none;">
         <button
-          class="btn btn-success btn-block w-25 m-auto"
+          class="btn btn-success btn-block m-auto btn-add-cathedra"
           icon="fas fa-plus-circle"
         >
           <i class="fas fa-plus-circle"></i>&nbsp;Agregar cátedra
@@ -193,9 +193,17 @@ export default {
   margin: auto;
 }
 
+.btn-add-cathedra {
+  width: 25%;
+}
+
 @media (max-width: 991px) {
   .cathedra {
     width: 100%;
+  }
+
+  .btn-add-cathedra {
+    width: 80%;
   }
 }
 </style>

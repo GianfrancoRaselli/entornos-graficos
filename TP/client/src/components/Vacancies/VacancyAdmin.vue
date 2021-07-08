@@ -3,7 +3,7 @@
     <div v-if="isAdministrador">
       <router-link to="/agregarVacante" style="text-decoration: none;">
         <button
-          class="btn btn-success btn-block w-25 m-auto"
+          class="btn btn-success btn-block m-auto btn-add-vacancy"
           icon="fas fa-plus-circle"
         >
           <i class="fas fa-plus-circle"></i>&nbsp;Agregar vacante
@@ -243,9 +243,17 @@ export default {
   margin: auto;
 }
 
+.btn-add-vacancy {
+  width: 25%;
+}
+
 @media (max-width: 991px) {
   .vacancy {
     width: 100%;
+  }
+
+  .btn-add-vacancy {
+    width: 80%;
   }
 }
 </style>
