@@ -24,16 +24,18 @@ const store = new Vuex.Store({
     async signUp ({ dispatch }, personalInformation) {
       await axios.post('/personas/signUp', personalInformation);
       await dispatch('attempt', null);
+      window.$(".navbar-collapse").removeClass("show");
     },
 
     async signIn ({ dispatch }, credentials) {
       const res = await axios.post('/personas/signIn', credentials);
       await dispatch('attempt', res.data);
+      window.$(".navbar-collapse").removeClass("show");
     },
 
     async logOut ({ dispatch }) {
       await dispatch('attempt', null);
-      window.$("#navbarNav").toggle("collapse");
+      window.$(".navbar-collapse").removeClass("show");
       EventBus.$emit('actualizarVacantes');
       router.push('/');
     },
