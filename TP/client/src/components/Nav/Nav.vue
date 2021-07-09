@@ -31,25 +31,24 @@
             aria-haspopup="true"
             aria-expanded="false"
             to="#"
-          >
-            {{ user.nombre_usuario }}
-          </utn-button>
-          <div
-            class="dropdown-menu dropdown-menu-lg-right"
-            aria-labelledby="navbarDropdown"
-          >
-            <router-link class="dropdown-item btn btn-link" to="/perfil">
-              <i class="fas fa-id-card"></i>
-              Perfil
+          >&nbsp;{{ user.nombre_usuario }}</utn-button>
+          <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="navbarDropdown">
+            <router-link class="dropdown-item btn btn-link btn-desktop" to="/perfil">
+              <i class="fas fa-id-card"></i> Perfil
             </router-link>
-            <div class="dropdown-divider"></div>
-            <button
-              class="dropdown-item btn btn-link"
-              @click="cerrarSesion"
-              id="btn-cerrar-sesion"
+            <router-link
+              class="dropdown-item btn btn-link btn-mobile"
+              data-toggle="collapse"
+              data-target="#navbarNav"
+              to="/perfil"
             >
-              <i class="fas fa-sign-out-alt"></i>
-              Cerrar Sesión
+              <i class="fas fa-id-card"></i> Perfil
+            </router-link>
+
+            <div class="dropdown-divider"></div>
+
+            <button class="dropdown-item btn btn-link" @click="cerrarSesion" id="btn-cerrar-sesion">
+              <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
             </button>
           </div>
         </li>
@@ -62,9 +61,7 @@
               :btnClass="item.btnClass"
               :data-target="item.target"
               :icon="item.icon"
-            >
-              {{ item.name }}
-            </utn-button>
+            >{{ item.name }}</utn-button>
           </li>
         </div>
         <LogIn />
@@ -130,11 +127,30 @@ export default {
 .navbar {
   box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.08);
 }
+
 .btn {
   width: 100%;
   text-align: left;
 }
+
 #btn-cerrar-sesion {
   color: red;
+}
+.btn-desktop {
+  display: none;
+}
+
+.btn-mobile {
+  display: block;
+}
+
+@media (min-width: 992px) {
+  .btn-desktop {
+    display: block;
+  }
+
+  .btn-mobile {
+    display: none;
+  }
 }
 </style>
