@@ -22,6 +22,10 @@ class PostulacionController extends Controller
         }
       }
 
+      foreach ($postulaciones as $key => $postulacion) {
+        $postulacion->llamado->catedra;
+      }
+
       return response()->json($postulaciones);
     } catch (Exception $e) {
       return response()->json(['error' => $e->getMessage()], 406, []);

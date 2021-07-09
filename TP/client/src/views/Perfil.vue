@@ -51,10 +51,10 @@
             </a>
           </div>
           <div
-            class="applications"
+            class="applications mt-5"
             v-if="isUsuario && user.postulaciones.length"
           >
-            <h4>Mis postulaciones</h4>
+            <h4 class="mb-2">Mis postulaciones</h4>
             <table class="table table-responsive-lg">
               <thead>
                 <tr>
