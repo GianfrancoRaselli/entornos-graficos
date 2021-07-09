@@ -2,7 +2,7 @@
   <ul class="navbar-nav">
     <li class="nav-item">
       <router-link class="btn btn-light btn-block btn-desktop" to="/" exact>
-        <i class="fas fa-home mr-1"></i> Inicio
+        <i class="fas fa-home mr-1 icono"></i> Inicio
       </router-link>
       <router-link
         class="btn btn-light btn-block btn-mobile"
@@ -20,7 +20,7 @@
         to="/contacto"
         exact
       >
-        <i class="fas fa-map-marker-alt mr-1"></i> Contacto
+        <i class="fas fa-map-marker-alt mr-1 icono"></i> Contacto
       </router-link>
       <router-link
         class="btn btn-light btn-block btn-mobile"
@@ -41,7 +41,7 @@
         aria-haspopup="true"
         aria-expanded="false"
       >
-        <i class="fas fa-hand-pointer mr-1"></i> Vacantes
+        <i class="fas fa-hand-pointer mr-1 icono"></i> Vacantes
       </a>
       <div class="dropdown-menu" aria-labelledby="navbarDropdown">
         <router-link
@@ -149,7 +149,7 @@
         aria-haspopup="true"
         aria-expanded="false"
       >
-        <i class="fas fa-book"></i> Cátedras
+        <i class="fas fa-book mr-1 icono"></i> Cátedras
       </a>
       <div class="dropdown-menu" aria-labelledby="navbarDropdown">
         <router-link
@@ -157,7 +157,7 @@
           to="/administrarCatedras"
           exact
         >
-          <i class="fas fa-book-open"></i> Administrar cátedras
+          <i class="fas fa-book-open mr-1"></i> Administrar cátedras
         </router-link>
         <router-link
           class="dropdown-item btn-mobile"
@@ -166,7 +166,7 @@
           to="/administrarCatedras"
           exact
         >
-          <i class="fas fa-book-open"></i> Administrar cátedras
+          <i class="fas fa-book-open mr-1"></i> Administrar cátedras
         </router-link>
 
         <router-link
@@ -193,7 +193,7 @@
         to="/verificarIdentidades"
         exact
       >
-        <i class="fas fa-user-check"></i> Identidades
+        <i class="fas fa-user-check icono"></i> Identidades
       </router-link>
       <router-link
         class="btn btn-light btn-block btn-mobile"
@@ -211,7 +211,7 @@
         to="/ayuda"
         exact
       >
-        <i class="fas fa-question"></i> Ayuda
+        <i class="fas fa-question icono"></i> Ayuda
       </router-link>
       <router-link
         class="btn btn-light btn-block btn-mobile"
@@ -242,25 +242,25 @@ export default {
 
 <style scoped>
 .btn-desktop {
-  display: block;
-}
-
-.btn-mobile {
   display: none;
 }
 
-@media (max-width: 992px) {
+.btn-mobile {
+  display: block;
+}
+
+@media (min-width: 992px) {
   .btn-desktop {
-    display: none;
+    display: block;
   }
 
   .btn-mobile {
-    display: block;
+    display: none;
   }
 }
 
 @media (min-width: 992px) and (max-width: 1180px) {
-  .fas {
+  .icono {
     display: none;
   }
 }

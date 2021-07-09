@@ -14,7 +14,7 @@
         <li>Escoge la vacante que deseas ocupar</li>
         <li>Ingresa tus datos personales y curriculum vitae</li>
         <li>¡Listo! Ya estas participando</li>
-        <li>Al finalizar la orden de mérito se le notificará su situación vía Email</li>
+        <li>Al finalizar la orden de mérito se le notificará vía Email</li>
       </ol>
     </p>
     <div v-if="!authenticated">

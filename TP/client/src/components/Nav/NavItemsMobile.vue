@@ -74,23 +74,23 @@ export default {
 
 <style>
 .mobile-nav {
-  display: none;
+  display: flex;
+  height: 65px;
+  position: fixed;
+  bottom: 0;
+  align-items: center;
+  list-style: none;
+  box-shadow: 0 -4px 20px 0 rgba(0, 0, 0, 0.08);
+  justify-content: space-around;
+  background-color: white;
+  width: 100%;
+  margin: -0.1rem -1rem;
+  padding: 0;
 }
 
-@media (max-width: 992px) {
+@media (min-width: 992px) {
   .mobile-nav {
-    display: flex;
-    height: 65px;
-    position: fixed;
-    bottom: 0;
-    align-items: center;
-    list-style: none;
-    box-shadow: 0 -4px 20px 0 rgba(0, 0, 0, 0.08);
-    justify-content: space-around;
-    background-color: white;
-    width: 100%;
-    margin: -0.1rem -1rem;
-    padding: 0;
+    display: none;
   }
 }
 </style>

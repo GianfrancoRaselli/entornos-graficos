@@ -52,28 +52,30 @@
           </div>
           <div
             class="applications"
-            v-if="isUsuario && tablePostulaciones.length"
+            v-if="isUsuario && user.postulaciones.length"
           >
             <h4>Mis postulaciones</h4>
-            <table class="table">
+            <table class="table table-responsive-lg">
               <thead>
                 <tr>
                   <th scope="col">Nro</th>
                   <th scope="col">Cátedra</th>
-                  <th scope="col">Definición</th>
+                  <th scope="col">Fecha inicio</th>
                   <th scope="col">Fecha fin</th>
+                  <th scope="col">Estado</th>
                   <th scope="col">Acción</th>
                 </tr>
               </thead>
               <tbody>
                 <tr
-                  v-for="(postulacion, index) in tablePostulaciones"
+                  v-for="(postulacion, index) in user.postulaciones"
                   :key="index"
                 >
                   <th scope="row">{{ ++index }}</th>
-                  <td>{{ postulacion.descripcion }}</td>
-                  <td>{{ postulacion.definicion }}</td>
-                  <td>{{ postulacion.fecha_fin }}</td>
+                  <td>{{ postulacion.llamado.catedra.descripcion }}</td>
+                  <td>{{ postulacion.llamado.fecha_inicio }}</td>
+                  <td>{{ postulacion.llamado.fecha_fin }}</td>
+                  <td>{{ postulacion.estado }}</td>
                   <td>
                     <utn-button
                       @click="darmeDeBaja(postulacion.id)"
@@ -129,7 +131,6 @@ export default {
     return {
       usuarioCargado: false,
       postulacionesCargadas: false,
-      vacantes: [],
       user: {
         dni: "",
         nombre_apellido: "",
@@ -139,7 +140,6 @@ export default {
         ruta_cv: "",
         postulaciones: []
       },
-      tablePostulaciones: [],
       errorFormato: false
     };
   },
@@ -157,6 +157,8 @@ export default {
       this.postulacionesCargadas = false;
 
       if (this.$store.getters.isUsuario) {
+        this.user.postulaciones = [];
+
         try {
           let res = await axios.get(
             "/postulaciones/buscarPostulacionesDelUsuario",
@@ -168,47 +170,12 @@ export default {
           );
 
           this.user.postulaciones = res.data;
-          this.buscarVacantes();
         } catch (err) {
           console.log(err.response.data.error);
         }
       }
 
       this.postulacionesCargadas = true;
-    },
-
-    async buscarVacantes() {
-      try {
-        let res = await axios.get("/llamados/buscarLlamados");
-        let vacantes = res.data;
-
-        if (vacantes && vacantes.length > 0) {
-          for (let vacante of vacantes) {
-            vacante.usuarioPostulado = false;
-
-            if (this.user.postulaciones && this.user.postulaciones.length > 0) {
-              for (let postulacion of this.user.postulaciones) {
-                if (vacante.id === postulacion.id_llamado) {
-                  vacante.usuarioPostulado = true;
-                  break;
-                }
-              }
-            }
-          }
-        }
-        this.vacantes = vacantes;
-
-        this.tablePostulaciones = [];
-        for (let i = 0; i < this.vacantes.length; i++) {
-          for (let j = 0; j < this.user.postulaciones.length; j++) {
-            if (this.user.postulaciones[j].id_llamado == this.vacantes[i].id) {
-              this.tablePostulaciones.push(this.vacantes[i]);
-            }
-          }
-        }
-      } catch (err) {
-        console.log(err);
-      }
     },
 
     async buscarUsuario() {
