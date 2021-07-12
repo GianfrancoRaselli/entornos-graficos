@@ -1,21 +1,13 @@
 <template>
   <div>
     <div v-if="!cargado">
-      <img
-        src="../assets/loading.gif"
-        alt="Imagen de carga de página"
-        class="loading mt-5"
-      />
+      <img src="../assets/loading.gif" alt="Imagen de carga de página" class="loading mt-5" />
     </div>
     <div v-else>
-      <div
-        class="d-flex justify-content-center animate__animated animate__pulse animate__fast"
-      >
+      <div class="d-flex justify-content-center animate__animated animate__pulse animate__fast">
         <div class="col-lg-12 w-100 profile-container">
           <div class="col-lg-3 data-box">
-            <div class="profile-img">
-              {{ user.nombre_apellido[0] }}
-            </div>
+            <div class="profile-img">{{ user.nombre_apellido[0] }}</div>
             <div class="personal-info mt-3">
               <p>DNI: {{ user.dni }}</p>
               <p>Nombre y apellido: {{ user.nombre_apellido }}</p>
@@ -27,9 +19,7 @@
               to="perfil/editar"
               btnClass="btn btn-light"
               id="btn-editar-usuario"
-            >
-              Editar
-            </utn-button>
+            >Editar</utn-button>
           </div>
           <div class="d-flex">
             <button
@@ -50,10 +40,7 @@
               <i class="fas fa-eye"></i> Ver CV
             </a>
           </div>
-          <div
-            class="applications mt-5"
-            v-if="isUsuario && user.postulaciones.length"
-          >
+          <div class="applications mt-5" v-if="isUsuario && user.postulaciones.length">
             <h4 class="mb-2">Mis postulaciones</h4>
             <table class="table table-responsive-lg">
               <thead>
@@ -67,10 +54,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr
-                  v-for="(postulacion, index) in user.postulaciones"
-                  :key="index"
-                >
+                <tr v-for="(postulacion, index) in user.postulaciones" :key="index">
                   <th scope="row">{{ ++index }}</th>
                   <td>{{ postulacion.llamado.catedra.descripcion }}</td>
                   <td>{{ postulacion.llamado.fecha_inicio }}</td>
@@ -80,9 +64,7 @@
                     <utn-button
                       @click="darmeDeBaja(postulacion.id)"
                       btnClass="btn btn-danger"
-                    >
-                      Darme de baja
-                    </utn-button>
+                    >Darme de baja</utn-button>
                   </td>
                 </tr>
               </tbody>
@@ -90,7 +72,7 @@
           </div>
         </div>
       </div>
-      <Popup dataTarget="cargarCV" title="Cargar CV" :showButtons="false">
+      <Popup data-target="cargarCV" title="Cargar CV" :showButtons="false">
         <form @submit.prevent="handleSubmitCV" enctype="multipart/form-data">
           <div class="form-group">
             <label for="labelInputCV">Curriculum Vitae</label>
@@ -102,12 +84,12 @@
               accept="pdf"
               required
             />
-            <small class="form-text text-muted" v-if="!errorFormato"
-              ><p>Ingrese su CV en formado PDF</p></small
-            >
-            <medium class="form-text text-muted" v-if="errorFormato"
-              ><p class="error">Ingrese su CV en formado PDF</p></medium
-            >
+            <small class="form-text text-muted" v-if="!errorFormato">
+              <p>Ingrese su CV en formado PDF</p>
+            </small>
+            <medium class="form-text text-muted" v-if="errorFormato">
+              <p class="error">Ingrese su CV en formado PDF</p>
+            </medium>
           </div>
           <br />
           <div class="form-group">

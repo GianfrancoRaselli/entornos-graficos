@@ -124,12 +124,7 @@
         </div>
       </div>
     </div>
-    <Popup
-      data-target="ingresarClavePopup"
-      title="Ingresar clave"
-      :showButtons="false"
-      id="btnCloseIngresarClavePopup"
-    >
+    <Popup data-target="ingresarClavePopup" title="Ingresar clave" :showButtons="false">
       <div style="width: 100%; margin-bottom: 1%;" v-if="errorMessageClave">
         <div
           class="alert alert-danger alert-dismissible fade show"
@@ -305,7 +300,11 @@ export default {
         if (!errorClave) {
           try {
             await this.updateProfile(this.user);
-            window.$("#btnCloseIngresarClavePopup").click();
+
+            window.$("#ingresarClavePopup").modal("hide");
+            window.$("body").removeClass("modal-open");
+            window.$(".modal-backdrop").remove();
+
             this.$router.push("/perfil");
           } catch (err) {
             this.errorMessageClave = err.response.data.error;

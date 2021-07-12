@@ -4,7 +4,6 @@
       dataTarget="searchUserPopup"
       title="Recuperar Clave"
       :showButtons="false"
-      btnClose="btnCloseSearchUserPopup"
     >
       <div style="width: 100%; margin-bottom: 1%;" v-if="errorMessage">
         <div
@@ -103,7 +102,9 @@ export default {
 
           this.buscandoPersona(false);
 
-          window.$("#btnCloseSearchUserPopup").click();
+          window.$("#searchUserPopup").modal("hide");
+          window.$("body").removeClass("modal-open");
+          window.$(".modal-backdrop").remove();
           
           Swal.fire(
             "Correo electrónico enviado",

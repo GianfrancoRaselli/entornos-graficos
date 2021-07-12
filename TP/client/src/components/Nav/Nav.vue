@@ -34,7 +34,11 @@
               to="#"
             >&nbsp;{{ user.nombre_usuario }}</utn-button>
             <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="navbarDropdown">
-              <router-link class="dropdown-item btn btn-link" to="/perfil" @click.native="cerrarNavMobile">
+              <router-link
+                class="dropdown-item btn btn-link"
+                to="/perfil"
+                @click.native="cerrarNavMobile"
+              >
                 <i class="fas fa-id-card"></i> Perfil
               </router-link>
               <div class="dropdown-divider"></div>
@@ -57,7 +61,7 @@
                 :data-target="item.target"
                 :icon="item.icon"
                 @click="cerrarNavMobile"
-              >{{ item.name }}</utn-button>
+              >&nbsp;{{ item.name }}</utn-button>
             </li>
           </div>
         </ul>
