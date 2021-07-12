@@ -50,21 +50,33 @@
                   <th scope="col">Fecha inicio</th>
                   <th scope="col">Fecha fin</th>
                   <th scope="col">Estado</th>
+                  <th scope="col">Calificación</th>
                   <th scope="col">Acción</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(postulacion, index) in user.postulaciones" :key="index">
+                <tr
+                  v-for="(postulacion, index) in user.postulaciones"
+                  :key="index"
+                  :class="{ elegido: postulacion.estado === 'Elegido', noElegido: postulacion.estado === 'No elegido' }"
+                >
                   <th scope="row">{{ ++index }}</th>
                   <td>{{ postulacion.llamado.catedra.descripcion }}</td>
                   <td>{{ postulacion.llamado.fecha_inicio }}</td>
                   <td>{{ postulacion.llamado.fecha_fin }}</td>
                   <td>{{ postulacion.estado }}</td>
                   <td>
-                    <utn-button
-                      @click="darmeDeBaja(postulacion.id)"
-                      btnClass="btn btn-danger"
-                    >Darme de baja</utn-button>
+                    <div v-if="postulacion.puntaje">{{ postulacion.puntaje }}</div>
+                    <div v-else>-</div>
+                  </td>
+                  <td>
+                    <div v-if="!postulacion.llamado.finalizado && !postulacion.llamado.calificado">
+                      <utn-button
+                        @click="darmeDeBaja(postulacion.llamado.id)"
+                        btnClass="btn btn-danger"
+                      >Darme de baja</utn-button>
+                    </div>
+                    <div v-else>-</div>
                   </td>
                 </tr>
               </tbody>
@@ -337,5 +349,13 @@ export default {
 .loading {
   display: block;
   margin: auto;
+}
+
+.elegido {
+  background-color: rgb(149, 248, 170);
+}
+
+.noElegido {
+  background-color: rgb(253, 193, 193);
 }
 </style>

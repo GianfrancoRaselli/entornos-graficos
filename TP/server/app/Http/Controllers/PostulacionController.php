@@ -24,6 +24,12 @@ class PostulacionController extends Controller
 
       foreach ($postulaciones as $key => $postulacion) {
         $postulacion->llamado->catedra;
+
+        if (strtotime($postulacion->llamado->fecha_fin) < strtotime(date('Y-m-d'))) {
+          $postulacion->llamado->finalizado = true;
+        } else {
+          $postulacion->llamado->finalizado = false;
+        }
       }
 
       return response()->json($postulaciones);
