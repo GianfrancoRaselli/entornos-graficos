@@ -15,6 +15,7 @@
             </h5>
             <button
               type="button"
+              :id="btnClose"
               class="close"
               data-dismiss="modal"
               aria-label="Close"
@@ -47,6 +48,7 @@
 export default {
   props: {
     title: { type: String, required: true },
+    btnClose: { type:String },
     cancelBtn: { type: String, default: "Cancelar" },
     acceptBtn: { type: String, default: "Aceptar" },
     dataTarget: { type: String, required: true },

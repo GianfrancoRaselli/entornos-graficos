@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Popup :dataTarget="dataTarget" title="Iniciar Sesión" :showButtons="false">
+    <Popup :dataTarget="dataTarget" title="Iniciar Sesión" :showButtons="false" id="btnCloseLoginPopup">
       <div style="width: 100%; margin-bottom: 1%;" v-if="errorMessage">
         <div
           class="alert alert-danger alert-dismissible fade show"
@@ -143,7 +143,7 @@ export default {
 
           if (!this.postularse) {
             this.$router.push({ path: "/perfil", query: { key: "signin" } });
-            this.cerrarModal("#loginPopup");
+            this.cerrarModal("#btnCloseLoginPopup");
           } else if (this.postularse) {
             await axios.post(
               "/postulaciones/agregarPostulacionDelUsuario",
@@ -158,7 +158,7 @@ export default {
             );
 
             this.$router.push({ path: "/perfil", query: { key: "postulado" } });
-            this.cerrarModal("#loginPostulacionPopup");
+            this.cerrarModal("#btnCloseLoginPostulacionPopup");
           }
         } else {
           this.errorMessage = "Solucione los campos con error";
@@ -176,15 +176,13 @@ export default {
             timer: 4000
           });
           EventBus.$emit("actualizarVacantes");
-          this.cerrarModal("#loginPostulacionPopup");
+          this.cerrarModal("#btnCloseLoginPostulacionPopup");
         }
       }
     },
 
     cerrarModal(id) {
-      window.$(id).modal("hide");
-      window.$("body").removeClass("modal-open");
-      window.$(".modal-backdrop").remove();
+      window.$(id).click();
     },
 
     abrirSignUp() {

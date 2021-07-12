@@ -5,7 +5,7 @@
         class="btn btn-light btn-block"
         to="/vacantes"
         exact
-        @click.native="cerrarNavbar"
+        @click.native="cerrarNavMobile"
       >
         <i class="fas fa-search fa-2x"></i>
       </router-link>
@@ -15,7 +15,7 @@
         class="btn btn-light btn-block"
         to="/ordenesMerito"
         exact
-        @click.native="cerrarNavbar"
+        @click.native="cerrarNavMobile"
       >
         <i class="fas fa-clipboard-list fa-2x"></i>
       </router-link>
@@ -25,7 +25,7 @@
         class="btn btn-light btn-block"
         to="/administrarVacantes"
         exact
-        @click.native="cerrarNavbar"
+        @click.native="cerrarNavMobile"
       >
         <i class="fas fa-toolbox fa-2x"></i>
       </router-link>
@@ -35,7 +35,7 @@
         class="btn btn-light btn-block"
         to="/administrarCatedras"
         exact
-        @click.native="cerrarNavbar"
+        @click.native="cerrarNavMobile"
       >
         <i class="fas fa-book-open fa-2x"></i>
       </router-link>
@@ -45,7 +45,7 @@
         class="btn btn-light btn-block"
         to="/verificarIdentidades"
         exact
-        @click.native="cerrarNavbar"
+        @click.native="cerrarNavMobile"
       >
         <i class="fas fa-user-check fa-2x"></i>
       </router-link>
@@ -65,7 +65,7 @@ export default {
     })
   },
   methods: {
-    cerrarNavbar() {
+    cerrarNavMobile() {
       window.$(".navbar-collapse").removeClass("show");
     }
   }

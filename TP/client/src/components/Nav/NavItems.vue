@@ -1,35 +1,18 @@
 <template>
   <ul class="navbar-nav">
     <li class="nav-item">
-      <router-link class="btn btn-light btn-block btn-desktop" to="/" exact>
+      <router-link class="btn btn-light btn-block" @click.native="cerrarNavMobile" to="/" exact>
         <i class="fas fa-home mr-1 icono"></i> Inicio
-      </router-link>
-      <router-link
-        class="btn btn-light btn-block btn-mobile"
-        data-toggle="collapse"
-        data-target="#navbarNav"
-        to="/"
-        exact
-      >
-        <i class="fas fa-home mr-1"></i> Inicio
       </router-link>
     </li>
     <li class="nav-item">
       <router-link
-        class="btn btn-light btn-block btn-desktop"
+        class="btn btn-light btn-block"
+        @click.native="cerrarNavMobile"
         to="/contacto"
         exact
       >
         <i class="fas fa-map-marker-alt mr-1 icono"></i> Contacto
-      </router-link>
-      <router-link
-        class="btn btn-light btn-block btn-mobile"
-        data-toggle="collapse"
-        data-target="#navbarNav"
-        to="/contacto"
-        exact
-      >
-        <i class="fas fa-map-marker-alt mr-1"></i> Contacto
       </router-link>
     </li>
     <li class="nav-item dropdown">
@@ -45,94 +28,45 @@
       </a>
       <div class="dropdown-menu" aria-labelledby="navbarDropdown">
         <router-link
-          class="dropdown-item btn-desktop"
+          class="dropdown-item"
           v-if="!authenticated || isUsuario"
+          @click.native="cerrarNavMobile"
           to="/requisitos"
           exact
         >
           <i class="fas fa-list-ul mr-1"></i> Requisitos
         </router-link>
         <router-link
-          class="dropdown-item btn-mobile"
-          data-toggle="collapse"
-          data-target="#navbarNav"
+          class="dropdown-item"
           v-if="!authenticated || isUsuario"
-          to="/requisitos"
-          exact
-        >
-          <i class="fas fa-list-ul mr-1"></i> Requisitos
-        </router-link>
-
-        <router-link
-          class="dropdown-item btn-desktop"
-          v-if="!authenticated || isUsuario"
+          @click.native="cerrarNavMobile"
           to="/vacantes"
           exact
         >
           <i class="fas fa-search mr-1"></i> Buscar vacantes
         </router-link>
         <router-link
-          class="dropdown-item btn-mobile"
-          data-toggle="collapse"
-          data-target="#navbarNav"
+          class="dropdown-item"
           v-if="!authenticated || isUsuario"
-          to="/vacantes"
-          exact
-        >
-          <i class="fas fa-search mr-1"></i> Buscar vacantes
-        </router-link>
-
-        <router-link
-          class="dropdown-item btn-desktop"
-          v-if="!authenticated || isUsuario"
+          @click.native="cerrarNavMobile"
           to="/ordenesMerito"
           exact
         >
           <i class="fas fa-clipboard-list mr-1"></i> Ordenes de mérito
         </router-link>
         <router-link
-          class="dropdown-item btn-mobile"
-          data-toggle="collapse"
-          data-target="#navbarNav"
-          v-if="!authenticated || isUsuario"
-          to="/ordenesMerito"
-          exact
-        >
-          <i class="fas fa-clipboard-list mr-1"></i> Ordenes de mérito
-        </router-link>
-
-        <router-link
-          class="dropdown-item btn-desktop"
+          class="dropdown-item"
           v-if="isAdministrador || isJefeCatedra"
+          @click.native="cerrarNavMobile"
           to="/administrarVacantes"
           exact
         >
           <i class="fas fa-toolbox mr-1"></i> Administrar vacantes
         </router-link>
         <router-link
-          class="dropdown-item btn-mobile"
-          data-toggle="collapse"
-          data-target="#navbarNav"
-          v-if="isAdministrador || isJefeCatedra"
-          to="/administrarVacantes"
-          exact
-        >
-          <i class="fas fa-toolbox mr-1"></i> Administrar vacantes
-        </router-link>
-
-        <router-link
-          class="dropdown-item btn-desktop"
+          class="dropdown-item"
           v-if="isAdministrador"
-          to="/agregarVacante"
-          exact
-        >
-          <i class="fas fa-plus-circle mr-1"></i> Agregar vacante
-        </router-link>
-        <router-link
-          class="dropdown-item btn-mobile"
-          data-toggle="collapse"
-          data-target="#navbarNav"
-          v-if="isAdministrador"
+          @click.native="cerrarNavMobile"
           to="/agregarVacante"
           exact
         >
@@ -153,33 +87,16 @@
       </a>
       <div class="dropdown-menu" aria-labelledby="navbarDropdown">
         <router-link
-          class="dropdown-item btn-desktop"
+          class="dropdown-item"
+          @click.native="cerrarNavMobile"
           to="/administrarCatedras"
           exact
         >
           <i class="fas fa-book-open mr-1"></i> Administrar cátedras
         </router-link>
         <router-link
-          class="dropdown-item btn-mobile"
-          data-toggle="collapse"
-          data-target="#navbarNav"
-          to="/administrarCatedras"
-          exact
-        >
-          <i class="fas fa-book-open mr-1"></i> Administrar cátedras
-        </router-link>
-
-        <router-link
-          class="dropdown-item btn-desktop"
-          to="/agregarCatedra"
-          exact
-        >
-          <i class="fas fa-plus-circle mr-1"></i> Agregar cátedra
-        </router-link>
-        <router-link
-          class="dropdown-item btn-mobile"
-          data-toggle="collapse"
-          data-target="#navbarNav"
+          class="dropdown-item"
+          @click.native="cerrarNavMobile"
           to="/agregarCatedra"
           exact
         >
@@ -189,38 +106,22 @@
     </li>
     <li class="nav-item" v-if="isAdministrador">
       <router-link
-        class="btn btn-light btn-block btn-desktop"
+        class="btn btn-light btn-block"
+        @click.native="cerrarNavMobile"
         to="/verificarIdentidades"
         exact
       >
         <i class="fas fa-user-check icono"></i> Identidades
       </router-link>
-      <router-link
-        class="btn btn-light btn-block btn-mobile"
-        data-toggle="collapse"
-        data-target="#navbarNav"
-        to="/verificarIdentidades"
-        exact
-      >
-        <i class="fas fa-user-check"></i> Identidades
-      </router-link>
     </li>
     <li class="nav-item">
       <router-link
-        class="btn btn-light btn-block btn-desktop"
+        class="btn btn-light btn-block"
+        @click.native="cerrarNavMobile"
         to="/ayuda"
         exact
       >
         <i class="fas fa-question icono"></i> Ayuda
-      </router-link>
-      <router-link
-        class="btn btn-light btn-block btn-mobile"
-        data-toggle="collapse"
-        data-target="#navbarNav"
-        to="/ayuda"
-        exact
-      >
-        <i class="fas fa-question"></i> Ayuda
       </router-link>
     </li>
   </ul>
@@ -236,29 +137,16 @@ export default {
       isJefeCatedra: "isJefeCatedra",
       isUsuario: "isUsuario"
     })
+  },
+  methods: {
+    cerrarNavMobile() {
+      window.$(".navbar-collapse").removeClass("show");
+    }
   }
 };
 </script>
 
 <style scoped>
-.btn-desktop {
-  display: none;
-}
-
-.btn-mobile {
-  display: block;
-}
-
-@media (min-width: 992px) {
-  .btn-desktop {
-    display: block;
-  }
-
-  .btn-mobile {
-    display: none;
-  }
-}
-
 @media (min-width: 992px) and (max-width: 1180px) {
   .icono {
     display: none;

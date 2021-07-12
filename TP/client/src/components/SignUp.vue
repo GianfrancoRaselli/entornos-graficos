@@ -1,6 +1,11 @@
 <template>
   <div>
-    <Popup :dataTarget="identificator" title="Registrarse" :showButtons="false">
+    <Popup
+      :dataTarget="identificator"
+      title="Registrarse"
+      :showButtons="false"
+      id="btnCloseSignUpPopup"
+    >
       <div style="width: 100%; margin-bottom: 1%;" v-if="errorMessage">
         <div
           class="alert alert-danger alert-dismissible fade show"
@@ -23,7 +28,9 @@
         <div class="card-body">
           <form @submit.prevent="handleSubmit">
             <div class="form-group">
-              <label><strong>Número DNI</strong></label>
+              <label>
+                <strong>Número DNI</strong>
+              </label>
               <input
                 type="text"
                 v-model="user.dni"
@@ -34,13 +41,15 @@
                 required
                 autofocus
               />
-              <medium class="form-text text-muted" v-if="errorDNI"
-                ><p class="error">{{ errorDNI }}</p></medium
-              >
+              <medium class="form-text text-muted" v-if="errorDNI">
+                <p class="error">{{ errorDNI }}</p>
+              </medium>
             </div>
             <br />
             <div class="form-group">
-              <label><strong>Imagen del DNI</strong></label>
+              <label>
+                <strong>Imagen del DNI</strong>
+              </label>
               <input
                 type="file"
                 @change="obtenerArchivoDNI"
@@ -50,16 +59,18 @@
                 accept="pdf"
                 required
               />
-              <small class="form-text text-muted" v-if="!errorFormatoDNI"
-                ><p>Ingrese su DNI en formado PDF</p></small
-              >
-              <medium class="form-text text-muted" v-if="errorFormatoDNI"
-                ><p class="error">Ingrese su DNI en formado PDF</p></medium
-              >
+              <small class="form-text text-muted" v-if="!errorFormatoDNI">
+                <p>Ingrese su DNI en formado PDF</p>
+              </small>
+              <medium class="form-text text-muted" v-if="errorFormatoDNI">
+                <p class="error">Ingrese su DNI en formado PDF</p>
+              </medium>
             </div>
             <br />
             <div class="form-group">
-              <label><strong>Nombre Usuario</strong></label>
+              <label>
+                <strong>Nombre Usuario</strong>
+              </label>
               <input
                 type="text"
                 v-model="user.nombre_usuario"
@@ -70,13 +81,15 @@
                 maxlength="30"
                 required
               />
-              <medium class="form-text text-muted" v-if="errorNombreUsuario"
-                ><p class="error">{{ errorNombreUsuario }}</p></medium
-              >
+              <medium class="form-text text-muted" v-if="errorNombreUsuario">
+                <p class="error">{{ errorNombreUsuario }}</p>
+              </medium>
             </div>
             <br />
             <div class="form-group">
-              <label><strong>Clave</strong></label>
+              <label>
+                <strong>Clave</strong>
+              </label>
               <input
                 type="password"
                 v-model="user.clave"
@@ -87,13 +100,15 @@
                 maxlength="40"
                 required
               />
-              <medium class="form-text text-muted" v-if="errorClave"
-                ><p class="error">{{ errorClave }}</p></medium
-              >
+              <medium class="form-text text-muted" v-if="errorClave">
+                <p class="error">{{ errorClave }}</p>
+              </medium>
             </div>
             <br />
             <div class="form-group">
-              <label><strong>Nombre y Apellido</strong></label>
+              <label>
+                <strong>Nombre y Apellido</strong>
+              </label>
               <input
                 type="text"
                 v-model="user.nombre_apellido"
@@ -103,13 +118,15 @@
                 maxlength="60"
                 required
               />
-              <medium class="form-text text-muted" v-if="errorNombreApellido"
-                ><p class="error">{{ errorNombreApellido }}</p></medium
-              >
+              <medium class="form-text text-muted" v-if="errorNombreApellido">
+                <p class="error">{{ errorNombreApellido }}</p>
+              </medium>
             </div>
             <br />
             <div class="form-group">
-              <label><strong>Email</strong></label>
+              <label>
+                <strong>Email</strong>
+              </label>
               <input
                 type="email"
                 v-model="user.email"
@@ -119,13 +136,15 @@
                 maxlength="60"
                 required
               />
-              <medium class="form-text text-muted" v-if="errorEmail"
-                ><p class="error">{{ errorEmail }}</p></medium
-              >
+              <medium class="form-text text-muted" v-if="errorEmail">
+                <p class="error">{{ errorEmail }}</p>
+              </medium>
             </div>
             <br />
             <div class="form-group">
-              <label><strong>Teléfono</strong></label>
+              <label>
+                <strong>Teléfono</strong>
+              </label>
               <input
                 type="text"
                 v-model="user.telefono"
@@ -135,13 +154,15 @@
                 maxlength="60"
                 required
               />
-              <medium class="form-text text-muted" v-if="errorTelefono"
-                ><p class="error">{{ errorTelefono }}</p></medium
-              >
+              <medium class="form-text text-muted" v-if="errorTelefono">
+                <p class="error">{{ errorTelefono }}</p>
+              </medium>
             </div>
             <br />
             <div class="form-group">
-              <label><strong>Curriculum Vitae</strong></label>
+              <label>
+                <strong>Curriculum Vitae</strong>
+              </label>
               <input
                 type="file"
                 @change="obtenerArchivoCV"
@@ -151,18 +172,16 @@
                 accept="pdf"
                 required
               />
-              <small class="form-text text-muted" v-if="!errorFormatoCV"
-                ><p>Ingrese su CV en formado PDF</p></small
-              >
-              <medium class="form-text text-muted" v-if="errorFormatoCV"
-                ><p class="error">Ingrese su CV en formado PDF</p></medium
-              >
+              <small class="form-text text-muted" v-if="!errorFormatoCV">
+                <p>Ingrese su CV en formado PDF</p>
+              </small>
+              <medium class="form-text text-muted" v-if="errorFormatoCV">
+                <p class="error">Ingrese su CV en formado PDF</p>
+              </medium>
             </div>
             <br />
             <div class="form-group">
-              <button class="btn btn-success btn-block">
-                Crear Cuenta
-              </button>
+              <button class="btn btn-success btn-block">Crear Cuenta</button>
             </div>
           </form>
         </div>
@@ -296,9 +315,7 @@ export default {
 
           await this.signUp(formData);
 
-          window.$("#signUpPopup").modal("hide");
-          window.$("body").removeClass("modal-open");
-          window.$(".modal-backdrop").remove();
+          window.$("#btnCloseSignUpPopup").click();
 
           Swal.fire(
             "Persona registrada",

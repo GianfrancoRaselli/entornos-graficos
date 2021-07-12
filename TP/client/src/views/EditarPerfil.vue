@@ -3,14 +3,12 @@
     <nav aria-label="breadcrumb" class="m-auto" style="width: fit-content">
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
-          <router-link to="/perfil"
-            ><i class="fas fa-id-card"></i>
+          <router-link to="/perfil">
+            <i class="fas fa-id-card"></i>
             Perfil
           </router-link>
         </li>
-        <li class="breadcrumb-item active" aria-current="page">
-          Editar Perfil
-        </li>
+        <li class="breadcrumb-item active" aria-current="page">Editar Perfil</li>
       </ol>
     </nav>
     <div style="width: 100%; margin-bottom: 1%;" v-if="errorMessage">
@@ -33,9 +31,7 @@
     </div>
     <div class="row m-2">
       <div class="col-md-4 mx-auto">
-        <div
-          class="card text-center animate__animated animate__flipInY animate__fast"
-        >
+        <div class="card text-center animate__animated animate__flipInY animate__fast">
           <div class="card-header">
             <p style="font-size: 1.75rem;">
               <strong>Editar Perfil</strong>
@@ -56,9 +52,9 @@
                   required
                   autofocus
                 />
-                <medium class="form-text text-muted" v-if="errorNombreUsuario"
-                  ><p class="error">{{ errorNombreUsuario }}</p></medium
-                >
+                <medium class="form-text text-muted" v-if="errorNombreUsuario">
+                  <p class="error">{{ errorNombreUsuario }}</p>
+                </medium>
               </div>
               <br />
               <div class="form-group">
@@ -82,9 +78,9 @@
                     minlength="8"
                     maxlength="40"
                   />
-                  <medium class="form-text text-muted" v-if="errorNuevaClave"
-                    ><p class="error">{{ errorNuevaClave }}</p></medium
-                  >
+                  <medium class="form-text text-muted" v-if="errorNuevaClave">
+                    <p class="error">{{ errorNuevaClave }}</p>
+                  </medium>
                 </div>
                 <br />
               </div>
@@ -99,9 +95,9 @@
                   maxlength="60"
                   required
                 />
-                <medium class="form-text text-muted" v-if="errorEmail"
-                  ><p class="error">{{ errorEmail }}</p></medium
-                >
+                <medium class="form-text text-muted" v-if="errorEmail">
+                  <p class="error">{{ errorEmail }}</p>
+                </medium>
               </div>
               <br />
               <div class="form-group">
@@ -115,15 +111,13 @@
                   maxlength="60"
                   required
                 />
-                <medium class="form-text text-muted" v-if="errorTelefono"
-                  ><p class="error">{{ errorTelefono }}</p></medium
-                >
+                <medium class="form-text text-muted" v-if="errorTelefono">
+                  <p class="error">{{ errorTelefono }}</p>
+                </medium>
               </div>
               <br />
               <div class="form-group">
-                <button class="btn btn-success btn-block">
-                  Guardar
-                </button>
+                <button class="btn btn-success btn-block">Guardar</button>
               </div>
             </form>
           </div>
@@ -131,9 +125,10 @@
       </div>
     </div>
     <Popup
-      dataTarget="ingresarClavePopup"
+      data-target="ingresarClavePopup"
       title="Ingresar clave"
       :showButtons="false"
+      id="btnCloseIngresarClavePopup"
     >
       <div style="width: 100%; margin-bottom: 1%;" v-if="errorMessageClave">
         <div
@@ -166,15 +161,13 @@
             maxlength="40"
             required
           />
-          <medium class="form-text text-muted" v-if="errorClave"
-            ><p class="error">{{ errorClave }}</p></medium
-          >
+          <medium class="form-text text-muted" v-if="errorClave">
+            <p class="error">{{ errorClave }}</p>
+          </medium>
         </div>
         <br />
         <div class="form-group">
-          <button class="btn btn-success btn-block">
-            Confirmar
-          </button>
+          <button class="btn btn-success btn-block">Confirmar</button>
         </div>
       </form>
     </Popup>
@@ -312,8 +305,8 @@ export default {
         if (!errorClave) {
           try {
             await this.updateProfile(this.user);
+            window.$("#btnCloseIngresarClavePopup").click();
             this.$router.push("/perfil");
-            window.$("#ingresarClavePopup").modal("hide");
           } catch (err) {
             this.errorMessageClave = err.response.data.error;
           }

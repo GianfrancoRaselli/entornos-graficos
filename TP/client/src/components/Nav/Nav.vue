@@ -1,76 +1,75 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light px-3 w-100" id="navbar">
-    <router-link to="/">
-      <img
-        src="../../assets/logo-utn.png"
-        class="headerLogo"
-        alt="Logo UTN"
-        id="logo-utn"
-        width="175px"
-      />
-    </router-link>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-toggle="collapse"
-      data-target="#navbarNav"
-      aria-controls="navbarNav"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <NavItems />
-      <ul v-if="authenticated" class="navbar-nav" style="margin-left: auto;">
-        <li class="nav-item dropdown">
-          <utn-button
-            btnClass="dropdown-toggle btn btn-outline-primary btn-block"
-            icon="fas fa-user"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-            to="#"
-          >&nbsp;{{ user.nombre_usuario }}</utn-button>
-          <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="navbarDropdown">
-            <router-link class="dropdown-item btn btn-link btn-desktop" to="/perfil">
-              <i class="fas fa-id-card"></i> Perfil
-            </router-link>
-            <router-link
-              class="dropdown-item btn btn-link btn-mobile"
-              data-toggle="collapse"
-              data-target="#navbarNav"
-              to="/perfil"
-            >
-              <i class="fas fa-id-card"></i> Perfil
-            </router-link>
-
-            <div class="dropdown-divider"></div>
-
-            <button class="dropdown-item btn btn-link" @click="cerrarSesion" id="btn-cerrar-sesion">
-              <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-            </button>
-          </div>
-        </li>
-      </ul>
-      <ul v-else class="navbar-nav" style="margin-left: auto;">
-        <div v-for="(item, index) in userNavItems" :key="index">
-          <li>
+  <div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light px-3 w-100" id="navbar">
+      <router-link @click.native="cerrarNavMobile" to="/">
+        <img
+          src="../../assets/logo-utn.png"
+          class="headerLogo"
+          alt="Logo UTN"
+          id="logo-utn"
+          width="175px"
+        />
+      </router-link>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <NavItems />
+        <ul v-if="authenticated" class="navbar-nav" style="margin-left: auto;">
+          <li class="nav-item dropdown">
             <utn-button
-              data-toggle="modal"
-              :btnClass="item.btnClass"
-              :data-target="item.target"
-              :icon="item.icon"
-            >{{ item.name }}</utn-button>
+              btnClass="dropdown-toggle btn btn-outline-primary btn-block"
+              icon="fas fa-user"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+              to="#"
+            >&nbsp;{{ user.nombre_usuario }}</utn-button>
+            <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="navbarDropdown">
+              <router-link class="dropdown-item btn btn-link" to="/perfil" @click.native="cerrarNavMobile">
+                <i class="fas fa-id-card"></i> Perfil
+              </router-link>
+              <div class="dropdown-divider"></div>
+              <button
+                class="dropdown-item btn btn-link"
+                @click="cerrarSesion"
+                id="btn-cerrar-sesion"
+              >
+                <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+              </button>
+            </div>
           </li>
-        </div>
-        <LogIn />
-        <SignUp />
-        <SearchUser />
-      </ul>
+        </ul>
+        <ul v-else class="navbar-nav" style="margin-left: auto;">
+          <div v-for="(item, index) in userNavItems" :key="index">
+            <li>
+              <utn-button
+                data-toggle="modal"
+                :btnClass="item.btnClass"
+                :data-target="item.target"
+                :icon="item.icon"
+                @click="cerrarNavMobile"
+              >{{ item.name }}</utn-button>
+            </li>
+          </div>
+        </ul>
+      </div>
+      <NavItemsMobile />
+    </nav>
+    <div v-if="!authenticated">
+      <LogIn />
+      <SignUp />
+      <SearchUser />
     </div>
-    <NavItemsMobile />
-  </nav>
+  </div>
 </template>
 
 <script>
@@ -112,6 +111,10 @@ export default {
     };
   },
   methods: {
+    cerrarNavMobile() {
+      window.$(".navbar-collapse").removeClass("show");
+    },
+
     cerrarSesion() {
       this.$store.dispatch("logOut");
     }
@@ -135,22 +138,5 @@ export default {
 
 #btn-cerrar-sesion {
   color: red;
-}
-.btn-desktop {
-  display: none;
-}
-
-.btn-mobile {
-  display: block;
-}
-
-@media (min-width: 992px) {
-  .btn-desktop {
-    display: block;
-  }
-
-  .btn-mobile {
-    display: none;
-  }
 }
 </style>
