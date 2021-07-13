@@ -189,7 +189,7 @@ class LlamadoController extends Controller
     ) {
       $llamado = Llamado::find($request->llamado["id"]);
       if (!$llamado->calificado) {
-        if ($llamado->fecha_fin < strtotime(date('Y-m-d'))) {
+        if (strtotime($llamado->fecha_fin) < strtotime(date('Y-m-d'))) {
           $postulacionesAEnviarCorreo = [];
 
           try {
