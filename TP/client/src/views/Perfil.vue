@@ -4,20 +4,34 @@
       <img src="../assets/loading.gif" alt="Imagen de carga de página" class="loading mt-5" />
     </div>
     <div v-else>
-      <div class="d-flex justify-content-center animate__animated animate__pulse animate__fast">
-        <div class="col-lg-12 w-100 profile-container">
-          <div class="col-lg-3 data-box">
+      <div
+        class="d-flex justify-content-center animate__animated animate__pulse animate__fast mx-1"
+      >
+        <div class="w-100 profile-container">
+          <div class="col-sm-10 col-md-8 col-lg-7 col-xl-5 data-box">
             <div class="profile-img">{{ user.nombre_apellido[0] }}</div>
-            <div class="personal-info mt-3">
-              <p>DNI: {{ user.dni }}</p>
-              <p>Nombre y apellido: {{ user.nombre_apellido }}</p>
-              <p>Email: {{ user.email }}</p>
-              <p>Teléfono: {{ user.telefono }}</p>
+            <div class="personal-info mt-3 mx-2">
+              <p>
+                <strong>DNI</strong>
+                : {{ user.dni }}
+              </p>
+              <p>
+                <strong>Nombre y apellido</strong>
+                : {{ user.nombre_apellido }}
+              </p>
+              <p>
+                <strong>Email</strong>
+                : {{ user.email }}
+              </p>
+              <p>
+                <strong>Teléfono</strong>
+                : {{ user.telefono }}
+              </p>
             </div>
             <utn-button
               icon="fas fa-edit"
               to="perfil/editar"
-              btnClass="btn btn-light"
+              btnClass="btn btn-light mx-4"
               id="btn-editar-usuario"
             >Editar</utn-button>
           </div>
