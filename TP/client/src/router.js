@@ -145,7 +145,7 @@ router.beforeEach(async (to, from, next) => {
     next('');
   } else if (auth && !store.getters.authenticated) {
     next('');
-  } else if (notAuthOrUsuario && (store.getters.isAdministrador || store.getters.isJefeCatedra)) {
+  } else if (notAuthOrUsuario && !(!store.getters.authenticated || store.getters.isUsuario)) {
     next('');
   } else if (isAdministradorOrJefeCatedra && !(store.getters.isAdministrador || store.getters.isJefeCatedra)) {
     next(from);
