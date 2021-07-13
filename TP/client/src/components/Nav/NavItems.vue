@@ -34,7 +34,7 @@
           to="/requisitos"
           exact
         >
-          <i class="fas fa-list-ul mr-1"></i> Requisitos
+          <i class="fas fa-list-ul mr-1"></i> Requisitos para postularse
         </router-link>
         <router-link
           class="dropdown-item"
@@ -43,7 +43,7 @@
           to="/vacantes"
           exact
         >
-          <i class="fas fa-search mr-1"></i> Buscar vacantes
+          <i class="fas fa-search mr-1"></i> Buscar vacantes abiertas
         </router-link>
         <router-link
           class="dropdown-item"
@@ -52,7 +52,7 @@
           to="/ordenesMerito"
           exact
         >
-          <i class="fas fa-clipboard-list mr-1"></i> Ordenes de mérito
+          <i class="fas fa-clipboard-list mr-1"></i> Vacantes calificadas
         </router-link>
         <router-link
           class="dropdown-item"
