@@ -9,10 +9,10 @@
     <p>
       <i class="far fa-clipboard mr-2 mt-2 hide-responsive"></i>
       <ol>
+        <li>Lea los requisitos en el menú "Vacantes" -> "Requisitos para postularse"</li>
         <li v-if="!authenticated">Registrese o inicie sesión</li>
-        <li>Selecciona en el menú la opción "Vacantes"</li>
-        <li>Escoge la vacante que deseas ocupar</li>
-        <li>Ingresa tus datos personales y curriculum vitae</li>
+        <li>Selecciona en el menú la opción "Vacantes", luego "Buscar vacantes abiertas"</li>
+        <li>Escoge la vacante en la que desea postularse</li>
         <li>¡Listo! Ya estas participando</li>
         <li>Al finalizar la orden de mérito se le notificará vía Email</li>
       </ol>
@@ -68,10 +68,11 @@ export default {
   font-size: 6rem;
 }
 
-@media(max-width:560px){
+@media(max-width: 560px){
   .hide-responsive{
     display:none;
   }
+
   .cta {
     padding: 2rem 1rem;
   }
