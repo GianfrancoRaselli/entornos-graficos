@@ -6,7 +6,6 @@ import './axios'
 
 // Components
 Vue.component('utn-button', () => import('./components/Button.vue'));
-Vue.component('SignUp', () => import('./components/SignUp.vue'));
 Vue.component('Popup', () => import('./components/Popup.vue'));
 
 Vue.config.productionTip = false
