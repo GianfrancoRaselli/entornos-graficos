@@ -12,20 +12,16 @@
             <div class="profile-img">{{ user.nombre_apellido[0] }}</div>
             <div class="personal-info mt-3 mx-2">
               <p>
-                <strong>DNI</strong>
-                : {{ user.dni }}
+                <strong>DNI</strong>: {{ user.dni }}
               </p>
               <p>
-                <strong>Nombre y apellido</strong>
-                : {{ user.nombre_apellido }}
+                <strong>Nombre y apellido</strong>: {{ user.nombre_apellido }}
               </p>
               <p>
-                <strong>Email</strong>
-                : {{ user.email }}
+                <strong>Email</strong>: {{ user.email }}
               </p>
               <p>
-                <strong>Teléfono</strong>
-                : {{ user.telefono }}
+                <strong>Teléfono</strong>: {{ user.telefono }}
               </p>
             </div>
             <utn-button
