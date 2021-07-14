@@ -1,7 +1,5 @@
 <template>
-  <table
-    class="inscriptos-desktop table table-responsive table-striped table-hover table-bordered"
-  >
+  <table class="inscriptos-desktop table table-responsive table-hover table-bordered">
     <thead>
       <tr>
         <th>DNI</th>
@@ -15,7 +13,11 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(postulacion, index) in llamado.postulaciones" :key="index">
+      <tr
+        v-for="(postulacion, index) in llamado.postulaciones"
+        :key="index"
+        :class="{ elegido: postulacion.estado === 'Elegido', noElegido: postulacion.estado === 'No elegido' }"
+      >
         <td>
           <div class="columna-md">{{ postulacion.dni }}</div>
         </td>
@@ -30,9 +32,7 @@
         </td>
         <td>
           <div class="columna-md">
-            <div v-if="!isEditing">
-              {{ postulacion.estado }}
-            </div>
+            <div v-if="!isEditing">{{ postulacion.estado }}</div>
             <div v-else-if="editMode">
               <select
                 class="form-control"
@@ -49,9 +49,7 @@
         <td>
           <div class="columna-sm">
             <div v-if="!isEditing">
-              <div v-if="postulacion.puntaje">
-                {{ postulacion.puntaje }}
-              </div>
+              <div v-if="postulacion.puntaje">{{ postulacion.puntaje }}</div>
               <div v-else>-</div>
             </div>
             <div v-else-if="editMode">
@@ -70,9 +68,7 @@
         <td>
           <div class="columna-lg">
             <div v-if="!isEditing">
-              <div v-if="postulacion.comentarios">
-                {{ postulacion.comentarios }}
-              </div>
+              <div v-if="postulacion.comentarios">{{ postulacion.comentarios }}</div>
               <div v-else>-</div>
             </div>
             <div v-else-if="editMode">
@@ -119,4 +115,11 @@ export default {
 </script>
 
 <style>
+.elegido {
+  background-color: rgb(149, 248, 170);
+}
+
+.noElegido {
+  background-color: rgb(253, 193, 193);
+}
 </style>

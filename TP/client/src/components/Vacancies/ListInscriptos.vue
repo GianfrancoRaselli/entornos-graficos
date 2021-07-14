@@ -306,9 +306,11 @@ table {
   .inscriptos-mobile {
     display: block;
   }
+  
   .inscriptos-desktop {
     display: none;
   }
+
   .inscripto-data {
     border-bottom: 1px solid rgb(158, 158, 158);
     padding: 1rem;
