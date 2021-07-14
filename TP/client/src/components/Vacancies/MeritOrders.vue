@@ -82,7 +82,7 @@
                 <li class="page-item" :class="{ disabled: pag === 1 }">
                   <a class="page-link" href="#" tabindex="-1" @click.prevent="disminuirPag">Anterior</a>
                 </li>
-                <li class="page-item" v-for="n in numeros" :key="n">
+                <li class="page-item" v-for="n in numeros" :key="n" :class="{ active: pag === n }">
                   <a class="page-link" href="#" @click.prevent="pag = n">
                     {{
                     n
@@ -120,7 +120,7 @@ export default {
       vacantesAMostrar: [],
       title: "",
       id_catedra: 0,
-      limit: 12,
+      limit: 10,
       pag: 1
     };
   },
@@ -131,9 +131,11 @@ export default {
         this.pag * this.limit
       );
     },
+
     numeros() {
       return Math.ceil(this.vacantesAMostrar.length / this.limit);
     },
+
     catedras() {
       let catedras = [];
       for (let vacante of this.vacantes) {
@@ -247,7 +249,7 @@ export default {
 }
 
 .select-catedras {
-  width: 50%;
+  width: 100%;
 }
 
 .loading {
@@ -263,9 +265,9 @@ export default {
   align-items: center;
 }
 
-@media (max-width: 991px) {
+@media (min-width: 992px) {
   .select-catedras {
-    width: 100%;
+    width: 50%;
   }
 }
 </style>

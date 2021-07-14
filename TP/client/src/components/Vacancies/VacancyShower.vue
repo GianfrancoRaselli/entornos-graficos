@@ -11,90 +11,98 @@
           <p class="mt-5 mb-5" v-if="!ultimasVacantes">¡No hay vacantes abiertas!</p>
           <p class="mt-5 mb-5" v-else>¡No hay vacantes abiertas con pocos cupos!</p>
         </div>
-        <div v-else>
-          <div class="vacancies">
-            <div class="vacancy col-lg-6" v-for="(vacante, index) in limitVacantes" :key="index">
-              <div class="descripcion">
-                <p>{{ vacante.descripcion }}</p>
+        <div class="vacancies" v-else>
+          <div class="search-options w-100 mb-2">
+            <div class="form-group select-catedras m-auto">
+              <select class="form-control" @change="cambioCatedra" v-model="id_catedra">
+                <option selected="true" :value="0">Todas las cátedras</option>
+                <option
+                  v-for="(catedra, index) in catedras"
+                  :key="index"
+                  :value="catedra.id_catedra"
+                >{{ catedra.descripcion }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="vacancy col-lg-6" v-for="(vacante, index) in limitVacantes" :key="index">
+            <div class="descripcion">
+              <p>{{ vacante.descripcion }}</p>
+            </div>
+            <div class="vacancy-content">
+              <div class="definicion">
+                <p>{{ vacante.definicion }}</p>
               </div>
-              <div class="vacancy-content">
-                <div class="definicion">
-                  <p>{{ vacante.definicion }}</p>
-                </div>
-                <div>
-                  <p>
-                    <i class="fas fa-check-circle"></i>&nbsp;
-                    <strong>Requisitos:</strong>
-                    &nbsp;{{
-                    vacante.requisitos
-                    }}
-                  </p>
-                </div>
-                <div class="fecha-fin">
-                  <p>
-                    <i class="fas fa-calendar"></i>&nbsp;
-                    <strong>Fecha de cierre:</strong>
-                    &nbsp;{{ vacante.fecha_fin }}
-                  </p>
-                </div>
-                <div
-                  class="postulado alert alert-success"
-                  role="alert"
-                  v-if="vacante.usuarioPostulado"
-                >Ya se encuentra postulado</div>
-                <div
-                  class="pocas-vacantes"
-                  role="alert"
-                  v-if="
+              <div>
+                <p>
+                  <i class="fas fa-check-circle"></i>&nbsp;
+                  <strong>Requisitos:</strong>
+                  &nbsp;{{
+                  vacante.requisitos
+                  }}
+                </p>
+              </div>
+              <div class="fecha-fin">
+                <p>
+                  <i class="fas fa-calendar"></i>&nbsp;
+                  <strong>Fecha de cierre:</strong>
+                  &nbsp;{{ vacante.fecha_fin }}
+                </p>
+              </div>
+              <div
+                class="postulado alert alert-success"
+                role="alert"
+                v-if="vacante.usuarioPostulado"
+              >Ya se encuentra postulado</div>
+              <div
+                class="pocas-vacantes"
+                role="alert"
+                v-if="
                     !vacante.usuarioPostulado &&
                       vacante.vacantes_disponibles <= 3
                   "
-                >
-                  <p v-if="vacante.vacantes_disponibles > 1">
-                    <i class="fas fa-exclamation-circle"></i>
-                    &nbsp;¡Quedan solo
-                    {{ vacante.vacantes_disponibles }} vacantes!
-                  </p>
-                  <p v-else-if="vacante.vacantes_disponibles === 1">
-                    <i class="fas fa-exclamation-circle"></i>&nbsp;¡Última
-                    vacante disponible!
-                  </p>
-                  <p
-                    v-else-if="vacante.vacantes_disponibles === 0"
-                  >No quedan más vacantes disponibles</p>
-                </div>
-                <div
-                  v-if="!authenticated && vacante.vacantes_disponibles > 0"
-                  class="vacancy-options"
-                >
-                  <utn-button @click="postularme(vacante.id)">Postularme</utn-button>
-                  <LogIn
-                    data-target="loginPostulacionPopup"
-                    :postularse="true"
-                    :id_llamado="id_llamado"
-                  />
-                </div>
-                <div class="vacancy-options" v-else-if="isUsuario">
-                  <utn-button
-                    @click="postularme(vacante.id)"
-                    v-if="
+              >
+                <p v-if="vacante.vacantes_disponibles > 1">
+                  <i class="fas fa-exclamation-circle"></i>
+                  &nbsp;¡Quedan solo
+                  {{ vacante.vacantes_disponibles }} vacantes!
+                </p>
+                <p v-else-if="vacante.vacantes_disponibles === 1">
+                  <i class="fas fa-exclamation-circle"></i>&nbsp;¡Última
+                  vacante disponible!
+                </p>
+                <p v-else-if="vacante.vacantes_disponibles === 0">No quedan más vacantes disponibles</p>
+              </div>
+              <div
+                v-if="!authenticated && vacante.vacantes_disponibles > 0"
+                class="vacancy-options"
+              >
+                <utn-button @click="postularme(vacante.id)">Postularme</utn-button>
+                <LogIn
+                  data-target="loginPostulacionPopup"
+                  :postularse="true"
+                  :id_llamado="id_llamado"
+                />
+              </div>
+              <div class="vacancy-options" v-else-if="isUsuario">
+                <utn-button
+                  @click="postularme(vacante.id)"
+                  v-if="
                       !vacante.usuarioPostulado &&
                         !vacante.usuarioTrabajaEnLaCatedra &&
                         vacante.vacantes_disponibles > 0
                     "
-                  >Postularme</utn-button>
-                  <button
-                    @click="modalDarmeDeBaja(vacante)"
-                    class="btn btn-danger"
-                    v-if="vacante.usuarioPostulado"
-                  >Darme de baja</button>
-                </div>
-                <div v-if="vacante.usuarioTrabajaEnLaCatedra">
-                  <p>Ya forma parte de la cátedra</p>
-                </div>
-                <div v-if="!isUsuario">
-                  <p>No posee el rol de "usuario" para postularse</p>
-                </div>
+                >Postularme</utn-button>
+                <button
+                  @click="modalDarmeDeBaja(vacante)"
+                  class="btn btn-danger"
+                  v-if="vacante.usuarioPostulado"
+                >Darme de baja</button>
+              </div>
+              <div v-if="vacante.usuarioTrabajaEnLaCatedra">
+                <p>Ya forma parte de la cátedra</p>
+              </div>
+              <div v-if="authenticated && !isUsuario">
+                <p>No posee el rol de "usuario" para postularse</p>
               </div>
             </div>
           </div>
@@ -104,7 +112,7 @@
                 <li class="page-item" :class="{ disabled: pag === 1 }">
                   <a class="page-link" href="#" tabindex="-1" @click.prevent="disminuirPag">Anterior</a>
                 </li>
-                <li class="page-item" v-for="n in numeros" :key="n">
+                <li class="page-item" v-for="n in numeros" :key="n" :class="{ active: pag === n }">
                   <a class="page-link" href="#" @click.prevent="pag = n">
                     {{
                     n
@@ -114,7 +122,7 @@
                 <li
                   class="page-item"
                   :class="{
-                    disabled: pag === Math.ceil(vacantes.length / limit)
+                    disabled: pag === Math.ceil(vacantesAMostrar.length / limit)
                   }"
                 >
                   <a class="page-link" href="#" @click.prevent="aumentarPag">Siguiente</a>
@@ -137,14 +145,20 @@ export default {
   components: {
     LogIn: () => import("../LogIn.vue")
   },
+  props: {
+    limit: { type: Number, default: 10 },
+    ultimasVacantes: { type: Boolean, default: false }
+  },
   data() {
     return {
       cargando: true,
       postulacionesDelUsuario: [],
       trabajosDelUsuario: [],
       vacantes: [],
+      vacantesAMostrar: [],
       id_llamado: null,
-      pag: 1
+      pag: 1,
+      id_catedra: 0
     };
   },
   computed: {
@@ -154,19 +168,34 @@ export default {
     }),
 
     limitVacantes() {
-      return this.vacantes.slice(
+      return this.vacantesAMostrar.slice(
         this.pag * this.limit - this.limit,
         this.pag * this.limit
       );
     },
 
     numeros() {
-      return Math.ceil(this.vacantes.length / this.limit);
+      return Math.ceil(this.vacantesAMostrar.length / this.limit);
+    },
+
+    catedras() {
+      let catedras = [];
+      for (let vacante of this.vacantes) {
+        let catedraAgregada = false;
+        for (let catedra of catedras) {
+          if (catedra.id_catedra === vacante.id_catedra) {
+            catedraAgregada = true;
+            break;
+          }
+        }
+        if (!catedraAgregada)
+          catedras.push({
+            id_catedra: vacante.id_catedra,
+            descripcion: vacante.descripcion
+          });
+      }
+      return catedras;
     }
-  },
-  props: {
-    limit: { type: Number, default: 12 },
-    ultimasVacantes: { type: Boolean, default: false }
   },
   methods: {
     ...mapActions({
@@ -178,7 +207,22 @@ export default {
     },
 
     aumentarPag() {
-      if (this.pag < Math.ceil(this.vacantes.length / this.limit)) this.pag++;
+      if (this.pag < Math.ceil(this.vacantesAMostrar.length / this.limit))
+        this.pag++;
+    },
+
+    cambioCatedra() {
+      this.pag = 1;
+      if (this.id_catedra === 0) {
+        this.vacantesAMostrar = this.vacantes;
+      } else {
+        let vacantesAMostrar = [];
+        for (let vacante of this.vacantes) {
+          if (vacante.id_catedra === this.id_catedra)
+            vacantesAMostrar.push(vacante);
+        }
+        this.vacantesAMostrar = vacantesAMostrar;
+      }
     },
 
     async buscarPostulacionesDelUsuario() {
@@ -255,6 +299,8 @@ export default {
         }
 
         this.vacantes = vacantes;
+
+        this.cambioCatedra();
       } catch (err) {
         console.log(err.response.data.error);
       }
@@ -430,5 +476,15 @@ export default {
 .loading {
   display: block;
   margin: auto;
+}
+
+.select-catedras {
+  width: 100%;
+}
+
+@media (min-width: 992px) {
+  .select-catedras {
+    width: 50%;
+  }
 }
 </style>
