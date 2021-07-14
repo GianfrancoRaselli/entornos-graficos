@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-5 mb-5 px-5">
+  <div class="mt-4 mb-5 px-5">
     <div class="alert alert-info" role="alert">
       <b>IMPORTANTE:</b> Los aspirantes NO deberán haber cumplidos los 65 años de edad a la fecha del cierre de inscripción.
       <br /><br />

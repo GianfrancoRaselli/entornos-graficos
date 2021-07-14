@@ -1,69 +1,56 @@
 <template>
   <div>
     <div v-if="cargando">
-      <img
-        src="../../assets/loading.gif"
-        alt="Imagen de carga de página"
-        class="loading mt-5"
-      />
+      <img src="../../assets/loading.gif" alt="Imagen de carga de página" class="loading mt-5" />
     </div>
     <div v-else>
       <div class="vacancies-list">
-        <p v-if="!vacantes.length"><i class="fas fa-angle-right"></i> No hay vacantes calificadas</p>
-        <div class="vacancies" v-if="vacantes.length">
+        <div class="alert alert-info no-vacancies" role="alert" v-if="!vacantes.length">
+          <i class="fas fa-info-circle mt-5" style="font-size: 5rem"></i>
+          <p class="mt-5 mb-5">No hay vacantes calificadas</p>
+        </div>
+        <div class="vacancies" v-else>
           <div class="search-options w-100 mb-2">
             <div class="form-group select-catedras m-auto">
-              <select
-                class="form-control"
-                @change="cambioCatedra"
-                v-model="id_catedra"
-              >
+              <select class="form-control" @change="cambioCatedra" v-model="id_catedra">
                 <option selected="true" :value="0">Todas las cátedras</option>
                 <option
                   v-for="(catedra, index) in catedras"
                   :key="index"
                   :value="catedra.id_catedra"
-                  >{{ catedra.descripcion }}</option
-                >
+                >{{ catedra.descripcion }}</option>
               </select>
             </div>
           </div>
-          <div
-            class="vacancy"
-            v-for="(vacante, index) in limitVacantes"
-            :key="index"
-          >
+          <div class="vacancy col-lg-6" v-for="(vacante, index) in limitVacantes" :key="index">
             <div class="descripcion">
-              <p>
-                {{ vacante.descripcion }}
-              </p>
+              <p>{{ vacante.descripcion }}</p>
             </div>
             <div class="vacancy-content">
               <div class="definicion">
-                <p>
-                  {{ vacante.definicion }}
-                </p>
+                <p>{{ vacante.definicion }}</p>
               </div>
               <div class="requisitos">
                 <p>
-                  <i class="fas fa-check-circle"></i
-                  >&nbsp;<strong>Requisitos:</strong>&nbsp;{{
-                    vacante.requisitos
+                  <i class="fas fa-check-circle"></i>&nbsp;
+                  <strong>Requisitos:</strong>
+                  &nbsp;{{
+                  vacante.requisitos
                   }}
                 </p>
               </div>
               <div class="fecha-inicio">
                 <p>
-                  <i class="fas fa-calendar-check"></i>&nbsp;<strong
-                    >Fecha de inicio:</strong
-                  >&nbsp;{{ vacante.fecha_inicio }}
+                  <i class="fas fa-calendar-check"></i>&nbsp;
+                  <strong>Fecha de inicio:</strong>
+                  &nbsp;{{ vacante.fecha_inicio }}
                 </p>
               </div>
               <div class="fecha-fin">
                 <p>
-                  <i class="fas fa-calendar-times"></i>&nbsp;<strong
-                    >Fecha de cierre:</strong
-                  >&nbsp;{{ vacante.fecha_fin }}
+                  <i class="fas fa-calendar-times"></i>&nbsp;
+                  <strong>Fecha de cierre:</strong>
+                  &nbsp;{{ vacante.fecha_fin }}
                 </p>
               </div>
               <div class="vacancy-options">
@@ -82,7 +69,7 @@
             </div>
           </div>
           <Popup
-            dataTarget="listInscriptos"
+            data-target="listInscriptos"
             :title="title"
             :showButtons="false"
             propClass="modal-xl"
@@ -93,18 +80,14 @@
             <nav aria-label="Page navigation example">
               <ul class="pagination justify-content-center">
                 <li class="page-item" :class="{ disabled: pag === 1 }">
-                  <a
-                    class="page-link"
-                    href="#"
-                    tabindex="-1"
-                    @click.prevent="disminuirPag"
-                    >Anterior</a
-                  >
+                  <a class="page-link" href="#" tabindex="-1" @click.prevent="disminuirPag">Anterior</a>
                 </li>
                 <li class="page-item" v-for="n in numeros" :key="n">
-                  <a class="page-link" href="#" @click.prevent="pag = n">{{
+                  <a class="page-link" href="#" @click.prevent="pag = n">
+                    {{
                     n
-                  }}</a>
+                    }}
+                  </a>
                 </li>
                 <li
                   class="page-item"
@@ -112,9 +95,7 @@
                     disabled: pag === Math.ceil(vacantesAMostrar.length / limit)
                   }"
                 >
-                  <a class="page-link" href="#" @click.prevent="aumentarPag"
-                    >Siguiente</a
-                  >
+                  <a class="page-link" href="#" @click.prevent="aumentarPag">Siguiente</a>
                 </li>
               </ul>
             </nav>
@@ -272,6 +253,14 @@ export default {
 .loading {
   display: block;
   margin: auto;
+}
+
+.no-vacancies {
+  font-size: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 @media (max-width: 991px) {

@@ -2,62 +2,51 @@
   <div>
     <div v-if="isAdministrador">
       <router-link to="/agregarVacante" style="text-decoration: none;">
-        <button
-          class="btn btn-success btn-block m-auto btn-add-vacancy"
-          icon="fas fa-plus-circle"
-        >
+        <button class="btn btn-success btn-block m-auto btn-add-vacancy" icon="fas fa-plus-circle">
           <i class="fas fa-plus-circle"></i>&nbsp;Agregar vacante
         </button>
       </router-link>
     </div>
     <div>
       <div v-if="cargando">
-        <img
-          src="../../assets/loading.gif"
-          alt="Imagen de carga de página"
-          class="loading mt-5"
-        />
+        <img src="../../assets/loading.gif" alt="Imagen de carga de página" class="loading mt-5" />
       </div>
       <div v-else>
         <div class="vacancies-list">
-          <p v-if="!vacantes.length"><i class="fas fa-angle-right"></i> No tiene vacantes a su cargo</p>
-          <div class="vacancies" v-if="vacantes.length">
-            <div
-              class="vacancy"
-              v-for="(vacante, index) in vacantes"
-              :key="index"
-            >
+          <div class="alert alert-info no-vacancies" role="alert" v-if="!vacantes.length">
+            <i class="fas fa-info-circle mt-5" style="font-size: 5rem"></i>
+            <p class="mt-5 mb-5">No tiene vacantes a su cargo</p>
+          </div>
+          <div class="vacancies" v-else>
+            <div class="vacancy col-lg-6" v-for="(vacante, index) in vacantes" :key="index">
               <div class="descripcion">
-                <p>
-                  {{ vacante.descripcion }}
-                </p>
+                <p>{{ vacante.descripcion }}</p>
               </div>
               <div class="vacancy-content">
                 <div class="definicion">
-                  <p>
-                    {{ vacante.definicion }}
-                  </p>
+                  <p>{{ vacante.definicion }}</p>
                 </div>
                 <div class="requisitos">
                   <p>
-                    <i class="fas fa-check-circle"></i
-                    >&nbsp;<strong>Requisitos:</strong>&nbsp;{{
-                      vacante.requisitos
+                    <i class="fas fa-check-circle"></i>&nbsp;
+                    <strong>Requisitos:</strong>
+                    &nbsp;{{
+                    vacante.requisitos
                     }}
                   </p>
                 </div>
                 <div class="fecha-inicio">
                   <p>
-                    <i class="fas fa-calendar-check"></i>&nbsp;<strong
-                      >Fecha de inicio:</strong
-                    >&nbsp;{{ vacante.fecha_inicio }}
+                    <i class="fas fa-calendar-check"></i>&nbsp;
+                    <strong>Fecha de inicio:</strong>
+                    &nbsp;{{ vacante.fecha_inicio }}
                   </p>
                 </div>
                 <div class="fecha-fin">
                   <p>
-                    <i class="fas fa-calendar-times"></i>&nbsp;<strong
-                      >Fecha de cierre:</strong
-                    >&nbsp;{{ vacante.fecha_fin }}
+                    <i class="fas fa-calendar-times"></i>&nbsp;
+                    <strong>Fecha de cierre:</strong>
+                    &nbsp;{{ vacante.fecha_fin }}
                   </p>
                 </div>
                 <div class="vacancy-options">
@@ -83,7 +72,7 @@
               </div>
             </div>
             <Popup
-              dataTarget="listInscriptos"
+              data-target="listInscriptos"
               :title="title"
               :showButtons="false"
               propClass="modal-xl"
@@ -203,7 +192,6 @@ export default {
 }
 
 .vacancy {
-  width: 50%;
   padding: 1rem;
   font-size: 1.08rem;
   display: flex;
@@ -247,11 +235,15 @@ export default {
   width: 25%;
 }
 
-@media (max-width: 991px) {
-  .vacancy {
-    width: 100%;
-  }
+.no-vacancies {
+  font-size: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
+@media (max-width: 991px) {
   .btn-add-vacancy {
     width: 80%;
   }

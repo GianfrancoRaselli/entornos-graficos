@@ -1,17 +1,11 @@
 <template>
-  <div class="m-5">
+  <div class="mt-4 mx-5 mb-5">
     <div v-if="cargando">
-      <img
-        src="../assets/loading.gif"
-        alt="Imagen de carga de página"
-        class="loading mt-5"
-      />
+      <img src="../assets/loading.gif" alt="Imagen de carga de página" class="loading mt-5" />
     </div>
     <div v-else>
       <div class="personas" v-if="personas.length">
-        <table
-          class="table table-responsive table-striped table-hover table-bordered"
-        >
+        <table class="table table-responsive table-striped table-hover table-bordered">
           <thead>
             <tr>
               <th>DNI</th>
@@ -63,8 +57,9 @@
           </tbody>
         </table>
       </div>
-      <div v-else>
-        <p><i class="fas fa-angle-right"></i> Ya fueron verificadas todas las personas</p>
+      <div class="alert alert-info no-person" role="alert" v-else>
+        <i class="fas fa-info-circle mt-5" style="font-size: 5rem"></i>
+        <p class="mt-5 mb-5">Ya fueron verificadas todas las personas</p>
       </div>
     </div>
   </div>
@@ -228,5 +223,13 @@ table {
 .loading {
   display: block;
   margin: auto;
+}
+
+.no-person {
+  font-size: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 </style>

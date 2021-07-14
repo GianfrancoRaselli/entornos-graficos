@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mt-4">
     <nav aria-label="breadcrumb" class="m-auto" style="width: fit-content">
       <ol class="breadcrumb">
         <li class="breadcrumb-item">

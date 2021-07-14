@@ -1,5 +1,5 @@
 <template>
-  <div id="accordion" class="help-container">
+  <div id="accordion" class="help-container mt-4">
     <div class="card">
       <div class="card-header" id="headingOne">
         <h5 class="mb-0">

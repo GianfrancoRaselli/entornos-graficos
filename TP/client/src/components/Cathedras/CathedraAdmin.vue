@@ -2,55 +2,35 @@
   <div>
     <div>
       <router-link to="/agregarCatedra" style="text-decoration: none;">
-        <button
-          class="btn btn-success btn-block m-auto btn-add-cathedra"
-          icon="fas fa-plus-circle"
-        >
+        <button class="btn btn-success btn-block m-auto btn-add-cathedra" icon="fas fa-plus-circle">
           <i class="fas fa-plus-circle"></i>&nbsp;Agregar cátedra
         </button>
       </router-link>
     </div>
     <div>
       <div v-if="cargando">
-        <img
-          src="../../assets/loading.gif"
-          alt="Imagen de carga de página"
-          class="loading mt-5"
-        />
+        <img src="../../assets/loading.gif" alt="Imagen de carga de página" class="loading mt-5" />
       </div>
       <div v-else>
         <div class="cathedras-list">
-          <p v-if="!catedras.length">
-            <i class="fas fa-angle-right"></i> No hay ninguna cátedra registrada
-          </p>
-          <div class="cathedras" v-if="catedras.length">
-            <div
-              class="cathedra"
-              v-for="(catedra, index) in catedras"
-              :key="index"
-            >
+          <div class="alert alert-info no-cathedras" role="alert" v-if="!catedras.length">
+            <i class="fas fa-info-circle mt-5" style="font-size: 5rem"></i>
+            <p class="mt-5 mb-5">No hay ninguna cátedra registrada</p>
+          </div>
+          <div class="cathedras" v-else>
+            <div class="cathedra col-lg-6" v-for="(catedra, index) in catedras" :key="index">
               <div class="descripcion">
-                <p>
-                  {{ catedra.descripcion }}
-                </p>
+                <p>{{ catedra.descripcion }}</p>
               </div>
               <div class="cathedra-content">
                 <div class="definicion">
-                  <p>
-                    {{ catedra.definicion }}
-                  </p>
+                  <p>{{ catedra.definicion }}</p>
                 </div>
                 <div class="cathedra-options">
-                  <utn-button
-                    :to="'/agregarCatedra/' + catedra.id"
-                    btnClass="btn btn-secondary"
-                  >
+                  <utn-button :to="'/agregarCatedra/' + catedra.id" btnClass="btn btn-secondary">
                     <i class="fas fa-edit"></i> Editar cátedra
                   </utn-button>
-                  <utn-button
-                    @click="modalEliminarCatedra(catedra)"
-                    btnClass="btn btn-danger"
-                  >
+                  <utn-button @click="modalEliminarCatedra(catedra)" btnClass="btn btn-danger">
                     <i class="fas fa-trash-alt"></i> Eliminar cátedra
                   </utn-button>
                 </div>
@@ -153,7 +133,6 @@ export default {
 }
 
 .cathedra {
-  width: 50%;
   padding: 1rem;
   font-size: 1.08rem;
   display: flex;
@@ -197,11 +176,15 @@ export default {
   width: 25%;
 }
 
-@media (max-width: 991px) {
-  .cathedra {
-    width: 100%;
-  }
+.no-cathedras {
+  font-size: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
+@media (max-width: 991px) {
   .btn-add-cathedra {
     width: 80%;
   }

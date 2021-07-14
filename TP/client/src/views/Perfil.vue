@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mt-4">
     <div v-if="!cargado">
       <img src="../assets/loading.gif" alt="Imagen de carga de página" class="loading mt-5" />
     </div>

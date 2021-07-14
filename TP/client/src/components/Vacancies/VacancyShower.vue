@@ -1,35 +1,19 @@
 <template>
   <div class="mb-3">
-    <h2 class="title-ultimas-vacantes mt-4" v-if="ultimasVacantes">
-      ¡Últimos cupos!
-    </h2>
+    <h2 class="title-ultimas-vacantes mt-4" v-if="ultimasVacantes">¡Últimos cupos!</h2>
     <div v-if="cargando">
-      <img
-        src="../../assets/loading.gif"
-        alt="Imagen de carga de página"
-        class="loading mt-5"
-      />
+      <img src="../../assets/loading.gif" alt="Imagen de carga de página" class="loading mt-5" />
     </div>
     <div v-else>
       <div class="vacancies-list">
-        <div
-          v-if="!vacantes.length"
-          class="alert alert-danger no-vacancies"
-          role="alert"
-        >
-          <i
-            class="fas fa-exclamation-triangle mt-5"
-            style="font-size: 5rem"
-          ></i>
-          <p class="mt-5 mb-5">¡No se encuentran vacantes!</p>
+        <div v-if="!vacantes.length" class="alert alert-info no-vacancies" role="alert">
+          <i class="fas fa-info-circle mt-5" style="font-size: 5rem"></i>
+          <p class="mt-5 mb-5" v-if="!ultimasVacantes">¡No hay vacantes abiertas!</p>
+          <p class="mt-5 mb-5" v-else>¡No hay vacantes abiertas con pocos cupos!</p>
         </div>
-        <div v-if="vacantes.length">
+        <div v-else>
           <div class="vacancies">
-            <div
-              class="vacancy"
-              v-for="(vacante, index) in limitVacantes"
-              :key="index"
-            >
+            <div class="vacancy col-lg-6" v-for="(vacante, index) in limitVacantes" :key="index">
               <div class="descripcion">
                 <p>{{ vacante.descripcion }}</p>
               </div>
@@ -39,26 +23,25 @@
                 </div>
                 <div>
                   <p>
-                    <i class="fas fa-check-circle"></i
-                    >&nbsp;<strong>Requisitos:</strong>&nbsp;{{
-                      vacante.requisitos
+                    <i class="fas fa-check-circle"></i>&nbsp;
+                    <strong>Requisitos:</strong>
+                    &nbsp;{{
+                    vacante.requisitos
                     }}
                   </p>
                 </div>
                 <div class="fecha-fin">
                   <p>
-                    <i class="fas fa-calendar"></i>&nbsp;<strong
-                      >Fecha de cierre:</strong
-                    >&nbsp;{{ vacante.fecha_fin }}
+                    <i class="fas fa-calendar"></i>&nbsp;
+                    <strong>Fecha de cierre:</strong>
+                    &nbsp;{{ vacante.fecha_fin }}
                   </p>
                 </div>
                 <div
                   class="postulado alert alert-success"
                   role="alert"
                   v-if="vacante.usuarioPostulado"
-                >
-                  Ya se encuentra postulado
-                </div>
+                >Ya se encuentra postulado</div>
                 <div
                   class="pocas-vacantes"
                   role="alert"
@@ -68,26 +51,25 @@
                   "
                 >
                   <p v-if="vacante.vacantes_disponibles > 1">
-                    <i class="fas fa-exclamation-circle"></i>&nbsp;¡Quedan solo
+                    <i class="fas fa-exclamation-circle"></i>
+                    &nbsp;¡Quedan solo
                     {{ vacante.vacantes_disponibles }} vacantes!
                   </p>
                   <p v-else-if="vacante.vacantes_disponibles === 1">
                     <i class="fas fa-exclamation-circle"></i>&nbsp;¡Última
                     vacante disponible!
                   </p>
-                  <p v-else-if="vacante.vacantes_disponibles === 0">
-                    No quedan más vacantes disponibles
-                  </p>
+                  <p
+                    v-else-if="vacante.vacantes_disponibles === 0"
+                  >No quedan más vacantes disponibles</p>
                 </div>
                 <div
                   v-if="!authenticated && vacante.vacantes_disponibles > 0"
                   class="vacancy-options"
                 >
-                  <utn-button @click="postularme(vacante.id)">
-                    Postularme
-                  </utn-button>
+                  <utn-button @click="postularme(vacante.id)">Postularme</utn-button>
                   <LogIn
-                    dataTarget="loginPostulacionPopup"
+                    data-target="loginPostulacionPopup"
                     :postularse="true"
                     :id_llamado="id_llamado"
                   />
@@ -100,16 +82,12 @@
                         !vacante.usuarioTrabajaEnLaCatedra &&
                         vacante.vacantes_disponibles > 0
                     "
-                  >
-                    Postularme
-                  </utn-button>
+                  >Postularme</utn-button>
                   <button
                     @click="modalDarmeDeBaja(vacante)"
                     class="btn btn-danger"
                     v-if="vacante.usuarioPostulado"
-                  >
-                    Darme de baja
-                  </button>
+                  >Darme de baja</button>
                 </div>
                 <div v-if="vacante.usuarioTrabajaEnLaCatedra">
                   <p>Ya forma parte de la cátedra</p>
@@ -121,18 +99,14 @@
             <nav aria-label="Page navigation example">
               <ul class="pagination justify-content-center">
                 <li class="page-item" :class="{ disabled: pag === 1 }">
-                  <a
-                    class="page-link"
-                    href="#"
-                    tabindex="-1"
-                    @click.prevent="disminuirPag"
-                    >Anterior</a
-                  >
+                  <a class="page-link" href="#" tabindex="-1" @click.prevent="disminuirPag">Anterior</a>
                 </li>
                 <li class="page-item" v-for="n in numeros" :key="n">
-                  <a class="page-link" href="#" @click.prevent="pag = n">{{
+                  <a class="page-link" href="#" @click.prevent="pag = n">
+                    {{
                     n
-                  }}</a>
+                    }}
+                  </a>
                 </li>
                 <li
                   class="page-item"
@@ -140,9 +114,7 @@
                     disabled: pag === Math.ceil(vacantes.length / limit)
                   }"
                 >
-                  <a class="page-link" href="#" @click.prevent="aumentarPag"
-                    >Siguiente</a
-                  >
+                  <a class="page-link" href="#" @click.prevent="aumentarPag">Siguiente</a>
                 </li>
               </ul>
             </nav>
@@ -410,7 +382,6 @@ export default {
 }
 
 .vacancy {
-  width: 50%;
   padding: 1rem;
   font-size: 1.08rem;
   display: flex;
@@ -456,11 +427,5 @@ export default {
 .loading {
   display: block;
   margin: auto;
-}
-
-@media (max-width: 991px) {
-  .vacancy {
-    width: 100%;
-  }
 }
 </style>
