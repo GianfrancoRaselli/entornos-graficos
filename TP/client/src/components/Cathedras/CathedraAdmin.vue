@@ -12,6 +12,15 @@
         <img src="../../assets/loading.gif" alt="Imagen de carga de página" class="loading mt-5" />
       </div>
       <div v-else>
+        <div class="buscar mt-5">
+          <input
+            class="form-control input mr-1"
+            type="search"
+            placeholder="Nombre Cátedra"
+            aria-label="Buscar por nombre de cátedra"
+          />
+          <button class="btn btn-outline-success btn-block btn-buscar" type="submit">Buscar</button>
+        </div>
         <div class="cathedras-list">
           <div class="alert alert-info no-cathedras" role="alert" v-if="!catedras.length">
             <i class="fas fa-info-circle mt-5" style="font-size: 5rem"></i>
@@ -184,9 +193,28 @@ export default {
   align-items: center;
 }
 
-@media (max-width: 991px) {
+.buscar {
+  display: flex;
+  padding-left: 20%;
+  padding-right: 20%;
+}
+
+.buscar .input {
+  width: 70%;
+}
+
+.buscar .btn-buscar {
+  width: 30%;
+}
+
+@media (max-width: 992px) {
   .btn-add-cathedra {
     width: 80%;
+  }
+
+  .buscar {
+    padding-left: 10%;
+    padding-right: 10%;
   }
 }
 </style>

@@ -33,7 +33,7 @@
               to="#"
             >
               <span class="icono">
-                <i class="fas fa-user"></i>
+                <i class="fas fa-user mr-1"></i>
               </span>
               {{ user.nombre_usuario }}
             </utn-button>
@@ -43,7 +43,7 @@
                 to="/perfil"
                 @click.native="cerrarNavMobile"
               >
-                <i class="fas fa-id-card"></i>&nbsp;Perfil
+                <i class="fas fa-id-card mr-1"></i>Perfil
               </router-link>
               <div class="dropdown-divider"></div>
               <button
@@ -51,7 +51,7 @@
                 @click="cerrarSesion"
                 id="btn-cerrar-sesion"
               >
-                <i class="fas fa-sign-out-alt"></i>&nbsp;Cerrar Sesión
+                <i class="fas fa-sign-out-alt mr-1"></i>Cerrar Sesión
               </button>
             </div>
           </li>
@@ -65,7 +65,7 @@
                 :data-target="item.target"
                 :icon="item.icon"
                 @click="cerrarNavMobile"
-              >&nbsp;{{ item.name }}</utn-button>
+              >{{ item.name }}</utn-button>
             </li>
           </div>
         </ul>
@@ -105,13 +105,13 @@ export default {
       userNavItems: [
         {
           name: "Crear cuenta",
-          icon: "fas fa-user-plus",
+          icon: "fas fa-user-plus mr-1",
           btnClass: "btn btn-light btn-block",
           target: "#signUpPopup"
         },
         {
           name: "Iniciar sesión",
-          icon: "fas fa-sign-in-alt",
+          icon: "fas fa-sign-in-alt mr-1",
           btnClass: "btn btn-primary btn-block",
           target: "#loginPopup"
         }
