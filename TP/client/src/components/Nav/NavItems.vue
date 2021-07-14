@@ -2,7 +2,7 @@
   <ul class="navbar-nav">
     <li class="nav-item">
       <router-link class="btn btn-light btn-block" @click.native="cerrarNavMobile" to="/" exact>
-        <i class="fas fa-home mr-1 icono"></i> Inicio
+        <span class="icono"><i class="fas fa-home mr-1"></i>&nbsp;</span>Inicio
       </router-link>
     </li>
     <li class="nav-item">
@@ -12,7 +12,7 @@
         to="/contacto"
         exact
       >
-        <i class="fas fa-map-marker-alt mr-1 icono"></i> Contacto
+        <span class="icono"><i class="fas fa-map-marker-alt mr-1"></i>&nbsp;</span>Contacto
       </router-link>
     </li>
     <li class="nav-item dropdown">
@@ -24,7 +24,7 @@
         aria-haspopup="true"
         aria-expanded="false"
       >
-        <i class="fas fa-hand-pointer mr-1 icono"></i> Vacantes
+        <span class="icono"><i class="fas fa-hand-pointer mr-1"></i>&nbsp;</span>Vacantes
       </a>
       <div class="dropdown-menu" aria-labelledby="navbarDropdown">
         <router-link
@@ -34,7 +34,7 @@
           to="/requisitos"
           exact
         >
-          <i class="fas fa-list-ul mr-1"></i> Requisitos para postularse
+          <i class="fas fa-list-ul mr-1"></i>&nbsp;Requisitos para postularse
         </router-link>
         <router-link
           class="dropdown-item"
@@ -43,7 +43,7 @@
           to="/vacantes"
           exact
         >
-          <i class="fas fa-search mr-1"></i> Buscar vacantes abiertas
+          <i class="fas fa-search mr-1"></i>&nbsp;Buscar vacantes abiertas
         </router-link>
         <router-link
           class="dropdown-item"
@@ -52,7 +52,7 @@
           to="/ordenesMerito"
           exact
         >
-          <i class="fas fa-clipboard-list mr-1"></i> Vacantes calificadas
+          <i class="fas fa-clipboard-list mr-1"></i>&nbsp;Vacantes calificadas
         </router-link>
         <router-link
           class="dropdown-item"
@@ -61,7 +61,7 @@
           to="/administrarVacantes"
           exact
         >
-          <i class="fas fa-toolbox mr-1"></i> Administrar vacantes
+          <i class="fas fa-toolbox mr-1"></i>&nbsp;Administrar vacantes
         </router-link>
         <router-link
           class="dropdown-item"
@@ -70,7 +70,7 @@
           to="/agregarVacante"
           exact
         >
-          <i class="fas fa-plus-circle mr-1"></i> Agregar vacante
+          <i class="fas fa-plus-circle mr-1"></i>&nbsp;Agregar vacante
         </router-link>
       </div>
     </li>
@@ -83,7 +83,7 @@
         aria-haspopup="true"
         aria-expanded="false"
       >
-        <i class="fas fa-book mr-1 icono"></i> Cátedras
+        <span class="icono"><i class="fas fa-book mr-1"></i>&nbsp;</span>Cátedras
       </a>
       <div class="dropdown-menu" aria-labelledby="navbarDropdown">
         <router-link
@@ -92,7 +92,7 @@
           to="/administrarCatedras"
           exact
         >
-          <i class="fas fa-book-open mr-1"></i> Administrar cátedras
+          <i class="fas fa-book-open mr-1"></i>&nbsp;Administrar cátedras
         </router-link>
         <router-link
           class="dropdown-item"
@@ -100,7 +100,7 @@
           to="/agregarCatedra"
           exact
         >
-          <i class="fas fa-plus-circle mr-1"></i> Agregar cátedra
+          <i class="fas fa-plus-circle mr-1"></i>&nbsp;Agregar cátedra
         </router-link>
       </div>
     </li>
@@ -111,18 +111,33 @@
         to="/verificarIdentidades"
         exact
       >
-        <i class="fas fa-user-check icono"></i> Identidades
+        <span class="icono"><i class="fas fa-user-check mr-1"></i>&nbsp;</span>Identidades
       </router-link>
     </li>
-    <li class="nav-item">
-      <router-link
-        class="btn btn-light btn-block"
-        @click.native="cerrarNavMobile"
-        to="/ayuda"
-        exact
+    <li class="nav-item dropdown">
+      <a
+        class="dropdown-toggle btn btn-light btn-block"
+        href="#"
+        role="button"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="false"
       >
-        <i class="fas fa-question icono"></i> Ayuda
-      </router-link>
+        <span class="icono"><i class="fas fa-question-circle mr-1"></i>&nbsp;</span>Ayuda
+      </a>
+      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <router-link
+          class="dropdown-item"
+          @click.native="cerrarNavMobile"
+          to="/preguntasFrecuentes"
+          exact
+        >
+          <i class="fas fa-question mr-1"></i>&nbsp;Preguntas frecuentes
+        </router-link>
+        <router-link class="dropdown-item" @click.native="cerrarNavMobile" to="/glosario" exact>
+          <i class="fas fa-info mr-1"></i>&nbsp;Glosario
+        </router-link>
+      </div>
     </li>
   </ul>
 </template>

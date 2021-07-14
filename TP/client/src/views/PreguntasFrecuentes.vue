@@ -130,7 +130,7 @@
             data-target="#collapseFour"
             aria-expanded="false"
             aria-controls="collapseFour"
-          >¿Donde veo a que cátedras me encuentro inscripto?</button>
+          >¿Dónde veo a que cátedras me encuentro inscripto?</button>
         </h5>
       </div>
       <div

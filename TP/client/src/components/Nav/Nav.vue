@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light px-3 w-100" id="navbar">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light px-2 w-100" id="navbar">
       <router-link @click.native="cerrarNavMobile" to="/">
         <img
           src="../../assets/logo-utn.png"
@@ -27,19 +27,23 @@
           <li class="nav-item dropdown">
             <utn-button
               btnClass="dropdown-toggle btn btn-outline-primary btn-block"
-              icon="fas fa-user"
               data-toggle="dropdown"
               aria-haspopup="true"
               aria-expanded="false"
               to="#"
-            >&nbsp;{{ user.nombre_usuario }}</utn-button>
+            >
+              <span class="icono">
+                <i class="fas fa-user"></i>
+              </span>
+              {{ user.nombre_usuario }}
+            </utn-button>
             <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="navbarDropdown">
               <router-link
                 class="dropdown-item btn btn-link"
                 to="/perfil"
                 @click.native="cerrarNavMobile"
               >
-                <i class="fas fa-id-card"></i> Perfil
+                <i class="fas fa-id-card"></i>&nbsp;Perfil
               </router-link>
               <div class="dropdown-divider"></div>
               <button
@@ -47,7 +51,7 @@
                 @click="cerrarSesion"
                 id="btn-cerrar-sesion"
               >
-                <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                <i class="fas fa-sign-out-alt"></i>&nbsp;Cerrar Sesión
               </button>
             </div>
           </li>
@@ -129,8 +133,9 @@ export default {
 <style scoped>
 .headerLogo {
   width: 100px;
-  margin: 0 25px;
+  margin: 0 22px;
 }
+
 .navbar {
   box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.08);
 }
@@ -142,5 +147,11 @@ export default {
 
 #btn-cerrar-sesion {
   color: red;
+}
+
+@media (min-width: 992px) and (max-width: 1180px) {
+  .icono {
+    display: none;
+  }
 }
 </style>

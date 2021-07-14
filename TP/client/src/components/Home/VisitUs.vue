@@ -1,8 +1,8 @@
 <template>
   <div class="visit-us-container">
     <div class="visit-description">
-      <h4>Conocenos!</h4>
-      <div class="mt-5 mb-5 px-3 row">
+      <h3 class="conocenos">¡Conócenos!</h3>
+      <div class="mt-3 mb-5 px-3 row">
         <div class="col-md-6 col-sm-12 mt-3" style="text-align:justify">
           En Rosario, la Facultad Regional de la Universidad Tecnológica Nacional tiene sus orígenes en 1953 sobre la base de la Escuela Fábrica N° 40 (hoy E.E.T. N° 468) y del Ciclo Técnico (que funcionaba en el actual Colegio Nacional N° 2), dependientes ambos de la Comisión Nacional de Aprendizaje y Orientación Profesional.
           <br />
@@ -13,7 +13,6 @@
           <p>Es MISIÓN de la Universidad Tecnológica Nacional: crear, preservar y transmitir los productos de los campos científicos, tecnológico y cultural para la formación plena del hombre como sujeto destinatario de esa cultura y de la técnica, extendiendo su accionar a la comunidad para contribuir a su desarrollo y transformación.</p>
           <br />
           <b>VISION</b>
-          <p></p>
           <p>La Universidad Tecnológica Nacional ha sido concebida desde su comienzo como una Institución abierta a todos los hombres capaces de contribuir al proceso de desarrollo de la economía argentina, con clara conciencia de su compromiso con el bienestar y la justicia social, su respeto por la ciencia y la cultura, y la necesidad de su aporte al progreso de la Nación y las regiones que la componen, reivindicando los valores imprescriptibles de la libertad y la dignidad del pueblo argentino, y la integración armónica de los sectores sociales que la componen.</p>
           <br />
           <b>VALORES</b>
@@ -55,9 +54,15 @@ export default {};
   padding: 3rem;
   margin-bottom: -2rem;
 }
+
 .visit-description {
   margin-right: 1rem;
 }
+
+.conocenos {
+  text-align: center;
+}
+
 @media (max-width: 560px) {
   .visit-us-container {
     padding: 1rem;

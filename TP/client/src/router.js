@@ -49,9 +49,14 @@ const router = new Router({
       component: () => import('@/views/Contact.vue'),
     },
     {
-      path: '/ayuda',
-      name: 'Ayuda',
-      component: () => import('@/views/Help.vue'),
+      path: '/preguntasFrecuentes',
+      name: 'Preguntas Frecuentes',
+      component: () => import('@/views/PreguntasFrecuentes.vue'),
+    },
+    {
+      path: '/glosario',
+      name: 'Glosario',
+      component: () => import('@/views/Glosario.vue'),
     },
     {
       path: '/cambiarClave/:codigo',
