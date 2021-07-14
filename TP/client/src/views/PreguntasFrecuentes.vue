@@ -23,7 +23,11 @@
                 icon="fas fa-user-plus"
                 style="width:150px;"
               >Crear cuenta</utn-button>
-              <img class="help-img" src="/ayuda/registro1.jpg" alt="Imagen de la pagina principal" />
+              <img
+                class="help-img"
+                src="../assets/ayuda/registro1.jpg"
+                alt="Imagen de la pagina principal"
+              />
             </li>
 
             <li
@@ -31,7 +35,7 @@
             >A continuación se desplegará un formulario. Todos los campos son obligatorios</li>
             <img
               class="help-img"
-              src="/ayuda/registro2.jpg"
+              src="../assets/ayuda/registro2.jpg"
               alt="Imagen del formulario de registro"
             />
 
@@ -66,7 +70,7 @@
               <br />
               <img
                 class="help-img"
-                src="/ayuda/perfil1.jpg"
+                src="../assets/ayuda/perfil1.jpg"
                 alt="Donde se encuentra el perfil: Esquina superior derecha"
               />
             </li>
@@ -75,7 +79,7 @@
               <br />
               <img
                 class="help-img"
-                src="/ayuda/perfil2.jpg"
+                src="../assets/ayuda/perfil2.jpg"
                 alt="Muestra de las opciones en el perfil"
               />
             </li>
@@ -106,14 +110,14 @@
             <li class="list-step">
               Usted puede revisar en la sección de inicio cuáles cátedras tienen sus últimas vacantes disponibles. Allí puede hacer click en el botón de "Postularme"
               <br />
-              <img class="help-img" src="/ayuda/postularme1.jpg" alt="Donde postularme" />
+              <img class="help-img" src="../assets/ayuda/postularme1.jpg" alt="Donde postularme" />
             </li>
             <li class="list-step mt-3">
               En caso de que la cátedra deseada no se encuentre en la página de inicio, usted puede dirigirse a Vacantes -> Buscar Vacantes, y postularse a la cátedra que desee.
               <br />
               <img
                 class="help-img"
-                src="/ayuda/postularme2.jpg"
+                src="../assets/ayuda/postularme2.jpg"
                 alt="Donde se encuentra el perfil: Esquina superior derecha"
               />
             </li>
@@ -144,7 +148,11 @@
             <li class="list-step">
               Desde su perfil, usted puede revisar a que vacantes se encuentra postulado
               <br />
-              <img class="help-img" src="/ayuda/mispostulaciones1.jpg" alt="Donde postularme" />
+              <img
+                class="help-img"
+                src="../assets/ayuda/mispostulaciones1.jpg"
+                alt="Donde postularme"
+              />
             </li>
           </ul>
         </div>
@@ -173,12 +181,16 @@
             <li class="list-step">
               Desde su perfil, usted puede revisar a que vacantes se encuentra postulado, desde allí puede realizar la acción "Darme de baja"
               <br />
-              <img class="help-img" src="/ayuda/mispostulaciones1.jpg" alt="Donde postularme" />
+              <img
+                class="help-img"
+                src="../assets/ayuda/mispostulaciones1.jpg"
+                alt="Donde postularme"
+              />
             </li>
             <li class="list-step">
               También puede buscar en la lista de vacantes la cátedra en la cual se encuentra postulado, y hacer click en "Darme de baja"
               <br />
-              <img class="help-img" src="/ayuda/darmedebaja1.jpg" alt="Donde postularme" />
+              <img class="help-img" src="../assets/ayuda/darmedebaja1.jpg" alt="Donde postularme" />
             </li>
           </ul>
         </div>

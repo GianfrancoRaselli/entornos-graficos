@@ -21,7 +21,7 @@
         <div class="col-md-6 col-sm-12 mt-3 pl-5">
           <img
             width="100%"
-            src="/utnfrente.jpg"
+            src="../../assets/utnfrente.jpg"
             alt="Foto de frente de las instalaciones de la UTN"
           />
         </div>
