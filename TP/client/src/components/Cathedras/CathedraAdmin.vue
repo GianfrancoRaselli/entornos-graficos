@@ -18,16 +18,33 @@
             type="search"
             placeholder="Nombre Cátedra"
             aria-label="Buscar por nombre de cátedra"
+            v-on:input="cambioNombreCatedra"
+            v-model="nombreCatedra"
           />
-          <button class="btn btn-outline-success btn-block btn-buscar" type="submit">Buscar</button>
+          <button
+            class="btn btn-outline-success btn-block btn-buscar"
+            @click="buscarPorNombreCatedra"
+          >Buscar</button>
         </div>
         <div class="cathedras-list">
           <div class="alert alert-info no-cathedras" role="alert" v-if="!catedras.length">
             <i class="fas fa-info-circle mt-5" style="font-size: 5rem"></i>
             <p class="mt-5 mb-5">No hay ninguna cátedra registrada</p>
           </div>
+          <div
+            class="alert alert-info no-cathedras"
+            role="alert"
+            v-else-if="!catedrasAMostrar.length"
+          >
+            <i class="fas fa-info-circle mt-5" style="font-size: 5rem"></i>
+            <p class="mt-5 mb-5">No hay cátedras con ese nombre</p>
+          </div>
           <div class="cathedras" v-else>
-            <div class="cathedra col-lg-6" v-for="(catedra, index) in catedras" :key="index">
+            <div
+              class="cathedra col-lg-6"
+              v-for="(catedra, index) in catedrasAMostrar"
+              :key="index"
+            >
               <div class="descripcion">
                 <p>{{ catedra.descripcion }}</p>
               </div>
@@ -60,7 +77,9 @@ export default {
   data() {
     return {
       cargando: true,
-      catedras: []
+      catedras: [],
+      catedrasAMostrar: [],
+      nombreCatedra: ""
     };
   },
   computed: {
@@ -71,6 +90,25 @@ export default {
     })
   },
   methods: {
+    buscarPorNombreCatedra() {
+      if (this.nombreCatedra === "") {
+        this.catedrasAMostrar = this.catedras;
+      } else {
+        this.catedrasAMostrar = this.catedras.filter(catedra => {
+          return (
+            catedra.descripcion.toUpperCase().replace(/ /g, "") ===
+            this.nombreCatedra.toUpperCase().replace(/ /g, "")
+          );
+        });
+      }
+    },
+
+    cambioNombreCatedra() {
+      if (this.nombreCatedra === '') {
+        this.buscarPorNombreCatedra();
+      }
+    },
+
     async buscarCatedras() {
       this.cargando = true;
 
@@ -82,6 +120,8 @@ export default {
         });
 
         this.catedras = res.data;
+
+        this.buscarPorNombreCatedra();
       } catch (err) {
         console.log(err.response.data.error);
       }
@@ -195,8 +235,8 @@ export default {
 
 .buscar {
   display: flex;
-  padding-left: 20%;
-  padding-right: 20%;
+  padding-left: 25%;
+  padding-right: 25%;
 }
 
 .buscar .input {

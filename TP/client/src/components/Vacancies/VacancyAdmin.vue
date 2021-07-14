@@ -12,13 +12,35 @@
         <img src="../../assets/loading.gif" alt="Imagen de carga de página" class="loading mt-5" />
       </div>
       <div v-else>
+        <div class="buscar mt-5">
+          <input
+            class="form-control input mr-1"
+            type="search"
+            placeholder="Nombre Cátedra"
+            aria-label="Buscar por nombre de cátedra"
+            v-on:input="cambioNombreCatedra"
+            v-model="nombreCatedra"
+          />
+          <button
+            class="btn btn-outline-success btn-block btn-buscar"
+            @click="buscarPorNombreCatedra"
+          >Buscar</button>
+        </div>
         <div class="vacancies-list">
           <div class="alert alert-info no-vacancies" role="alert" v-if="!vacantes.length">
             <i class="fas fa-info-circle mt-5" style="font-size: 5rem"></i>
             <p class="mt-5 mb-5">No tiene vacantes a su cargo</p>
           </div>
+          <div
+            class="alert alert-info no-vacancies"
+            role="alert"
+            v-else-if="!vacantesAMostrar.length"
+          >
+            <i class="fas fa-info-circle mt-5" style="font-size: 5rem"></i>
+            <p class="mt-5 mb-5">No hay vacantes en la cátedra</p>
+          </div>
           <div class="vacancies" v-else>
-            <div class="vacancy col-lg-6" v-for="(vacante, index) in vacantes" :key="index">
+            <div class="vacancy col-lg-6" v-for="(vacante, index) in vacantesAMostrar" :key="index">
               <div class="descripcion">
                 <p>{{ vacante.descripcion }}</p>
               </div>
@@ -99,6 +121,8 @@ export default {
     return {
       cargando: true,
       vacantes: [],
+      vacantesAMostrar: [],
+      nombreCatedra: "",
       title: ""
     };
   },
@@ -110,6 +134,25 @@ export default {
     })
   },
   methods: {
+    buscarPorNombreCatedra() {
+      if (this.nombreCatedra === "") {
+        this.vacantesAMostrar = this.vacantes;
+      } else {
+        this.vacantesAMostrar = this.vacantes.filter(vacante => {
+          return (
+            vacante.descripcion.toUpperCase().replace(/ /g, "") ===
+            this.nombreCatedra.toUpperCase().replace(/ /g, "")
+          );
+        });
+      }
+    },
+
+    cambioNombreCatedra() {
+      if (this.nombreCatedra === '') {
+        this.buscarPorNombreCatedra();
+      }
+    },
+
     async buscarVacantes() {
       this.cargando = true;
 
@@ -121,6 +164,8 @@ export default {
         });
 
         this.vacantes = res.data;
+
+        this.buscarPorNombreCatedra();
       } catch (err) {
         console.log(err.response.data.error);
       }
@@ -243,9 +288,28 @@ export default {
   align-items: center;
 }
 
+.buscar {
+  display: flex;
+  padding-left: 25%;
+  padding-right: 25%;
+}
+
+.buscar .input {
+  width: 70%;
+}
+
+.buscar .btn-buscar {
+  width: 30%;
+}
+
 @media (max-width: 991px) {
   .btn-add-vacancy {
     width: 80%;
+  }
+
+  .buscar {
+    padding-left: 10%;
+    padding-right: 10%;
   }
 }
 </style>
