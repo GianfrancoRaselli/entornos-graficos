@@ -40,7 +40,7 @@
             <p class="mt-5 mb-5">No hay vacantes en la cátedra</p>
           </div>
           <div class="vacancies" v-else>
-            <div class="vacancy col-lg-6" v-for="(vacante, index) in vacantesAMostrar" :key="index">
+            <div class="vacancy col-lg-6" v-for="(vacante, index) in limitVacantes" :key="index">
               <div class="descripcion">
                 <p>{{ vacante.descripcion }}</p>
               </div>
@@ -93,6 +93,40 @@
                 </div>
               </div>
             </div>
+            <div class="w-100 mt-2">
+              <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                  <li class="page-item" :class="{ disabled: pag === 1 }">
+                    <a
+                      class="page-link"
+                      href="#"
+                      tabindex="-1"
+                      @click.prevent="disminuirPag"
+                    >Anterior</a>
+                  </li>
+                  <li
+                    class="page-item"
+                    v-for="n in numeros"
+                    :key="n"
+                    :class="{ active: pag === n }"
+                  >
+                    <a class="page-link" href="#" @click.prevent="pag = n">
+                      {{
+                      n
+                      }}
+                    </a>
+                  </li>
+                  <li
+                    class="page-item"
+                    :class="{
+                    disabled: pag === Math.ceil(vacantesAMostrar.length / limit)
+                  }"
+                  >
+                    <a class="page-link" href="#" @click.prevent="aumentarPag">Siguiente</a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
             <Popup
               data-target="listInscriptos"
               :title="title"
@@ -123,7 +157,9 @@ export default {
       vacantes: [],
       vacantesAMostrar: [],
       nombreCatedra: "",
-      title: ""
+      title: "",
+      limit: 10,
+      pag: 1
     };
   },
   computed: {
@@ -131,10 +167,32 @@ export default {
       authenticated: "authenticated",
       isAdministrador: "isAdministrador",
       isJefeCatedra: "isJefeCatedra"
-    })
+    }),
+
+    limitVacantes() {
+      return this.vacantesAMostrar.slice(
+        this.pag * this.limit - this.limit,
+        this.pag * this.limit
+      );
+    },
+
+    numeros() {
+      return Math.ceil(this.vacantesAMostrar.length / this.limit);
+    }
   },
   methods: {
+    disminuirPag() {
+      if (this.pag > 1) this.pag--;
+    },
+
+    aumentarPag() {
+      if (this.pag < Math.ceil(this.vacantesAMostrar.length / this.limit))
+        this.pag++;
+    },
+
     buscarPorNombreCatedra() {
+      this.pag = 1;
+
       if (this.nombreCatedra === "") {
         this.vacantesAMostrar = this.vacantes;
       } else {
@@ -148,7 +206,7 @@ export default {
     },
 
     cambioNombreCatedra() {
-      if (this.nombreCatedra === '') {
+      if (this.nombreCatedra === "") {
         this.buscarPorNombreCatedra();
       }
     },

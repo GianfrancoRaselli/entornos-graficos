@@ -40,11 +40,7 @@
             <p class="mt-5 mb-5">No hay cátedras con ese nombre</p>
           </div>
           <div class="cathedras" v-else>
-            <div
-              class="cathedra col-lg-6"
-              v-for="(catedra, index) in catedrasAMostrar"
-              :key="index"
-            >
+            <div class="cathedra col-lg-6" v-for="(catedra, index) in limitCatedras" :key="index">
               <div class="descripcion">
                 <p>{{ catedra.descripcion }}</p>
               </div>
@@ -61,6 +57,40 @@
                   </utn-button>
                 </div>
               </div>
+            </div>
+            <div class="w-100 mt-2">
+              <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                  <li class="page-item" :class="{ disabled: pag === 1 }">
+                    <a
+                      class="page-link"
+                      href="#"
+                      tabindex="-1"
+                      @click.prevent="disminuirPag"
+                    >Anterior</a>
+                  </li>
+                  <li
+                    class="page-item"
+                    v-for="n in numeros"
+                    :key="n"
+                    :class="{ active: pag === n }"
+                  >
+                    <a class="page-link" href="#" @click.prevent="pag = n">
+                      {{
+                      n
+                      }}
+                    </a>
+                  </li>
+                  <li
+                    class="page-item"
+                    :class="{
+                    disabled: pag === Math.ceil(catedrasAMostrar.length / limit)
+                  }"
+                  >
+                    <a class="page-link" href="#" @click.prevent="aumentarPag">Siguiente</a>
+                  </li>
+                </ul>
+              </nav>
             </div>
           </div>
         </div>
@@ -79,7 +109,9 @@ export default {
       cargando: true,
       catedras: [],
       catedrasAMostrar: [],
-      nombreCatedra: ""
+      nombreCatedra: "",
+      limit: 10,
+      pag: 1
     };
   },
   computed: {
@@ -87,10 +119,32 @@ export default {
       authenticated: "authenticated",
       isAdministrador: "isAdministrador",
       isJefeCatedra: "isJefeCatedra"
-    })
+    }),
+
+    limitCatedras() {
+      return this.catedrasAMostrar.slice(
+        this.pag * this.limit - this.limit,
+        this.pag * this.limit
+      );
+    },
+
+    numeros() {
+      return Math.ceil(this.catedrasAMostrar.length / this.limit);
+    }
   },
   methods: {
+    disminuirPag() {
+      if (this.pag > 1) this.pag--;
+    },
+
+    aumentarPag() {
+      if (this.pag < Math.ceil(this.catedrasAMostrar.length / this.limit))
+        this.pag++;
+    },
+
     buscarPorNombreCatedra() {
+      this.pag = 1;
+
       if (this.nombreCatedra === "") {
         this.catedrasAMostrar = this.catedras;
       } else {
@@ -104,7 +158,7 @@ export default {
     },
 
     cambioNombreCatedra() {
-      if (this.nombreCatedra === '') {
+      if (this.nombreCatedra === "") {
         this.buscarPorNombreCatedra();
       }
     },

@@ -167,6 +167,7 @@ export default {
 
     cambioCatedra() {
       this.pag = 1;
+      
       if (this.id_catedra === 0) {
         this.vacantesAMostrar = this.vacantes;
       } else {
