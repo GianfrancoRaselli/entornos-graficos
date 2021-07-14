@@ -13,11 +13,11 @@ use Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 
-require __DIR__.'/../../../config/paths.php';
+require __DIR__ . '/../../../config/paths.php';
 
-require __DIR__.'/../../../config/PHPMailer/Exception.php';
-require __DIR__.'/../../../config/PHPMailer/PHPMailer.php';
-require __DIR__.'/../../../config/PHPMailer/SMTP.php';
+require __DIR__ . '/../../../config/PHPMailer/Exception.php';
+require __DIR__ . '/../../../config/PHPMailer/PHPMailer.php';
+require __DIR__ . '/../../../config/PHPMailer/SMTP.php';
 
 class LlamadoController extends Controller
 {
@@ -34,7 +34,7 @@ class LlamadoController extends Controller
         } else {
           $llamado->finalizado = false;
         }
-  
+
         $llamado->catedra;
 
         foreach ($llamado->postulaciones as $key => $postulacion) {
@@ -45,16 +45,16 @@ class LlamadoController extends Controller
         }
 
         foreach ($llamado->postulaciones as $postulacion) {
-            $persona = Persona::find($postulacion->id_persona);
+          $persona = Persona::find($postulacion->id_persona);
 
-            $postulacion->dni = $persona->dni;
-            $postulacion->nombre_apellido = $persona->nombre_apellido;
-            $postulacion->email = $persona->email;
-            $postulacion->telefono = $persona->telefono;
-            $postulacion->curriculum_vitae = $persona->curriculum_vitae;
+          $postulacion->dni = $persona->dni;
+          $postulacion->nombre_apellido = $persona->nombre_apellido;
+          $postulacion->email = $persona->email;
+          $postulacion->telefono = $persona->telefono;
+          $postulacion->curriculum_vitae = $persona->curriculum_vitae;
         }
       }
-      
+
       return response()->json($llamado);
     } catch (Exception $e) {
       return response()->json(['error' => $e->getMessage()], 406, []);
@@ -74,7 +74,7 @@ class LlamadoController extends Controller
         } else {
           $llamado->finalizado = false;
         }
-  
+
         $llamado->catedra;
 
         foreach ($llamado->postulaciones as $postulacion) {
@@ -82,7 +82,7 @@ class LlamadoController extends Controller
 
           $postulacion->dni = $persona->dni;
           $postulacion->nombre_apellido = $persona->nombre_apellido;
-        }  
+        }
       }
 
       return response()->json($llamado);
@@ -96,13 +96,30 @@ class LlamadoController extends Controller
     $fechaDeHoy = date('Y-m-d');
     try {
       $llamados = Llamado::join('catedras', 'catedras.id', '=', 'llamados.id_catedra')
-      ->leftJoin('postulaciones', 'postulaciones.id_llamado', '=', 'llamados.id')
-      ->select('llamados.id', 'llamados.fecha_inicio', 'llamados.fecha_fin', 'llamados.vacantes',
-      DB::raw('(llamados.vacantes - count(postulaciones.id_llamado)) as vacantes_disponibles'),
-      'llamados.requisitos', 'catedras.id as id_catedra', 'catedras.descripcion', 'catedras.definicion')
-      ->where([['fecha_inicio', '<=', $fechaDeHoy], ['fecha_fin', '>=', $fechaDeHoy]])
-      ->groupBy('llamados.id', 'llamados.fecha_inicio', 'llamados.fecha_fin', 'llamados.vacantes', 'llamados.requisitos', 
-      'catedras.id', 'catedras.descripcion', 'catedras.definicion')->get();
+        ->leftJoin('postulaciones', 'postulaciones.id_llamado', '=', 'llamados.id')
+        ->select(
+          'llamados.id',
+          'llamados.fecha_inicio',
+          'llamados.fecha_fin',
+          'llamados.vacantes',
+          DB::raw('(llamados.vacantes - count(postulaciones.id_llamado)) as vacantes_disponibles'),
+          'llamados.requisitos',
+          'catedras.id as id_catedra',
+          'catedras.descripcion',
+          'catedras.definicion'
+        )
+        ->where([['fecha_inicio', '<=', $fechaDeHoy], ['fecha_fin', '>=', $fechaDeHoy]])
+        ->groupBy(
+          'llamados.id',
+          'llamados.fecha_inicio',
+          'llamados.fecha_fin',
+          'llamados.vacantes',
+          'llamados.requisitos',
+          'catedras.id',
+          'catedras.descripcion',
+          'catedras.definicion'
+        )
+        ->orderBy('llamados.fecha_fin', 'ASC')->get();
 
       return response()->json($llamados);
     } catch (Exception $e) {
@@ -116,14 +133,30 @@ class LlamadoController extends Controller
     try {
       // puse 3 como numero de pocas vacantes (se puede cambiar)
       $llamados = Llamado::join('catedras', 'catedras.id', '=', 'llamados.id_catedra')
-      ->leftJoin('postulaciones', 'postulaciones.id_llamado', '=', 'llamados.id')
-      ->select('llamados.id', 'llamados.fecha_inicio', 'llamados.fecha_fin', 'llamados.vacantes',
-      DB::raw('(llamados.vacantes - count(postulaciones.id_llamado)) as vacantes_disponibles'),
-      'llamados.requisitos', 'catedras.id as id_catedra', 'catedras.descripcion', 'catedras.definicion')
-      ->where([['fecha_inicio', '<=', $fechaDeHoy], ['fecha_fin', '>=', $fechaDeHoy]])
-      ->groupBy('llamados.id', 'llamados.fecha_inicio', 'llamados.fecha_fin', 'llamados.vacantes', 'llamados.requisitos', 'catedras.id', 
-      'catedras.descripcion', 'catedras.definicion')->having(DB::raw('llamados.vacantes - count(postulaciones.id_llamado)'), '<=', 3)
-      ->get();
+        ->leftJoin('postulaciones', 'postulaciones.id_llamado', '=', 'llamados.id')
+        ->select(
+          'llamados.id',
+          'llamados.fecha_inicio',
+          'llamados.fecha_fin',
+          'llamados.vacantes',
+          DB::raw('(llamados.vacantes - count(postulaciones.id_llamado)) as vacantes_disponibles'),
+          'llamados.requisitos',
+          'catedras.id as id_catedra',
+          'catedras.descripcion',
+          'catedras.definicion'
+        )
+        ->where([['fecha_inicio', '<=', $fechaDeHoy], ['fecha_fin', '>=', $fechaDeHoy]])
+        ->groupBy(
+          'llamados.id',
+          'llamados.fecha_inicio',
+          'llamados.fecha_fin',
+          'llamados.vacantes',
+          'llamados.requisitos',
+          'catedras.id',
+          'catedras.descripcion',
+          'catedras.definicion'
+        )->having(DB::raw('llamados.vacantes - count(postulaciones.id_llamado)'), '<=', 3)
+        ->orderBy('llamados.fecha_fin', 'ASC')->get();
 
       return response()->json($llamados);
     } catch (Exception $e) {
@@ -135,10 +168,18 @@ class LlamadoController extends Controller
   {
     try {
       $llamados = Llamado::join('catedras', 'catedras.id', '=', 'llamados.id_catedra')
-      ->select('llamados.id', 'llamados.fecha_inicio', 'llamados.fecha_fin', 'llamados.vacantes',
-      'llamados.requisitos', 'catedras.id as id_catedra', 'catedras.descripcion', 'catedras.definicion')
-      ->where('calificado', '=', true)->get();
-    
+        ->select(
+          'llamados.id',
+          'llamados.fecha_inicio',
+          'llamados.fecha_fin',
+          'llamados.vacantes',
+          'llamados.requisitos',
+          'catedras.id as id_catedra',
+          'catedras.descripcion',
+          'catedras.definicion'
+        )
+        ->where('calificado', '=', true)->orderBy('llamados.fecha_fin', 'ASC')->get();
+
       return response()->json($llamados);
     } catch (Exception $e) {
       return response()->json(['error' => $e->getMessage()], 406, []);
@@ -153,9 +194,18 @@ class LlamadoController extends Controller
       if ($rol->descripcion == 'Administrador') {
         try {
           $llamados = Llamado::join('catedras', 'catedras.id', '=', 'llamados.id_catedra')
-          ->select('llamados.id', 'llamados.fecha_inicio', 'llamados.fecha_fin', 'llamados.vacantes',
-          'llamados.requisitos', 'llamados.calificado', 'catedras.descripcion', 'catedras.definicion')->get();
-    
+            ->select(
+              'llamados.id',
+              'llamados.fecha_inicio',
+              'llamados.fecha_fin',
+              'llamados.vacantes',
+              'llamados.requisitos',
+              'llamados.calificado',
+              'catedras.descripcion',
+              'catedras.definicion'
+            )
+            ->orderBy('llamados.fecha_fin', 'ASC')->get();
+
           return response()->json($llamados);
         } catch (Exception $e) {
           return response()->json(['error' => $e->getMessage()], 406, []);
@@ -167,10 +217,19 @@ class LlamadoController extends Controller
       if ($rol->descripcion == 'Jefe Catedra') {
         try {
           $llamados = Llamado::join('catedras', 'catedras.id', '=', 'llamados.id_catedra')
-          ->select('llamados.id', 'llamados.fecha_inicio', 'llamados.fecha_fin', 'llamados.vacantes',
-          'llamados.requisitos', 'llamados.calificado', 'catedras.descripcion', 'catedras.definicion')
-          ->where('catedras.id_jefe_catedra', '=', auth()->user()->id)->get();
-    
+            ->select(
+              'llamados.id',
+              'llamados.fecha_inicio',
+              'llamados.fecha_fin',
+              'llamados.vacantes',
+              'llamados.requisitos',
+              'llamados.calificado',
+              'catedras.descripcion',
+              'catedras.definicion'
+            )
+            ->where('catedras.id_jefe_catedra', '=', auth()->user()->id)
+            ->orderBy('llamados.fecha_fin', 'ASC')->get();
+
           return response()->json($llamados);
         } catch (Exception $e) {
           return response()->json(['error' => $e->getMessage()], 406, []);
@@ -182,10 +241,10 @@ class LlamadoController extends Controller
   public function calificarLlamado(Request $request)
   {
     if (
-        $request->llamado
-        && $request->llamado["id"]
-        && $request->llamado["postulaciones"]
-        && count($request->llamado["postulaciones"]) >= 1
+      $request->llamado
+      && $request->llamado["id"]
+      && $request->llamado["postulaciones"]
+      && count($request->llamado["postulaciones"]) >= 1
     ) {
       $llamado = Llamado::find($request->llamado["id"]);
       if (!$llamado->calificado) {
@@ -203,7 +262,7 @@ class LlamadoController extends Controller
               } else {
                 if ($postulacion["estadoEditado"] == "Aceptar") {
                   $postulacionAEditar->estado = "Elegido";
-                  
+
                   $trabajo = new Trabajo();
                   $trabajo->id_persona = $postulacionAEditar->persona->id;
                   $trabajo->id_catedra = $llamado->catedra->id;
@@ -213,9 +272,9 @@ class LlamadoController extends Controller
                 }
                 $postulacionAEditar->puntaje = (int) $postulacion["puntajeEditado"];
                 $postulacionAEditar->comentarios = $postulacion["comentariosEditado"];
-  
+
                 $postulacionAEditar->save();
-                
+
                 $postulacionesAEnviarCorreo[] = $postulacionAEditar;
               }
             }
@@ -248,11 +307,12 @@ class LlamadoController extends Controller
     }
   }
 
-  private function enviarMailCalificacionLlamado($llamado, $postulacionesAEnviarCorreo) {
+  private function enviarMailCalificacionLlamado($llamado, $postulacionesAEnviarCorreo)
+  {
     if (count($postulacionesAEnviarCorreo) > 0) {
       $mail = new PHPMailer(true);
 
-      $mail->SMTPDebug = SMTP::DEBUG_SERVER; 
+      $mail->SMTPDebug = SMTP::DEBUG_SERVER;
       $mail->isSMTP();
       $mail->Host = 'smtp.gmail.com';
       $mail->SMTPAuth = true;
@@ -260,8 +320,8 @@ class LlamadoController extends Controller
       $mail->Password = env('MAIL_PASSWORD');
       $mail->SMTPSecure = 'tls';
       $mail->Port = 587;
-      $mail->SMTPOptions = array (
-        'ssl' => array (
+      $mail->SMTPOptions = array(
+        'ssl' => array(
           'verify_peer' => false,
           'verify_peer_name' => false,
           'allow_self_signed' => true
@@ -274,8 +334,8 @@ class LlamadoController extends Controller
       $mail->Body = '
                     <div style="font-size: large;">
                       <p>¡Buen día!</p>
-                      <p>Ya puede ver los resultados del llamado a cubir vacantes de la cátedra de ' . 
-                      $llamado->catedra->descripcion . ' del ' . $llamado->fecha_inicio . ' en: <a href="' . frontPath . 'ordenesMerito" target="_blank">calificaciones</a></p>
+                      <p>Ya puede ver los resultados del llamado a cubir vacantes de la cátedra de ' .
+        $llamado->catedra->descripcion . ' del ' . $llamado->fecha_inicio . ' en: <a href="' . frontPath . 'ordenesMerito" target="_blank">calificaciones</a></p>
                     </div>
                     ';
 
@@ -290,29 +350,29 @@ class LlamadoController extends Controller
   public function agregarLlamado(Request $request)
   {
     if (
-        $request->llamado
-        && $request->llamado["fecha_inicio"]
-        && $request->llamado["fecha_fin"]
-        && $request->llamado["requisitos"]
-        && $request->llamado["vacantes"]
-        && $request->llamado["id_catedra"]
-      ) {
+      $request->llamado
+      && $request->llamado["fecha_inicio"]
+      && $request->llamado["fecha_fin"]
+      && $request->llamado["requisitos"]
+      && $request->llamado["vacantes"]
+      && $request->llamado["id_catedra"]
+    ) {
       if (strtotime($request->llamado["fecha_inicio"]) >= strtotime(date('Y-m-d'))) {
         if (strtotime($request->llamado["fecha_inicio"]) <= strtotime($request->llamado["fecha_fin"])) {
           if ($request->llamado["requisitos"]) {
             if (
-                is_numeric($request->llamado["vacantes"])
-                && (int) $request->llamado["vacantes"] >= 1
-                && (int) $request->llamado["vacantes"] <= 100
+              is_numeric($request->llamado["vacantes"])
+              && (int) $request->llamado["vacantes"] >= 1
+              && (int) $request->llamado["vacantes"] <= 100
             ) {
               try {
                 if (
-                    is_numeric($request->llamado["id_catedra"])
-                    && (int) $request->llamado["id_catedra"] > 0
-                    && Catedra::find($request->llamado["id_catedra"])
+                  is_numeric($request->llamado["id_catedra"])
+                  && (int) $request->llamado["id_catedra"] > 0
+                  && Catedra::find($request->llamado["id_catedra"])
                 ) {
                   $llamado = new Llamado();
-                  
+
                   $llamado->fecha_inicio = $request->llamado["fecha_inicio"];
                   $llamado->fecha_fin = $request->llamado["fecha_fin"];
                   $llamado->requisitos = $request->llamado["requisitos"];
@@ -326,7 +386,7 @@ class LlamadoController extends Controller
                 }
               } catch (Exception $e) {
                 return response()->json(['error' => $e->getMessage()], 406, []);
-            }
+              }
             } else {
               return response()->json(['error' => 'El número de personas que se pueden postular debe estar entre 1 y 100'], 406, []);
             }
@@ -358,7 +418,7 @@ class LlamadoController extends Controller
           DB::commit();
         } catch (Exception $e) {
           DB::rollback();
-          
+
           return response()->json(['error' => $e->getMessage()], 406, []);
         }
       } else {
