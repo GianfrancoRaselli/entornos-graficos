@@ -92,6 +92,9 @@
                 <div v-if="vacante.usuarioTrabajaEnLaCatedra">
                   <p>Ya forma parte de la cátedra</p>
                 </div>
+                <div v-if="!isUsuario">
+                  <p>No posee el rol de "usuario" para postularse</p>
+                </div>
               </div>
             </div>
           </div>
