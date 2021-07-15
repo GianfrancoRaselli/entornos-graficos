@@ -1,22 +1,24 @@
 <template>
   <div class="cta">
-    <div class="cta-title">
-      ¡Postulate!
+    <div style="text-align: justify">
+      <div class="cta-title">
+        ¡Postulate!
+      </div>
+      <div class="cta-subtitle" v-if="!authenticated">
+        Para postularte, primero debes estar registrado
+      </div>
+      <p>
+        <i class="far fa-clipboard mr-2 mt-2 hide-responsive"></i>
+        <ol>
+          <li>Lea los requisitos en el menú "Vacantes" -> "Requisitos para postularse"</li>
+          <li v-if="!authenticated">Registrese o inicie sesión</li>
+          <li>Selecciona en el menú la opción "Vacantes", luego "Buscar vacantes abiertas"</li>
+          <li>Escoge la vacante en la que desea postularse</li>
+          <li>¡Listo! Ya estas participando</li>
+          <li>Al finalizar la orden de mérito se le notificará vía Email</li>
+        </ol>
+      </p>
     </div>
-    <div class="cta-subtitle" v-if="!authenticated">
-      Para postularte, primero debes estar registrado
-    </div>
-    <p>
-      <i class="far fa-clipboard mr-2 mt-2 hide-responsive"></i>
-      <ol>
-        <li>Lea los requisitos en el menú "Vacantes" -> "Requisitos para postularse"</li>
-        <li v-if="!authenticated">Registrese o inicie sesión</li>
-        <li>Selecciona en el menú la opción "Vacantes", luego "Buscar vacantes abiertas"</li>
-        <li>Escoge la vacante en la que desea postularse</li>
-        <li>¡Listo! Ya estas participando</li>
-        <li>Al finalizar la orden de mérito se le notificará vía Email</li>
-      </ol>
-    </p>
     <div v-if="!authenticated">
       <utn-button data-toggle="modal" data-target="#signUpPopupCallToAction" icon="fas fa-user-plus">
         Crear cuenta
