@@ -102,7 +102,7 @@ class CatedraController extends Controller
           && (int) $request->catedra["id"] > 0
           && $catedra = Catedra::find($request->catedra["id"])
         ) {
-          if ($catedra->descripcion == $request->catedra["descripcion"] || !Catedra::where('descripcion', $request->catedra["descripcion"])->first()) {
+          if (strtoupper($catedra->descripcion) == strtoupper($request->catedra["descripcion"]) || !Catedra::where('descripcion', $request->catedra["descripcion"])->first()) {
             if (
               is_numeric($request->catedra["id_jefe_catedra"])
               && (int) $request->catedra["id_jefe_catedra"] > 0
