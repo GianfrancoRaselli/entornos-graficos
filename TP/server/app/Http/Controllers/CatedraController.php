@@ -43,7 +43,7 @@ class CatedraController extends Controller
       && $request->catedra["id_jefe_catedra"]
     ) {
       try {
-        if (!Catedra::where('descripcion', $request->catedra["descripcion"])->first()) {
+        if (!Catedra::where('descripcion', trim($request->catedra["descripcion"]))->first()) {
           if (
             is_numeric($request->catedra["id_jefe_catedra"])
             && (int) $request->catedra["id_jefe_catedra"] > 0
@@ -60,7 +60,7 @@ class CatedraController extends Controller
             }
 
             $catedra = new Catedra();
-            $catedra->descripcion = $request->catedra["descripcion"];
+            $catedra->descripcion = trim($request->catedra["descripcion"]);
             $catedra->definicion = $request->catedra["definicion"];
             $catedra->id_jefe_catedra = $request->catedra["id_jefe_catedra"];
             $catedra->save();
@@ -102,7 +102,7 @@ class CatedraController extends Controller
           && (int) $request->catedra["id"] > 0
           && $catedra = Catedra::find($request->catedra["id"])
         ) {
-          if (strtoupper($catedra->descripcion) == strtoupper($request->catedra["descripcion"]) || !Catedra::where('descripcion', $request->catedra["descripcion"])->first()) {
+          if (strtoupper(trim($catedra->descripcion)) == strtoupper(trim($request->catedra["descripcion"])) || !Catedra::where('descripcion', trim($request->catedra["descripcion"]))->first()) {
             if (
               is_numeric($request->catedra["id_jefe_catedra"])
               && (int) $request->catedra["id_jefe_catedra"] > 0
@@ -124,7 +124,7 @@ class CatedraController extends Controller
                 }
               }
 
-              $catedra->descripcion = $request->catedra["descripcion"];
+              $catedra->descripcion = trim($request->catedra["descripcion"]);
               $catedra->definicion = $request->catedra["definicion"];
               $catedra->id_jefe_catedra = $request->catedra["id_jefe_catedra"];
               $catedra->save();
