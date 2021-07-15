@@ -359,39 +359,43 @@ class LlamadoController extends Controller
     ) {
       if (strtotime($request->llamado["fecha_inicio"]) >= strtotime(date('Y-m-d'))) {
         if (strtotime($request->llamado["fecha_inicio"]) <= strtotime($request->llamado["fecha_fin"])) {
-          if ($request->llamado["requisitos"]) {
-            if (
-              is_numeric($request->llamado["vacantes"])
-              && (int) $request->llamado["vacantes"] >= 1
-              && (int) $request->llamado["vacantes"] <= 100
-            ) {
-              try {
-                if (
-                  is_numeric($request->llamado["id_catedra"])
-                  && (int) $request->llamado["id_catedra"] > 0
-                  && Catedra::find($request->llamado["id_catedra"])
-                ) {
-                  $llamado = new Llamado();
+          if (!Llamado::where([['fecha_inicio', $request->llamado["fecha_inicio"]], ['id_catedra', $request->llamado["id_catedra"]]])->first()) {
+            if ($request->llamado["requisitos"]) {
+              if (
+                is_numeric($request->llamado["vacantes"])
+                && (int) $request->llamado["vacantes"] >= 1
+                && (int) $request->llamado["vacantes"] <= 100
+              ) {
+                try {
+                  if (
+                    is_numeric($request->llamado["id_catedra"])
+                    && (int) $request->llamado["id_catedra"] > 0
+                    && Catedra::find($request->llamado["id_catedra"])
+                  ) {
+                    $llamado = new Llamado();
 
-                  $llamado->fecha_inicio = $request->llamado["fecha_inicio"];
-                  $llamado->fecha_fin = $request->llamado["fecha_fin"];
-                  $llamado->requisitos = $request->llamado["requisitos"];
-                  $llamado->vacantes = $request->llamado["vacantes"];
-                  $llamado->calificado = false;
-                  $llamado->id_catedra = $request->llamado["id_catedra"];
+                    $llamado->fecha_inicio = $request->llamado["fecha_inicio"];
+                    $llamado->fecha_fin = $request->llamado["fecha_fin"];
+                    $llamado->requisitos = $request->llamado["requisitos"];
+                    $llamado->vacantes = $request->llamado["vacantes"];
+                    $llamado->calificado = false;
+                    $llamado->id_catedra = $request->llamado["id_catedra"];
 
-                  $llamado->save();
-                } else {
-                  return response()->json(['error' => 'El ID de cátedra ingresado no pertenece a una cátedra'], 406, []);
+                    $llamado->save();
+                  } else {
+                    return response()->json(['error' => 'El ID de cátedra ingresado no pertenece a una cátedra'], 406, []);
+                  }
+                } catch (Exception $e) {
+                  return response()->json(['error' => $e->getMessage()], 406, []);
                 }
-              } catch (Exception $e) {
-                return response()->json(['error' => $e->getMessage()], 406, []);
+              } else {
+                return response()->json(['error' => 'El número de personas que se pueden postular debe estar entre 1 y 100'], 406, []);
               }
             } else {
-              return response()->json(['error' => 'El número de personas que se pueden postular debe estar entre 1 y 100'], 406, []);
+              return response()->json(['error' => 'Ingrese los requisitos'], 406, []);
             }
           } else {
-            return response()->json(['error' => 'Ingrese los requisitos'], 406, []);
+            return response()->json(['error' => 'Ya hay una vacante registrada para la cátedra con esa fecha de inicio'], 406, []);
           }
         } else {
           return response()->json(['error' => 'La fecha de cierre debe ser mayor o igual a la fecha de inicio'], 406, []);
