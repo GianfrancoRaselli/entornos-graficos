@@ -1,23 +1,17 @@
 <template>
   <div>
     <div v-if="!cargado">
-      <img
-        src="../../assets/loading.gif"
-        alt="Imagen de carga de página"
-        class="loading mt-5"
-      />
+      <img src="../../assets/loading.gif" alt="Imagen de carga de página" class="loading mt-5" />
     </div>
     <div v-else>
       <nav aria-label="breadcrumb" class="m-auto" style="width: fit-content">
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
-            <router-link to="/administrarVacantes"
-              ><i class="fas fa-toolbox"></i> Administrar Vacantes</router-link
-            >
+            <router-link to="/administrarVacantes">
+              <i class="fas fa-toolbox"></i> Administrar Vacantes
+            </router-link>
           </li>
-          <li class="breadcrumb-item active" aria-current="page">
-            Agregar Vacante
-          </li>
+          <li class="breadcrumb-item active" aria-current="page">Agregar Vacante</li>
         </ol>
       </nav>
       <div style="width: 100%; margin-bottom: 1%;" v-if="errorMessage">
@@ -40,9 +34,7 @@
       </div>
       <div class="row m-2">
         <div class="col-md-5 mx-auto">
-          <div
-            class="card text-center animate__animated animate__flipInY animate__fast"
-          >
+          <div class="card text-center animate__animated animate__flipInY animate__fast">
             <div class="card-header">
               <p style="font-size: 1.75rem;">
                 <strong>Agregar Vacante</strong>
@@ -51,7 +43,9 @@
             <div class="card-body">
               <form @submit.prevent="handleSubmit">
                 <div class="form-group">
-                  <label><strong>Fecha Inicio</strong></label>
+                  <label>
+                    <strong>Fecha Inicio</strong>
+                  </label>
                   <input
                     type="date"
                     v-model="llamado.fecha_inicio"
@@ -62,14 +56,16 @@
                     required
                     autofocus
                   />
-                  <medium class="form-text text-muted" v-if="errorFechaInicio"
-                    ><p class="error">{{ errorFechaInicio }}</p></medium
-                  >
+                  <medium class="form-text text-muted" v-if="errorFechaInicio">
+                    <p class="error">{{ errorFechaInicio }}</p>
+                  </medium>
                 </div>
                 <br />
                 <div v-if="llamado.fecha_inicio">
                   <div class="form-group">
-                    <label><strong>Fecha Fin</strong></label>
+                    <label>
+                      <strong>Fecha Fin</strong>
+                    </label>
                     <input
                       type="date"
                       v-model="llamado.fecha_fin"
@@ -79,47 +75,53 @@
                       :class="{ errorClass: errorFechaFin }"
                       required
                     />
-                    <medium class="form-text text-muted" v-if="errorFechaFin"
-                      ><p class="error">{{ errorFechaFin }}</p></medium
-                    >
+                    <medium class="form-text text-muted" v-if="errorFechaFin">
+                      <p class="error">{{ errorFechaFin }}</p>
+                    </medium>
                   </div>
                   <br />
                 </div>
                 <div class="form-group">
-                  <label><strong>Requisitos</strong></label>
+                  <label>
+                    <strong>Requisitos</strong>
+                  </label>
                   <textarea
                     type="text"
                     v-model="llamado.requisitos"
-                    placeholder="Requisitos"
+                    placeholder="Descpción de los requisitos del puesto de trabajo"
                     class="form-control"
                     :class="{ errorClass: errorRequisitos }"
                     maxlength="300"
                     required
                   />
-                  <medium class="form-text text-muted" v-if="errorRequisitos"
-                    ><p class="error">{{ errorRequisitos }}</p></medium
-                  >
+                  <medium class="form-text text-muted" v-if="errorRequisitos">
+                    <p class="error">{{ errorRequisitos }}</p>
+                  </medium>
                 </div>
                 <br />
                 <div class="form-group">
-                  <label><strong>Vacantes</strong></label>
+                  <label>
+                    <strong>Número de Vacantes</strong>
+                  </label>
                   <input
                     type="number"
                     v-model="llamado.vacantes"
-                    placeholder="Vacentes"
+                    placeholder="Número de Vacentes"
                     min="1"
                     max="100"
                     class="form-control"
                     :class="{ errorClass: errorVacantes }"
                     required
                   />
-                  <medium class="form-text text-muted" v-if="errorVacantes"
-                    ><p class="error">{{ errorVacantes }}</p></medium
-                  >
+                  <medium class="form-text text-muted" v-if="errorVacantes">
+                    <p class="error">{{ errorVacantes }}</p>
+                  </medium>
                 </div>
                 <br />
                 <div class="form-group">
-                  <label><strong>Cátedra</strong></label>
+                  <label>
+                    <strong>Cátedra</strong>
+                  </label>
                   <select
                     class="form-control"
                     :class="{ errorClass: errorIdCatedra }"
@@ -130,18 +132,15 @@
                       v-for="(catedra, index) in catedras"
                       :key="index"
                       :value="catedra.id"
-                      >{{ catedra.descripcion }}</option
-                    >
+                    >{{ catedra.descripcion }}</option>
                   </select>
-                  <medium class="form-text text-muted" v-if="errorIdCatedra"
-                    ><p class="error">{{ errorIdCatedra }}</p></medium
-                  >
+                  <medium class="form-text text-muted" v-if="errorIdCatedra">
+                    <p class="error">{{ errorIdCatedra }}</p>
+                  </medium>
                 </div>
                 <br />
                 <div class="form-group">
-                  <button class="btn btn-success btn-block">
-                    Guardar
-                  </button>
+                  <button class="btn btn-success btn-block">Guardar</button>
                 </div>
               </form>
             </div>

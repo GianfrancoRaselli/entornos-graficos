@@ -27,7 +27,7 @@
               <input
                 type="text"
                 v-model="user.dni"
-                placeholder="Número DNI"
+                placeholder="42589786"
                 class="form-control"
                 :class="{ errorClass: errorDNI }"
                 maxlength="15"
@@ -63,7 +63,7 @@
               <input
                 type="text"
                 v-model="user.nombre_usuario"
-                placeholder="Nombre Usuario"
+                placeholder="Usuario123"
                 class="form-control"
                 :class="{ errorClass: errorNombreUsuario }"
                 minlength="6"
@@ -80,7 +80,7 @@
               <input
                 type="password"
                 v-model="user.clave"
-                placeholder="Clave"
+                placeholder="Mínimo de 8 caracteres"
                 class="form-control"
                 :class="{ errorClass: errorClave }"
                 minlength="8"
@@ -97,7 +97,7 @@
               <input
                 type="text"
                 v-model="user.nombre_apellido"
-                placeholder="Nombre y Apellido"
+                placeholder="Fulano Mengano"
                 class="form-control"
                 :class="{ errorClass: errorNombreApellido }"
                 maxlength="60"
@@ -113,7 +113,7 @@
               <input
                 type="email"
                 v-model="user.email"
-                placeholder="Email"
+                placeholder="correo@email.com"
                 class="form-control"
                 :class="{ errorClass: errorEmail }"
                 maxlength="60"
@@ -129,7 +129,7 @@
               <input
                 type="text"
                 v-model="user.telefono"
-                placeholder="Teléfono"
+                placeholder="03414481871"
                 class="form-control"
                 :class="{ errorClass: errorTelefono }"
                 maxlength="60"

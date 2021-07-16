@@ -33,7 +33,7 @@
               <input
                 type="text"
                 v-model="user.nombre_usuario"
-                placeholder="Nombre Usuario"
+                placeholder="Nombre de Usuario"
                 class="form-control"
                 :class="{ errorClass: errorNombreUsuario }"
                 minlength="6"

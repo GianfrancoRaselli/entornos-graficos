@@ -1,31 +1,23 @@
 <template>
   <div>
     <div v-if="cargando">
-      <img
-        src="../../assets/loading.gif"
-        alt="Imagen de carga de página"
-        class="loading mt-5"
-      />
+      <img src="../../assets/loading.gif" alt="Imagen de carga de página" class="loading mt-5" />
     </div>
     <div v-else>
       <nav aria-label="breadcrumb" class="m-auto" style="width: fit-content">
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
-            <router-link to="/administrarCatedras"
-              ><i class="fas fa-book-open"></i> Administrar
-              Cátedras</router-link
-            >
+            <router-link to="/administrarCatedras">
+              <i class="fas fa-book-open"></i> Administrar
+              Cátedras
+            </router-link>
           </li>
+          <li class="breadcrumb-item active" aria-current="page" v-if="!editMode">Agregar Cátedra</li>
           <li
             class="breadcrumb-item active"
             aria-current="page"
-            v-if="!editMode"
-          >
-            Agregar Cátedra
-          </li>
-          <li class="breadcrumb-item active" aria-current="page" v-else>
-            Editar Cátedra: {{ catedraEditando }}
-          </li>
+            v-else
+          >Editar Cátedra: {{ catedraEditando }}</li>
         </ol>
       </nav>
       <div style="width: 100%; margin-bottom: 1%;" v-if="errorMessage">
@@ -48,9 +40,7 @@
       </div>
       <div class="row m-2">
         <div class="col-md-5 mx-auto">
-          <div
-            class="card text-center animate__animated animate__flipInY animate__fast"
-          >
+          <div class="card text-center animate__animated animate__flipInY animate__fast">
             <div class="card-header">
               <p style="font-size: 1.75rem;">
                 <strong>Agregar Cátedra</strong>
@@ -59,39 +49,46 @@
             <div class="card-body">
               <form @submit.prevent="handleSubmit">
                 <div class="form-group">
-                  <label><strong>Nombre</strong></label>
+                  <label>
+                    <strong>Cátedra</strong>
+                  </label>
                   <input
                     type="text"
                     v-model="catedra.descripcion"
-                    placeholder="Nombre"
+                    placeholder="Entornos Gráficos"
                     class="form-control"
                     :class="{ errorClass: errorDescripcion }"
                     maxlength="40"
                     required
+                    autofocus
                   />
-                  <medium class="form-text text-muted" v-if="errorDescripcion"
-                    ><p class="error">{{ errorDescripcion }}</p></medium
-                  >
+                  <medium class="form-text text-muted" v-if="errorDescripcion">
+                    <p class="error">{{ errorDescripcion }}</p>
+                  </medium>
                 </div>
                 <br />
                 <div class="form-group">
-                  <label><strong>Descripción</strong></label>
+                  <label>
+                    <strong>Descripción</strong>
+                  </label>
                   <textarea
                     type="text"
                     v-model="catedra.definicion"
-                    placeholder="Descipción"
+                    placeholder="Descipción de la cátedra"
                     class="form-control"
                     :class="{ errorClass: errorDefinicion }"
                     maxlength="300"
                     required
                   />
-                  <medium class="form-text text-muted" v-if="errorDefinicion"
-                    ><p class="error">{{ errorDefinicion }}</p></medium
-                  >
+                  <medium class="form-text text-muted" v-if="errorDefinicion">
+                    <p class="error">{{ errorDefinicion }}</p>
+                  </medium>
                 </div>
                 <br />
                 <div class="form-group">
-                  <label><strong>Jefe de Cátedra</strong></label>
+                  <label>
+                    <strong>Jefe de Cátedra</strong>
+                  </label>
                   <select
                     class="form-control"
                     :class="{ errorClass: errorIdJefeCatedra }"
@@ -102,18 +99,15 @@
                       v-for="(persona, index) in personas"
                       :key="index"
                       :value="persona.id"
-                      >{{ persona.dni }} - {{ persona.nombre_apellido }}</option
-                    >
+                    >{{ persona.dni }} - {{ persona.nombre_apellido }}</option>
                   </select>
-                  <medium class="form-text text-muted" v-if="errorIdJefeCatedra"
-                    ><p class="error">{{ errorIdJefeCatedra }}</p></medium
-                  >
+                  <medium class="form-text text-muted" v-if="errorIdJefeCatedra">
+                    <p class="error">{{ errorIdJefeCatedra }}</p>
+                  </medium>
                 </div>
                 <br />
                 <div class="form-group">
-                  <button class="btn btn-success btn-block">
-                    Guardar
-                  </button>
+                  <button class="btn btn-success btn-block">Guardar</button>
                 </div>
               </form>
             </div>
