@@ -43,14 +43,14 @@
           <div class="card text-center animate__animated animate__flipInY animate__fast">
             <div class="card-header">
               <p style="font-size: 1.75rem;">
-                <strong>Agregar Cátedra</strong>
+                <b>Agregar Cátedra</b>
               </p>
             </div>
             <div class="card-body">
               <form @submit.prevent="handleSubmit">
                 <div class="form-group">
                   <label>
-                    <strong>Cátedra</strong>
+                    <b>Cátedra</b>
                   </label>
                   <input
                     type="text"
@@ -69,7 +69,7 @@
                 <br />
                 <div class="form-group">
                   <label>
-                    <strong>Descripción</strong>
+                    <b>Descripción</b>
                   </label>
                   <textarea
                     type="text"
@@ -87,7 +87,7 @@
                 <br />
                 <div class="form-group">
                   <label>
-                    <strong>Jefe de Cátedra</strong>
+                    <b>Jefe de Cátedra</b>
                   </label>
                   <select
                     class="form-control"

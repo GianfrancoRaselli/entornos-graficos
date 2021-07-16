@@ -3,7 +3,7 @@
     <p class="title mb-4">Glosario</p>
     <div style="text-align: justify">
       <p v-for="(palabra, index) in palabrasOrdenadas" :key="index">
-        <i class="fas fa-angle-right"></i>&nbsp;<strong>{{ palabra.termino }}</strong>:&nbsp;{{ palabra.descripcion }}
+        <i class="fas fa-angle-right"></i>&nbsp;<b>{{ palabra.termino }}</b>:&nbsp;{{ palabra.descripcion }}
       </p>
     </div>
   </div>

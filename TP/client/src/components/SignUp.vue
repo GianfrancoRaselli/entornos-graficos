@@ -23,7 +23,7 @@
         <div class="card-body">
           <form @submit.prevent="handleSubmit">
             <div class="form-group">
-              <label><strong>Número DNI</strong></label>
+              <label><b>Número DNI</b></label>
               <input
                 type="text"
                 v-model="user.dni"
@@ -40,7 +40,7 @@
             </div>
             <br />
             <div class="form-group">
-              <label><strong>Imagen del DNI</strong></label>
+              <label><b>Imagen del DNI</b></label>
               <input
                 type="file"
                 @change="obtenerArchivoDNI"
@@ -59,7 +59,7 @@
             </div>
             <br />
             <div class="form-group">
-              <label><strong>Nombre Usuario</strong></label>
+              <label><b>Nombre Usuario</b></label>
               <input
                 type="text"
                 v-model="user.nombre_usuario"
@@ -76,7 +76,7 @@
             </div>
             <br />
             <div class="form-group">
-              <label><strong>Clave</strong></label>
+              <label><b>Clave</b></label>
               <input
                 type="password"
                 v-model="user.clave"
@@ -93,7 +93,7 @@
             </div>
             <br />
             <div class="form-group">
-              <label><strong>Nombre y Apellido</strong></label>
+              <label><b>Nombre y Apellido</b></label>
               <input
                 type="text"
                 v-model="user.nombre_apellido"
@@ -109,7 +109,7 @@
             </div>
             <br />
             <div class="form-group">
-              <label><strong>Email</strong></label>
+              <label><b>Email</b></label>
               <input
                 type="email"
                 v-model="user.email"
@@ -125,7 +125,7 @@
             </div>
             <br />
             <div class="form-group">
-              <label><strong>Teléfono</strong></label>
+              <label><b>Teléfono</b></label>
               <input
                 type="text"
                 v-model="user.telefono"
@@ -141,7 +141,7 @@
             </div>
             <br />
             <div class="form-group">
-              <label><strong>Curriculum Vitae</strong></label>
+              <label><b>Curriculum Vitae</b></label>
               <input
                 type="file"
                 @change="obtenerArchivoCV"

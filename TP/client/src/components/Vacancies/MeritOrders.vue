@@ -33,7 +33,7 @@
               <div class="requisitos">
                 <p>
                   <i class="fas fa-check-circle"></i>&nbsp;
-                  <strong>Requisitos:</strong>
+                  <b>Requisitos:</b>
                   &nbsp;{{
                   vacante.requisitos
                   }}
@@ -42,14 +42,14 @@
               <div class="fecha-inicio">
                 <p>
                   <i class="fas fa-calendar-check"></i>&nbsp;
-                  <strong>Fecha de inicio:</strong>
+                  <b>Fecha de inicio:</b>
                   &nbsp;{{ vacante.fecha_inicio }}
                 </p>
               </div>
               <div class="fecha-fin">
                 <p>
                   <i class="fas fa-calendar-times"></i>&nbsp;
-                  <strong>Fecha de cierre:</strong>
+                  <b>Fecha de cierre:</b>
                   &nbsp;{{ vacante.fecha_fin }}
                 </p>
               </div>

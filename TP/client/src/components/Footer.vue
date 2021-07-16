@@ -2,8 +2,8 @@
   <footer>
     <div class="footer-container">
       <div class="col">
-        <p class="title"><strong>FACULTAD REGIONAL ROSARIO</strong></p>
-        <p><strong>Universidad Tecnológica Nacional</strong></p>
+        <p class="title"><b>FACULTAD REGIONAL ROSARIO</b></p>
+        <p><b>Universidad Tecnológica Nacional</b></p>
       </div>
       <div class="col">
         <p>

@@ -34,7 +34,7 @@
         <div class="card text-center animate__animated animate__flipInY animate__fast">
           <div class="card-header">
             <p style="font-size: 1.75rem;">
-              <strong>Editar Perfil</strong>
+              <b>Editar Perfil</b>
             </p>
           </div>
           <div class="card-body">

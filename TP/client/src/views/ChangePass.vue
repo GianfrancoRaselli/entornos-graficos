@@ -33,14 +33,14 @@
           >
             <div class="card-header">
               <p style="font-size: 1.75rem;">
-                <strong>Cambiar Clave</strong>
+                <b>Cambiar Clave</b>
               </p>
-              <p><strong>Usuario: </strong>{{ user.nombre_usuario }}</p>
+              <p><b>Usuario: </b>{{ user.nombre_usuario }}</p>
             </div>
             <div class="card-body">
               <form @submit.prevent="handleSubmit">
                 <div class="form-group">
-                  <label><strong>Nueva Clave</strong></label>
+                  <label><b>Nueva Clave</b></label>
                   <input
                     type="password"
                     v-model="user.nueva_clave"

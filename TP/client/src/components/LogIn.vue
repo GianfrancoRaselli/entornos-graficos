@@ -29,7 +29,7 @@
           />
           <form @submit.prevent="handleSubmit">
             <div class="form-group">
-              <label><strong>Nombre Usuario</strong></label>
+              <label><b>Nombre Usuario</b></label>
               <input
                 type="text"
                 v-model="user.nombre_usuario"
@@ -47,7 +47,7 @@
             </div>
             <br />
             <div class="form-group">
-              <label><strong>Clave</strong></label>
+              <label><b>Clave</b></label>
               <input
                 type="password"
                 v-model="user.clave"

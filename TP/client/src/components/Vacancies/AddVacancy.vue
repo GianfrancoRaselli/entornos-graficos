@@ -37,14 +37,14 @@
           <div class="card text-center animate__animated animate__flipInY animate__fast">
             <div class="card-header">
               <p style="font-size: 1.75rem;">
-                <strong>Agregar Vacante</strong>
+                <b>Agregar Vacante</b>
               </p>
             </div>
             <div class="card-body">
               <form @submit.prevent="handleSubmit">
                 <div class="form-group">
                   <label>
-                    <strong>Fecha Inicio</strong>
+                    <b>Fecha Inicio</b>
                   </label>
                   <input
                     type="date"
@@ -64,7 +64,7 @@
                 <div v-if="llamado.fecha_inicio">
                   <div class="form-group">
                     <label>
-                      <strong>Fecha Fin</strong>
+                      <b>Fecha Fin</b>
                     </label>
                     <input
                       type="date"
@@ -83,7 +83,7 @@
                 </div>
                 <div class="form-group">
                   <label>
-                    <strong>Requisitos</strong>
+                    <b>Requisitos</b>
                   </label>
                   <textarea
                     type="text"
@@ -101,7 +101,7 @@
                 <br />
                 <div class="form-group">
                   <label>
-                    <strong>Número de Vacantes</strong>
+                    <b>Número de Vacantes</b>
                   </label>
                   <input
                     type="number"
@@ -120,7 +120,7 @@
                 <br />
                 <div class="form-group">
                   <label>
-                    <strong>Cátedra</strong>
+                    <b>Cátedra</b>
                   </label>
                   <select
                     class="form-control"
