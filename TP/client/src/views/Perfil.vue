@@ -102,7 +102,7 @@
               type="file"
               @change="obtenerArchivo"
               placeholder="CV"
-              class="form-control"
+              class="form-control-file"
               accept="pdf"
               required
             />

@@ -46,7 +46,7 @@
                 type="file"
                 @change="obtenerArchivoDNI"
                 placeholder="CV"
-                class="form-control"
+                class="form-control-file"
                 :class="{ errorClass: errorFormatoDNI }"
                 accept="pdf"
                 required
@@ -147,7 +147,7 @@
                 type="file"
                 @change="obtenerArchivoCV"
                 placeholder="CV"
-                class="form-control"
+                class="form-control-file"
                 :class="{ errorClass: errorFormatoCV }"
                 accept="pdf"
                 required
