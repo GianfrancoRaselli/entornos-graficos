@@ -30,7 +30,8 @@
                 placeholder="42589786"
                 class="form-control"
                 :class="{ errorClass: errorDNI }"
-                maxlength="15"
+                maxlength="10"
+                minlength="7"
                 required
                 autofocus
               />
@@ -132,7 +133,7 @@
                 placeholder="03414481871"
                 class="form-control"
                 :class="{ errorClass: errorTelefono }"
-                maxlength="60"
+                maxlength="14"
                 required
               />
               <medium class="form-text text-muted" v-if="errorTelefono"
