@@ -23,6 +23,11 @@ const router = new Router({
       component: () => import('@/views/Inicio.vue'),
     },
     {
+      path: '/mapasitio',
+      name: 'Mapa de Sitio',
+      component: () => import('@/views/SiteMap.vue'),
+    },
+    {
       path: '/vacantes',
       name: 'Vacantes',
       component: () => import('@/views/Vacancies.vue'),

@@ -11,6 +11,7 @@
           ZEBALLOS 1341 - S2000BQA - ROSARIO
         </p>
         <p>Télefono: (0341) 4481871</p>
+        <router-link class="link" to="/mapasitio">Mapa de sitio</router-link>
       </div>
     </div>
     <div class="support-container px-5">
