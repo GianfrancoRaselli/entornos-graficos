@@ -214,7 +214,8 @@ export default {
 
         if (
           this.user.dni &&
-          this.user.dni.length <= 15 &&
+          this.user.dni.length >= 7 &&
+          this.user.dni.length <= 10 &&
           !isNaN(this.user.dni)
         ) {
           this.errorDNI = "";
@@ -274,7 +275,7 @@ export default {
 
         if (
           this.user.telefono &&
-          this.user.telefono.length <= 60 &&
+          this.user.telefono.length <= 14 &&
           !isNaN(this.user.telefono)
         ) {
           this.errorTelefono = "";

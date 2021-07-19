@@ -23,7 +23,7 @@ const router = new Router({
       component: () => import('@/views/Inicio.vue'),
     },
     {
-      path: '/mapasitio',
+      path: '/mapaSitio',
       name: 'Mapa de Sitio',
       component: () => import('@/views/SiteMap.vue'),
     },

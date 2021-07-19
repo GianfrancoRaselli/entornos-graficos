@@ -32,7 +32,7 @@
 
             <li
               class="list-step"
-            >A continuación se desplegará un formulario. Todos los campos son obligatorios</li>
+            >A continuación se desplegará un formulario. Todos los campos son obligatorios.</li>
             <img
               class="help-img"
               src="../assets/ayuda/registro2.jpg"
@@ -41,11 +41,11 @@
 
             <li
               class="list-step mt-3"
-            >Una vez completados todos los campos, hacer click en el botón de crear cuenta</li>
+            >Una vez completados todos los campos, hacer click en el botón de crear cuenta.</li>
 
             <li
               class="list-step mt-3"
-            >Listo! Su cuenta será verificada por un administrador, este proceso puede demorar algunos días</li>
+            >Listo! Su cuenta será verificada por un administrador, este proceso puede demorar algunos días.</li>
           </ol>
         </div>
       </div>
@@ -66,7 +66,7 @@
         <div class="card-body">
           <ol>
             <li class="list-step">
-              En la pestaña ubicada en la esquina superior derecha, donde se encuentra nuestro nombre de usuario, ingresar a la sección del perfil
+              En la pestaña ubicada en la esquina superior derecha, donde se encuentra nuestro nombre de usuario, ingresar a la sección del perfil.
               <br />
               <img
                 class="help-img"
@@ -75,7 +75,7 @@
               />
             </li>
             <li class="list-step">
-              En dicha sección podremos editar nuestros datos, cargar un nuevo CV, o ver el actual
+              En dicha sección podremos editar nuestros datos, cargar un nuevo CV, o ver el actual.
               <br />
               <img
                 class="help-img"
@@ -108,12 +108,12 @@
         <div class="card-body">
           <ol>
             <li class="list-step">
-              Usted puede revisar en la sección de inicio cuáles cátedras tienen sus últimas vacantes disponibles. Allí puede hacer click en el botón de "Postularme"
+              Usted puede revisar en la sección de inicio cuáles cátedras tienen sus últimas vacantes disponibles. Allí puede hacer click en el botón de "Postularme".
               <br />
               <img class="help-img" src="../assets/ayuda/postularme1.jpg" alt="Donde postularme" />
             </li>
             <li class="list-step mt-3">
-              En caso de que la cátedra deseada no se encuentre en la página de inicio, usted puede dirigirse a Vacantes -> Buscar Vacantes, y postularse a la cátedra que desee.
+              En caso de que la cátedra deseada no se encuentre en la página de inicio, usted puede dirigirse a "Vacantes" -> "Buscar Vacantes", y postularse a la cátedra que tenga vacantes abiertas.
               <br />
               <img
                 class="help-img"
@@ -146,7 +146,7 @@
         <div class="card-body">
           <ul>
             <li class="list-step">
-              Desde su perfil, usted puede revisar a que vacantes se encuentra postulado
+              Desde su perfil, usted puede revisar a que vacantes se encuentra postulado.
               <br />
               <img
                 class="help-img"
@@ -179,7 +179,7 @@
         <div class="card-body">
           <ul>
             <li class="list-step">
-              Desde su perfil, usted puede revisar a que vacantes se encuentra postulado, desde allí puede realizar la acción "Darme de baja"
+              Desde su perfil, usted puede revisar a que vacantes se encuentra postulado, desde allí puede realizar la acción "Darme de baja" en las vacantes que aún se encuentren abiertas.
               <br />
               <img
                 class="help-img"
@@ -188,7 +188,7 @@
               />
             </li>
             <li class="list-step">
-              También puede buscar en la lista de vacantes la cátedra en la cual se encuentra postulado, y hacer click en "Darme de baja"
+              También puede buscar en la lista de vacantes la cátedra en la cual se encuentra postulado, y en caso de que la vacante no haya cerrado, hacer click en "Darme de baja".
               <br />
               <img class="help-img" src="../assets/ayuda/darmedebaja1.jpg" alt="Donde postularme" />
             </li>

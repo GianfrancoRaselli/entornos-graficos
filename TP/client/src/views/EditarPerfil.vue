@@ -108,7 +108,7 @@
                   placeholder="Teléfono"
                   class="form-control"
                   :class="{ errorClass: errorTelefono }"
-                  maxlength="60"
+                  maxlength="14"
                   required
                 />
                 <medium class="form-text text-muted" v-if="errorTelefono">
@@ -247,7 +247,7 @@ export default {
 
         if (
           this.user.telefono &&
-          this.user.telefono.length <= 60 &&
+          this.user.telefono.length <= 14 &&
           !isNaN(this.user.telefono)
         ) {
           this.errorTelefono = "";

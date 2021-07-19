@@ -25,7 +25,8 @@ class PersonaController extends Controller
     {
         if (
             $request->dni
-            && strlen($request->dni) <= 15
+            && strlen($request->dni) <= 7
+            && strlen($request->dni) <= 10
             && is_numeric($request->dni)
             && $request->imagen_dni
             && $request->hasFile('imagen_dni')
@@ -41,7 +42,7 @@ class PersonaController extends Controller
             && strlen($request->email) <= 60
             && preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/', $request->email)
             && $request->telefono
-            && strlen($request->telefono) <= 60
+            && strlen($request->telefono) <= 14
             && is_numeric($request->telefono)
             && $request->curriculum_vitae
             && $request->hasFile('curriculum_vitae')
@@ -157,7 +158,7 @@ class PersonaController extends Controller
             && strlen($request->email) <= 60
             && preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/', $request->email)
             && $request->telefono
-            && strlen($request->telefono) <= 60
+            && strlen($request->telefono) <= 14
             && (!$request->cambiar_clave ||
                 ($request->cambiar_clave
                     && $request->nueva_clave
