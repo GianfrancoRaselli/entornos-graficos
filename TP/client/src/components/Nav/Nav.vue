@@ -51,7 +51,7 @@
                 @click="cerrarSesion"
                 id="btn-cerrar-sesion"
               >
-                <i class="fas fa-sign-out-alt mr-1"></i>Cerrar Sesión
+                <i class="fas fa-sign-out-alt mr-1"></i>Cerrar sesión
               </button>
             </div>
           </li>

@@ -51,7 +51,7 @@
             <router-link class="sitemap-link" to="/mapaSitio">Mapa del sitio</router-link>
           </li>
         </ul>
-        <li>Iniciar Sesión</li>
+        <li>Iniciar sesión</li>
         <ul>
           <li>
             <router-link class="sitemap-link" to="/perfil">Perfil</router-link>
