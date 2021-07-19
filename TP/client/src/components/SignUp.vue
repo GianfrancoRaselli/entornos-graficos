@@ -1,6 +1,11 @@
 <template>
   <div>
-    <Popup :dataTarget="identificator" title="Registrarse" :showButtons="false">
+    <Popup
+      :dataTarget="identificator"
+      title="Registrarse"
+      :showButtons="false"
+      propClass="modal-lg"
+    >
       <div style="width: 100%; margin-bottom: 1%;" v-if="errorMessage">
         <div
           class="alert alert-danger alert-dismissible fade show"
@@ -22,148 +27,178 @@
       <div class="text-center animate__animated animate__flipInY animate__fast">
         <div class="card-body">
           <form @submit.prevent="handleSubmit">
-            <div class="form-group">
-              <label><b>Número DNI</b></label>
-              <input
-                type="text"
-                v-model="user.dni"
-                placeholder="42589786"
-                class="form-control"
-                :class="{ errorClass: errorDNI }"
-                maxlength="10"
-                minlength="7"
-                required
-                autofocus
-              />
-              <medium class="form-text text-muted" v-if="errorDNI"
-                ><p class="error">{{ errorDNI }}</p></medium
-              >
+            <div class="form-group row">
+              <label class="col-lg-3 col-form-label">
+                <b>Número DNI</b>:
+              </label>
+              <div class="col-lg-9">
+                <input
+                  type="text"
+                  v-model="user.dni"
+                  placeholder="42589786"
+                  class="form-control"
+                  :class="{ errorClass: errorDNI }"
+                  maxlength="10"
+                  minlength="7"
+                  required
+                  autofocus
+                />
+                <medium class="form-text text-muted" v-if="errorDNI">
+                  <p class="error">{{ errorDNI }}</p>
+                </medium>
+              </div>
+            </div>
+            <br />
+            <div class="form-group row">
+              <label class="col-lg-3 col-form-label">
+                <b>Imagen del DNI</b>:
+              </label>
+              <div class="col-lg-9">
+                <input
+                  type="file"
+                  @change="obtenerArchivoDNI"
+                  placeholder="CV"
+                  class="form-control-file"
+                  :class="{ errorClass: errorFormatoDNI }"
+                  accept="pdf"
+                  required
+                />
+                <small class="form-text text-muted" v-if="!errorFormatoDNI">
+                  <span>Ingrese su DNI en formado PDF</span>
+                </small>
+                <medium class="form-text text-muted" v-if="errorFormatoDNI">
+                  <span class="error">Ingrese su DNI en formado PDF</span>
+                </medium>
+              </div>
+            </div>
+            <br />
+            <div class="form-group row">
+              <label class="col-lg-3 col-form-label">
+                <b>Nombre Usuario</b>:
+              </label>
+              <div class="col-lg-9">
+                <input
+                  type="text"
+                  v-model="user.nombre_usuario"
+                  placeholder="Usuario123"
+                  class="form-control"
+                  :class="{ errorClass: errorNombreUsuario }"
+                  minlength="6"
+                  maxlength="30"
+                  required
+                />
+                <medium class="form-text text-muted" v-if="errorNombreUsuario">
+                  <span class="error">{{ errorNombreUsuario }}</span>
+                </medium>
+              </div>
+            </div>
+            <br />
+            <div class="form-group row">
+              <label class="col-lg-3 col-form-label">
+                <b>Clave</b>:
+              </label>
+              <div class="col-lg-9">
+                <input
+                  type="password"
+                  v-model="user.clave"
+                  placeholder="Mínimo de 8 caracteres"
+                  class="form-control"
+                  :class="{ errorClass: errorClave }"
+                  minlength="8"
+                  maxlength="40"
+                  required
+                />
+                <medium class="form-text text-muted" v-if="errorClave">
+                  <span class="error">{{ errorClave }}</span>
+                </medium>
+              </div>
+            </div>
+            <br />
+            <div class="form-group row">
+              <label class="col-lg-3 col-form-label">
+                <b>Nombre y Apellido</b>:
+              </label>
+              <div class="col-lg-9">
+                <input
+                  type="text"
+                  v-model="user.nombre_apellido"
+                  placeholder="Fulano Mengano"
+                  class="form-control"
+                  :class="{ errorClass: errorNombreApellido }"
+                  maxlength="60"
+                  required
+                />
+                <medium class="form-text text-muted" v-if="errorNombreApellido">
+                  <span class="error">{{ errorNombreApellido }}</span>
+                </medium>
+              </div>
+            </div>
+            <br />
+            <div class="form-group row">
+              <label class="col-lg-3 col-form-label">
+                <b>Email</b>:
+              </label>
+              <div class="col-lg-9">
+                <input
+                  type="email"
+                  v-model="user.email"
+                  placeholder="correo@email.com"
+                  class="form-control"
+                  :class="{ errorClass: errorEmail }"
+                  maxlength="60"
+                  required
+                />
+                <medium class="form-text text-muted" v-if="errorEmail">
+                  <span class="error">{{ errorEmail }}</span>
+                </medium>
+              </div>
+            </div>
+            <br />
+            <div class="form-group row">
+              <label class="col-lg-3 col-form-label">
+                <b>Teléfono</b>:
+              </label>
+              <div class="col-lg-9">
+                <input
+                  type="text"
+                  v-model="user.telefono"
+                  placeholder="03414481871"
+                  class="form-control"
+                  :class="{ errorClass: errorTelefono }"
+                  maxlength="14"
+                  required
+                />
+                <medium class="form-text text-muted" v-if="errorTelefono">
+                  <span class="error">{{ errorTelefono }}</span>
+                </medium>
+              </div>
+            </div>
+            <br />
+            <div class="form-group row">
+              <label class="col-lg-3 col-form-label">
+                <b>Curriculum Vitae</b>:
+              </label>
+              <div class="col-lg-9">
+                <input
+                  type="file"
+                  @change="obtenerArchivoCV"
+                  placeholder="CV"
+                  class="form-control-file"
+                  :class="{ errorClass: errorFormatoCV }"
+                  accept="pdf"
+                  required
+                />
+                <small class="form-text text-muted" v-if="!errorFormatoCV">
+                  <span>Ingrese su CV en formado PDF</span>
+                </small>
+                <medium class="form-text text-muted" v-if="errorFormatoCV">
+                  <span class="error">Ingrese su CV en formado PDF</span>
+                </medium>
+              </div>
             </div>
             <br />
             <div class="form-group">
-              <label><b>Imagen del DNI</b></label>
-              <input
-                type="file"
-                @change="obtenerArchivoDNI"
-                placeholder="CV"
-                class="form-control-file"
-                :class="{ errorClass: errorFormatoDNI }"
-                accept="pdf"
-                required
-              />
-              <small class="form-text text-muted" v-if="!errorFormatoDNI"
-                ><p>Ingrese su DNI en formado PDF</p></small
-              >
-              <medium class="form-text text-muted" v-if="errorFormatoDNI"
-                ><p class="error">Ingrese su DNI en formado PDF</p></medium
-              >
-            </div>
-            <br />
-            <div class="form-group">
-              <label><b>Nombre Usuario</b></label>
-              <input
-                type="text"
-                v-model="user.nombre_usuario"
-                placeholder="Usuario123"
-                class="form-control"
-                :class="{ errorClass: errorNombreUsuario }"
-                minlength="6"
-                maxlength="30"
-                required
-              />
-              <medium class="form-text text-muted" v-if="errorNombreUsuario"
-                ><p class="error">{{ errorNombreUsuario }}</p></medium
-              >
-            </div>
-            <br />
-            <div class="form-group">
-              <label><b>Clave</b></label>
-              <input
-                type="password"
-                v-model="user.clave"
-                placeholder="Mínimo de 8 caracteres"
-                class="form-control"
-                :class="{ errorClass: errorClave }"
-                minlength="8"
-                maxlength="40"
-                required
-              />
-              <medium class="form-text text-muted" v-if="errorClave"
-                ><p class="error">{{ errorClave }}</p></medium
-              >
-            </div>
-            <br />
-            <div class="form-group">
-              <label><b>Nombre y Apellido</b></label>
-              <input
-                type="text"
-                v-model="user.nombre_apellido"
-                placeholder="Fulano Mengano"
-                class="form-control"
-                :class="{ errorClass: errorNombreApellido }"
-                maxlength="60"
-                required
-              />
-              <medium class="form-text text-muted" v-if="errorNombreApellido"
-                ><p class="error">{{ errorNombreApellido }}</p></medium
-              >
-            </div>
-            <br />
-            <div class="form-group">
-              <label><b>Email</b></label>
-              <input
-                type="email"
-                v-model="user.email"
-                placeholder="correo@email.com"
-                class="form-control"
-                :class="{ errorClass: errorEmail }"
-                maxlength="60"
-                required
-              />
-              <medium class="form-text text-muted" v-if="errorEmail"
-                ><p class="error">{{ errorEmail }}</p></medium
-              >
-            </div>
-            <br />
-            <div class="form-group">
-              <label><b>Teléfono</b></label>
-              <input
-                type="text"
-                v-model="user.telefono"
-                placeholder="03414481871"
-                class="form-control"
-                :class="{ errorClass: errorTelefono }"
-                maxlength="14"
-                required
-              />
-              <medium class="form-text text-muted" v-if="errorTelefono"
-                ><p class="error">{{ errorTelefono }}</p></medium
-              >
-            </div>
-            <br />
-            <div class="form-group">
-              <label><b>Curriculum Vitae</b></label>
-              <input
-                type="file"
-                @change="obtenerArchivoCV"
-                placeholder="CV"
-                class="form-control-file"
-                :class="{ errorClass: errorFormatoCV }"
-                accept="pdf"
-                required
-              />
-              <small class="form-text text-muted" v-if="!errorFormatoCV"
-                ><p>Ingrese su CV en formado PDF</p></small
-              >
-              <medium class="form-text text-muted" v-if="errorFormatoCV"
-                ><p class="error">Ingrese su CV en formado PDF</p></medium
-              >
-            </div>
-            <br />
-            <div class="form-group">
-              <button class="btn btn-success btn-block">
-                Crear Cuenta
-              </button>
+              <button class="btn btn-success btn-block">Crear Cuenta</button>
             </div>
           </form>
         </div>
@@ -346,12 +381,18 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .error {
   color: red;
 }
 
 .errorClass {
   background-color: rgb(228, 167, 167);
+}
+
+label,
+small,
+medium {
+  text-align: left;
 }
 </style>

@@ -1,6 +1,11 @@
 <template>
   <div>
-    <Popup :dataTarget="dataTarget" title="Iniciar Sesión" :showButtons="false">
+    <Popup
+      :dataTarget="dataTarget"
+      title="Iniciar Sesión"
+      :showButtons="false"
+      propClass="modal-lg"
+    >
       <div style="width: 100%; margin-bottom: 1%;" v-if="errorMessage">
         <div
           class="alert alert-danger alert-dismissible fade show"
@@ -28,53 +33,58 @@
             class="card-img-top mx-auto m-4 rounded-circle w-25"
           />
           <form @submit.prevent="handleSubmit">
-            <div class="form-group">
-              <label><b>Nombre Usuario</b></label>
-              <input
-                type="text"
-                v-model="user.nombre_usuario"
-                placeholder="Nombre de Usuario"
-                class="form-control"
-                :class="{ errorClass: errorNombreUsuario }"
-                minlength="6"
-                maxlength="30"
-                required
-                autofocus
-              />
-              <medium class="form-text text-muted" v-if="errorNombreUsuario"
-                ><p class="error">{{ errorNombreUsuario }}</p></medium
-              >
+            <div class="form-group row">
+              <label class="col-lg-3 col-form-label">
+                <b>Nombre Usuario</b>:
+              </label>
+              <div class="col-lg-9">
+                <input
+                  type="text"
+                  v-model="user.nombre_usuario"
+                  placeholder="Nombre de Usuario"
+                  class="form-control"
+                  :class="{ errorClass: errorNombreUsuario }"
+                  minlength="6"
+                  maxlength="30"
+                  required
+                  autofocus
+                />
+                <medium class="form-text text-muted" v-if="errorNombreUsuario">
+                  <p class="error">{{ errorNombreUsuario }}</p>
+                </medium>
+              </div>
+            </div>
+            <br />
+            <div class="form-group row">
+              <label class="col-lg-3 col-form-label">
+                <b>Clave</b>:
+              </label>
+              <div class="col-lg-9">
+                <input
+                  type="password"
+                  v-model="user.clave"
+                  placeholder="Clave"
+                  class="form-control"
+                  :class="{ errorClass: errorClave }"
+                  minlength="8"
+                  maxlength="40"
+                  required
+                />
+                <medium class="form-text text-muted" v-if="errorClave">
+                  <p class="error">{{ errorClave }}</p>
+                </medium>
+              </div>
             </div>
             <br />
             <div class="form-group">
-              <label><b>Clave</b></label>
-              <input
-                type="password"
-                v-model="user.clave"
-                placeholder="Clave"
-                class="form-control"
-                :class="{ errorClass: errorClave }"
-                minlength="8"
-                maxlength="40"
-                required
-              />
-              <medium class="form-text text-muted" v-if="errorClave"
-                ><p class="error">{{ errorClave }}</p></medium
-              >
-            </div>
-            <br />
-            <div class="form-group">
-              <button class="btn btn-success btn-block">
-                Iniciar Sesión
-              </button>
+              <button class="btn btn-success btn-block">Iniciar Sesión</button>
             </div>
             <div class="form-group" v-if="!postularse">
-              <utn-button btnClass="btn btn-link" @click="abrirSearchUser">
-                ¿Has olvidado la clave?
-              </utn-button>
-              <utn-button btnClass="btn btn-link" @click="abrirSignUp">
-                ¿No tienes cuenta? ¡Regístrate!
-              </utn-button>
+              <utn-button btnClass="btn btn-link" @click="abrirSearchUser">¿Has olvidado la clave?</utn-button>
+              <utn-button
+                btnClass="btn btn-link"
+                @click="abrirSignUp"
+              >¿No tienes cuenta? ¡Regístrate!</utn-button>
             </div>
           </form>
         </div>
@@ -197,7 +207,7 @@ export default {
       window.$("#searchUserPopup").modal("show");
     }
   }
-}
+};
 </script>
 
 <style>
@@ -207,5 +217,11 @@ export default {
 
 .errorClass {
   background-color: rgb(228, 167, 167);
+}
+
+label,
+small,
+medium {
+  text-align: left;
 }
 </style>
