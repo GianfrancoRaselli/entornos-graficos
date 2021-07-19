@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 07-07-2021 a las 06:36:22
+-- Tiempo de generación: 19-07-2021 a las 19:37:37
 -- Versión del servidor: 10.4.14-MariaDB
 -- Versión de PHP: 7.4.9
 
@@ -71,26 +71,19 @@ DELIMITER ;
 
 CREATE TABLE `personas` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `dni` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `dni` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `imagen_dni` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `nombre_usuario` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `clave` varchar(180) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `nombre_apellido` varchar(60) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(60) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `telefono` varchar(60) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `telefono` varchar(14) COLLATE utf8mb4_unicode_ci NOT NULL,
   `api_token` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `curriculum_vitae` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `verificada` tinyint(1) NOT NULL,
   `codigo_cambiar_clave` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `fecha_hora_max_cambiar_clave` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Volcado de datos para la tabla `personas`
---
-
-INSERT INTO `personas` (`id`, `dni`, `imagen_dni`, `nombre_usuario`, `clave`, `nombre_apellido`, `email`, `telefono`, `api_token`, `curriculum_vitae`, `verificada`, `codigo_cambiar_clave`, `fecha_hora_max_cambiar_clave`) VALUES
-(1, '42531073', 'DNI_wcirb1JUgPk.pdf', 'GianRase', '$2y$10$D.8bYOPzDRYAG2AlpcpgwuswMFuzaAyeIksYHPeP7IsMoNZSdmMIy', 'Gianfranco Raselli', 'gianrase4@gmail.com', '3482334910', 'd5PQOt2HLHC68qR0rHLhHSNNHwG0Uy1S0pd6u2iGPGOKEDZeaahlJNqVki4B2', 'CV_edmaE1XUwl5.pdf', 1, 'xgRr0sdCbg11625718100jGZnD8fduY', '2021-07-08 01:21:40');
 
 -- --------------------------------------------------------
 
@@ -115,15 +108,6 @@ CREATE TABLE `personas_roles` (
   `id_persona` bigint(20) UNSIGNED NOT NULL,
   `id_rol` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Volcado de datos para la tabla `personas_roles`
---
-
-INSERT INTO `personas_roles` (`id`, `id_persona`, `id_rol`) VALUES
-(2, 1, 1),
-(3, 1, 2),
-(1, 1, 3);
 
 -- --------------------------------------------------------
 
@@ -163,15 +147,6 @@ CREATE TABLE `roles` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `descripcion` enum('Administrador','Jefe Catedra','Usuario') COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Volcado de datos para la tabla `roles`
---
-
-INSERT INTO `roles` (`id`, `descripcion`) VALUES
-(1, 'Administrador'),
-(2, 'Jefe Catedra'),
-(3, 'Usuario');
 
 --
 -- Índices para tablas volcadas
@@ -255,7 +230,7 @@ ALTER TABLE `llamados`
 -- AUTO_INCREMENT de la tabla `personas`
 --
 ALTER TABLE `personas`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `personas_catedras`
@@ -267,7 +242,7 @@ ALTER TABLE `personas_catedras`
 -- AUTO_INCREMENT de la tabla `personas_roles`
 --
 ALTER TABLE `personas_roles`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `postulaciones`
@@ -279,7 +254,7 @@ ALTER TABLE `postulaciones`
 -- AUTO_INCREMENT de la tabla `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- Restricciones para tablas volcadas
