@@ -197,7 +197,7 @@
               </div>
             </div>
             <br />
-            <div class="form-group">
+            <div class="form-group btn-submit">
               <button class="btn btn-success btn-block">Crear Cuenta</button>
             </div>
           </form>
@@ -390,9 +390,23 @@ export default {
   background-color: rgb(228, 167, 167);
 }
 
-label,
+label {
+  text-align: center;
+}
+
 small,
 medium {
   text-align: left;
+}
+
+@media (min-width: 992px) {
+  label {
+    text-align: left;
+  }
+
+  .btn-submit {
+    margin-left: 25%;
+    margin-right: 25%;
+  }
 }
 </style>

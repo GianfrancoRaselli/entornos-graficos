@@ -29,8 +29,7 @@
           <img
             src="../assets/img-signin.png"
             alt="Logo Inicio Sesion"
-            width="200px"
-            class="card-img-top mx-auto m-4 rounded-circle w-25"
+            class="card-img-top mx-auto mb-4 rounded-circle img-login"
           />
           <form @submit.prevent="handleSubmit">
             <div class="form-group row">
@@ -76,7 +75,7 @@
               </div>
             </div>
             <br />
-            <div class="form-group">
+            <div class="form-group btn-submit">
               <button class="btn btn-success btn-block">Iniciar Sesión</button>
             </div>
             <div class="form-group" v-if="!postularse">
@@ -210,7 +209,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .error {
   color: red;
 }
@@ -219,9 +218,43 @@ export default {
   background-color: rgb(228, 167, 167);
 }
 
-label,
+.img-login {
+  width: 35%;
+}
+
+label {
+  text-align: center;
+}
+
 small,
 medium {
   text-align: left;
+}
+
+@media (min-width: 576px) {
+  .img-login {
+    width: 30%;
+  }
+}
+
+@media (min-width: 768px) {
+  .img-login {
+    width: 25%;
+  }
+}
+
+@media (min-width: 992px) {
+  .img-login {
+    width: 20%;
+  }
+
+  label {
+    text-align: left;
+  }
+
+  .btn-submit {
+    margin-left: 25%;
+    margin-right: 25%;
+  }
 }
 </style>
