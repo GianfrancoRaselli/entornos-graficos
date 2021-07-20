@@ -25,7 +25,7 @@ class PersonaController extends Controller
     {
         if (
             $request->dni
-            && strlen($request->dni) <= 7
+            && strlen($request->dni) >= 7
             && strlen($request->dni) <= 10
             && is_numeric($request->dni)
             && $request->imagen_dni
