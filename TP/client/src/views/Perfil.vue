@@ -8,7 +8,7 @@
         class="d-flex justify-content-center animate__animated animate__pulse animate__fast mx-1"
       >
         <div class="w-100 profile-container">
-          <div class="col-sm-10 col-md-8 col-lg-7 col-xl-5 data-box">
+          <div class="col-sm-10 col-md-8 col-lg-7 col-xl-6 data-box">
             <div class="profile-img">{{ user.nombre_apellido[0] }}</div>
             <div class="personal-info mt-3 mx-2">
               <p>
@@ -25,9 +25,9 @@
               </p>
             </div>
             <utn-button
-              icon="fas fa-edit"
+              icon="fas fa-edit mr-2"
               to="perfil/editar"
-              btnClass="btn btn-light mx-4"
+              btnClass="btn btn-light mt-1 ml-4"
               id="btn-editar-usuario"
             >Editar</utn-button>
           </div>
@@ -97,7 +97,9 @@
       <Popup data-target="cargarCV" title="Cargar CV" :showButtons="false">
         <form @submit.prevent="handleSubmitCV" enctype="multipart/form-data">
           <div class="form-group">
-            <label for="labelInputCV">Curriculum Vitae</label>
+            <label for="labelInputCV">
+              <b>Curriculum Vitae</b>:
+            </label>
             <input
               type="file"
               @change="obtenerArchivo"

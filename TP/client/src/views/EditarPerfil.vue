@@ -30,101 +30,116 @@
       </div>
     </div>
     <div class="row m-2">
-      <div class="col-md-4 mx-auto">
+      <div class="col-md-9 col-xl-8 mx-auto">
         <div class="card text-center animate__animated animate__flipInY animate__fast">
           <div class="card-header">
-            <p style="font-size: 1.75rem;">
+            <span class="h2">
               <b>Editar Perfil</b>
-            </p>
+            </span>
           </div>
           <div class="card-body">
             <form @submit.prevent="handleSubmit">
-              <div class="form-group">
-                <label>Nombre Usuario</label>
-                <input
-                  type="text"
-                  v-model="user.nombre_usuario"
-                  placeholder="Nombre Usuario"
-                  class="form-control"
-                  :class="{ errorClass: errorNombreUsuario }"
-                  minlength="6"
-                  maxlength="30"
-                  required
-                  autofocus
-                />
-                <medium class="form-text text-muted" v-if="errorNombreUsuario">
-                  <p class="error">{{ errorNombreUsuario }}</p>
-                </medium>
-              </div>
-              <br />
-              <div class="form-group">
-                <label>Cambiar Clave</label>&nbsp;
-                <input
-                  type="checkbox"
-                  v-model="user.cambiar_clave"
-                  placeholder="Cambiar Clave"
-                />
-              </div>
-              <br />
-              <div v-if="user.cambiar_clave">
-                <div class="form-group">
-                  <label>Nueva Clave</label>
+              <div class="form-group row">
+                <label class="col-lg-3 col-form-label">
+                  <b>Nombre Usuario</b>:
+                </label>
+                <div class="col-lg-9">
                   <input
-                    type="password"
-                    v-model="user.nueva_clave"
-                    placeholder="Nueva Clave"
+                    type="text"
+                    v-model="user.nombre_usuario"
+                    placeholder="Nombre Usuario"
                     class="form-control"
-                    :class="{ errorClass: errorNuevaClave }"
-                    minlength="8"
-                    maxlength="40"
+                    :class="{ errorClass: errorNombreUsuario }"
+                    minlength="6"
+                    maxlength="30"
+                    required
+                    autofocus
                   />
-                  <medium class="form-text text-muted" v-if="errorNuevaClave">
-                    <p class="error">{{ errorNuevaClave }}</p>
+                  <medium class="form-text text-muted" v-if="errorNombreUsuario">
+                    <p class="error">{{ errorNombreUsuario }}</p>
                   </medium>
+                </div>
+              </div>
+              <br />
+              <div class="form-group row">
+                <label class="col-lg-3 col-form-label">
+                  <b>Email</b>:
+                </label>
+                <div class="col-lg-9">
+                  <input
+                    type="email"
+                    v-model="user.email"
+                    placeholder="Email"
+                    class="form-control"
+                    :class="{ errorClass: errorEmail }"
+                    maxlength="60"
+                    required
+                  />
+                  <medium class="form-text text-muted" v-if="errorEmail">
+                    <p class="error">{{ errorEmail }}</p>
+                  </medium>
+                </div>
+              </div>
+              <br />
+              <div class="form-group row">
+                <label class="col-lg-3 col-form-label">
+                  <b>Teléfono</b>:
+                </label>
+                <div class="col-lg-9">
+                  <input
+                    type="text"
+                    v-model="user.telefono"
+                    placeholder="Teléfono"
+                    class="form-control"
+                    :class="{ errorClass: errorTelefono }"
+                    maxlength="14"
+                    required
+                  />
+                  <medium class="form-text text-muted" v-if="errorTelefono">
+                    <p class="error">{{ errorTelefono }}</p>
+                  </medium>
+                </div>
+              </div>
+              <br />
+              <div class="form-group mb-4">
+                <label>
+                  <b>Cambiar Clave</b>&nbsp;
+                </label>
+                <input type="checkbox" v-model="user.cambiar_clave" placeholder="Cambiar Clave" />
+              </div>
+              <div v-if="user.cambiar_clave">
+                <div class="form-group row">
+                  <label class="col-lg-3 col-form-label">
+                    <b>Nueva Clave</b>:
+                  </label>
+                  <div class="col-lg-9">
+                    <input
+                      type="password"
+                      v-model="user.nueva_clave"
+                      placeholder="Nueva Clave"
+                      class="form-control"
+                      :class="{ errorClass: errorNuevaClave }"
+                      minlength="8"
+                      maxlength="40"
+                    />
+                    <medium class="form-text text-muted" v-if="errorNuevaClave">
+                      <p class="error">{{ errorNuevaClave }}</p>
+                    </medium>
+                  </div>
                 </div>
                 <br />
               </div>
-              <div class="form-group">
-                <label>Email</label>
-                <input
-                  type="email"
-                  v-model="user.email"
-                  placeholder="Email"
-                  class="form-control"
-                  :class="{ errorClass: errorEmail }"
-                  maxlength="60"
-                  required
-                />
-                <medium class="form-text text-muted" v-if="errorEmail">
-                  <p class="error">{{ errorEmail }}</p>
-                </medium>
-              </div>
-              <br />
-              <div class="form-group">
-                <label>Teléfono</label>
-                <input
-                  type="text"
-                  v-model="user.telefono"
-                  placeholder="Teléfono"
-                  class="form-control"
-                  :class="{ errorClass: errorTelefono }"
-                  maxlength="14"
-                  required
-                />
-                <medium class="form-text text-muted" v-if="errorTelefono">
-                  <p class="error">{{ errorTelefono }}</p>
-                </medium>
-              </div>
-              <br />
-              <div class="form-group">
-                <button class="btn btn-success btn-block">Guardar</button>
+              <div class="form-group btn-submit">
+                <button class="btn btn-success btn-block">
+                  <i class="fas fa-save mr-2"></i>Guardar
+                </button>
               </div>
             </form>
           </div>
         </div>
       </div>
     </div>
-    <Popup data-target="ingresarClavePopup" title="Ingresar clave" :showButtons="false">
+    <Popup data-target="ingresarClavePopup" title="Ingresar Clave" :showButtons="false">
       <div style="width: 100%; margin-bottom: 1%;" v-if="errorMessageClave">
         <div
           class="alert alert-danger alert-dismissible fade show"
@@ -145,7 +160,7 @@
       </div>
       <form @submit.prevent="handleSubmitClave">
         <div class="form-group">
-          <label>Ingrese su clave para confirmar los cambios</label>
+          <label>Ingrese su clave para confirmar los cambios:</label>
           <input
             type="password"
             v-model="user.clave"
@@ -333,7 +348,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 input[type="checkbox"] {
   position: relative;
   width: 50px;
@@ -374,5 +389,31 @@ input:checked[type="checkbox"]:before {
 
 .errorClass {
   background-color: rgb(228, 167, 167);
+}
+
+label {
+  text-align: center;
+}
+
+small,
+medium {
+  text-align: left;
+}
+
+.card {
+  background-color: #f4f4f5;
+  border-radius: 10px;
+  box-shadow: 0.1px 0.1px 2px rgb(43, 43, 43), -0.1px -0.1px 2px rgb(43, 43, 43);
+}
+
+@media (min-width: 992px) {
+  label {
+    text-align: left;
+  }
+
+  .btn-submit {
+    margin-left: 25%;
+    margin-right: 25%;
+  }
 }
 </style>

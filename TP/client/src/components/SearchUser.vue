@@ -27,17 +27,16 @@
         <div class="card-body">
           <img
             src="../assets/img-mail.png"
-            alt="Logo Inicio Sesion"
-            width="200px"
-            class="card-img-top mx-auto mt-2 mb-4 rounded-circle w-50"
+            alt="Imagén de un correo electrónico"
+            class="card-img-top mx-auto mb-4 rounded-circle w-50"
           />
           <form @submit.prevent="handleSubmit">
             <div class="form-group">
-              <label><b>Nombre Usuario</b></label>
+              <label><b>Nombre Usuario</b>:</label>
               <input
                 type="text"
                 v-model="user.nombre_usuario"
-                placeholder="Nombre Usuario"
+                placeholder="Nombre de Usuario"
                 class="form-control"
                 :class="{ errorClass: errorNombreUsuario }"
                 minlength="6"

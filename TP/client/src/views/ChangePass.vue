@@ -1,11 +1,7 @@
 <template>
   <div class="mt-4">
     <div v-if="buscandoUsuario">
-      <img
-        src="../assets/loading.gif"
-        alt="Imagen de carga de página"
-        class="loading mt-5"
-      />
+      <img src="../assets/loading.gif" alt="Imagen de carga de página" class="loading mt-5" />
     </div>
     <div v-else-if="habilitadoACambiarClave">
       <div style="width: 100%; margin-bottom: 1%;" v-if="errorMessage">
@@ -28,19 +24,22 @@
       </div>
       <div class="row m-2">
         <div class="col-md-5 mx-auto">
-          <div
-            class="text-center animate__animated animate__flipInY animate__fast"
-          >
+          <div class="card text-center animate__animated animate__flipInY animate__fast">
             <div class="card-header">
-              <p style="font-size: 1.75rem;">
+              <p class="h2">
                 <b>Cambiar Clave</b>
               </p>
-              <p><b>Usuario: </b>{{ user.nombre_usuario }}</p>
+              <span>
+                <b>Usuario:</b>
+                {{ user.nombre_usuario }}
+              </span>
             </div>
             <div class="card-body">
               <form @submit.prevent="handleSubmit">
                 <div class="form-group">
-                  <label><b>Nueva Clave</b></label>
+                  <label>
+                    <b>Nueva Clave</b>:
+                  </label>
                   <input
                     type="password"
                     v-model="user.nueva_clave"
@@ -51,15 +50,13 @@
                     maxlength="40"
                     required
                   />
-                  <medium class="form-text text-muted" v-if="errorClave"
-                    ><p class="error">{{ errorClave }}</p></medium
-                  >
+                  <medium class="form-text text-muted" v-if="errorClave">
+                    <p class="error">{{ errorClave }}</p>
+                  </medium>
                 </div>
                 <br />
                 <div class="form-group">
-                  <button class="btn btn-success btn-block">
-                    Guardar
-                  </button>
+                  <button class="btn btn-success btn-block"><i class="fas fa-save mr-2"></i>Guardar</button>
                 </div>
               </form>
             </div>
@@ -68,7 +65,10 @@
       </div>
     </div>
     <div v-else>
-      <p class="title"><i class="fas fa-angle-right"></i> {{ errorCodigo }}</p>
+      <p class="title">
+        <i class="fas fa-angle-right"></i>
+        {{ errorCodigo }}
+      </p>
     </div>
   </div>
 </template>
@@ -151,7 +151,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .error {
   color: red;
 }
@@ -167,5 +167,11 @@ export default {
 .loading {
   display: block;
   margin: auto;
+}
+
+.card {
+  background-color: #f4f4f5;
+  border-radius: 10px;
+  box-shadow: 0.1px 0.1px 2px rgb(43, 43, 43), -0.1px -0.1px 2px rgb(43, 43, 43);
 }
 </style>

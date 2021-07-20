@@ -33,113 +33,123 @@
         </div>
       </div>
       <div class="row m-2">
-        <div class="col-md-5 mx-auto">
+        <div class="col-sm-10 col-md-6 col-lg-11 col-xl-9 mx-auto">
           <div class="card text-center animate__animated animate__flipInY animate__fast">
             <div class="card-header">
-              <p style="font-size: 1.75rem;">
+              <span class="h2">
                 <b>Agregar Vacante</b>
-              </p>
+              </span>
             </div>
             <div class="card-body">
               <form @submit.prevent="handleSubmit">
-                <div class="form-group">
-                  <label>
-                    <b>Fecha Inicio</b>
+                <div class="form-group row">
+                  <label class="col-lg-3 col-form-label">
+                    <b>Fecha Inicio:</b>
                   </label>
-                  <input
-                    type="date"
-                    v-model="llamado.fecha_inicio"
-                    placeholder="Fecha Inicio"
-                    :min="fecha_hoy"
-                    class="form-control"
-                    :class="{ errorClass: errorFechaInicio }"
-                    required
-                    autofocus
-                  />
-                  <medium class="form-text text-muted" v-if="errorFechaInicio">
-                    <p class="error">{{ errorFechaInicio }}</p>
-                  </medium>
+                  <div class="col-lg-9">
+                    <input
+                      type="date"
+                      v-model="llamado.fecha_inicio"
+                      placeholder="Fecha Inicio"
+                      :min="fecha_hoy"
+                      class="form-control"
+                      :class="{ errorClass: errorFechaInicio }"
+                      required
+                      autofocus
+                    />
+                    <medium class="form-text text-muted" v-if="errorFechaInicio">
+                      <p class="error">{{ errorFechaInicio }}</p>
+                    </medium>
+                  </div>
                 </div>
                 <br />
                 <div v-if="llamado.fecha_inicio">
-                  <div class="form-group">
-                    <label>
-                      <b>Fecha Fin</b>
+                  <div class="form-group row">
+                    <label class="col-lg-3 col-form-label">
+                      <b>Fecha Fin:</b>
                     </label>
-                    <input
-                      type="date"
-                      v-model="llamado.fecha_fin"
-                      placeholder="Fecha Inicio"
-                      :min="llamado.fecha_inicio"
-                      class="form-control"
-                      :class="{ errorClass: errorFechaFin }"
-                      required
-                    />
-                    <medium class="form-text text-muted" v-if="errorFechaFin">
-                      <p class="error">{{ errorFechaFin }}</p>
-                    </medium>
+                    <div class="col-lg-9">
+                      <input
+                        type="date"
+                        v-model="llamado.fecha_fin"
+                        placeholder="Fecha Inicio"
+                        :min="llamado.fecha_inicio"
+                        class="form-control"
+                        :class="{ errorClass: errorFechaFin }"
+                        required
+                      />
+                      <medium class="form-text text-muted" v-if="errorFechaFin">
+                        <p class="error">{{ errorFechaFin }}</p>
+                      </medium>
+                    </div>
                   </div>
                   <br />
                 </div>
-                <div class="form-group">
-                  <label>
-                    <b>Requisitos</b>
+                <div class="form-group row">
+                  <label class="col-lg-3 col-form-label">
+                    <b>Requisitos:</b>
                   </label>
-                  <textarea
-                    type="text"
-                    v-model="llamado.requisitos"
-                    placeholder="Descpción de los requisitos del puesto de trabajo"
-                    class="form-control"
-                    :class="{ errorClass: errorRequisitos }"
-                    maxlength="300"
-                    required
-                  />
-                  <medium class="form-text text-muted" v-if="errorRequisitos">
-                    <p class="error">{{ errorRequisitos }}</p>
-                  </medium>
+                  <div class="col-lg-9">
+                    <textarea
+                      type="text"
+                      v-model="llamado.requisitos"
+                      placeholder="Descpción de los requisitos del puesto de trabajo"
+                      class="form-control"
+                      :class="{ errorClass: errorRequisitos }"
+                      maxlength="300"
+                      required
+                    />
+                    <medium class="form-text text-muted" v-if="errorRequisitos">
+                      <p class="error">{{ errorRequisitos }}</p>
+                    </medium>
+                  </div>
                 </div>
                 <br />
-                <div class="form-group">
-                  <label>
-                    <b>Número de Vacantes</b>
+                <div class="form-group row">
+                  <label class="col-lg-3 col-form-label">
+                    <b>Número de Vacantes:</b>
                   </label>
-                  <input
-                    type="number"
-                    v-model="llamado.vacantes"
-                    placeholder="Número de Vacentes"
-                    min="1"
-                    max="100"
-                    class="form-control"
-                    :class="{ errorClass: errorVacantes }"
-                    required
-                  />
-                  <medium class="form-text text-muted" v-if="errorVacantes">
-                    <p class="error">{{ errorVacantes }}</p>
-                  </medium>
+                  <div class="col-lg-9">
+                    <input
+                      type="number"
+                      v-model="llamado.vacantes"
+                      placeholder="Número de Vacentes"
+                      min="1"
+                      max="100"
+                      class="form-control"
+                      :class="{ errorClass: errorVacantes }"
+                      required
+                    />
+                    <medium class="form-text text-muted" v-if="errorVacantes">
+                      <p class="error">{{ errorVacantes }}</p>
+                    </medium>
+                  </div>
                 </div>
                 <br />
-                <div class="form-group">
-                  <label>
-                    <b>Cátedra</b>
+                <div class="form-group row">
+                  <label class="col-lg-3 col-form-label">
+                    <b>Cátedra:</b>
                   </label>
-                  <select
-                    class="form-control"
-                    :class="{ errorClass: errorIdCatedra }"
-                    v-model="llamado.id_catedra"
-                    required
-                  >
-                    <option
-                      v-for="(catedra, index) in catedras"
-                      :key="index"
-                      :value="catedra.id"
-                    >{{ catedra.descripcion }}</option>
-                  </select>
-                  <medium class="form-text text-muted" v-if="errorIdCatedra">
-                    <p class="error">{{ errorIdCatedra }}</p>
-                  </medium>
+                  <div class="col-lg-9">
+                    <select
+                      class="form-control"
+                      :class="{ errorClass: errorIdCatedra }"
+                      v-model="llamado.id_catedra"
+                      required
+                    >
+                      <option
+                        v-for="(catedra, index) in catedras"
+                        :key="index"
+                        :value="catedra.id"
+                      >{{ catedra.descripcion }}</option>
+                    </select>
+                    <medium class="form-text text-muted" v-if="errorIdCatedra">
+                      <p class="error">{{ errorIdCatedra }}</p>
+                    </medium>
+                  </div>
                 </div>
                 <br />
-                <div class="form-group">
+                <div class="form-group btn-submit">
                   <button class="btn btn-success btn-block">Guardar</button>
                 </div>
               </form>
@@ -315,7 +325,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .error {
   color: red;
 }
@@ -327,5 +337,31 @@ export default {
 .loading {
   display: block;
   margin: auto;
+}
+
+label {
+  text-align: center;
+}
+
+small,
+medium {
+  text-align: left;
+}
+
+.card {
+  background-color: #f4f4f5;
+  border-radius: 10px;
+  box-shadow: 0.1px 0.1px 2px rgb(43, 43, 43), -0.1px -0.1px 2px rgb(43, 43, 43);
+}
+
+@media (min-width: 992px) {
+  label {
+    text-align: left;
+  }
+
+  .btn-submit {
+    margin-left: 25%;
+    margin-right: 25%;
+  }
 }
 </style>
